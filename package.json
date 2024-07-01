@@ -48,7 +48,6 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "preinstall": "npm install --force",
     "start": "react-scripts start",
     "build": "craco build",
     "vercel-build": "npm install --force && npm run build",
