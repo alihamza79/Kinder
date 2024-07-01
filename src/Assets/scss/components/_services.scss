@@ -10,6 +10,7 @@
 
   .title {
     margin-bottom: 5px;
+    font-size: 0.9rem; // Decreased font size
   }
 
   .services-box-hover {
@@ -48,16 +49,17 @@
 
   .service-style {
     background-color: #fff;
-    padding: 3rem 3.5rem;
-    border-bottom: 4px solid;
-    border-color: var(--base-color, #0038e3);
+    padding: 1.5rem 2rem; // Adjusted padding to make the container smaller
+    border-bottom: 0; // Removed the bottom border
+    font-size: 0.9rem; // Decreased font size
 
     @media (max-width:var(--sm)) {
-      padding: 33px 39px;
+      padding: 20px 25px;
     }
 
     p {
       margin-bottom: 0;
+      font-size: 0.9rem; // Decreased font size
     }
   }
 
@@ -88,25 +90,27 @@
 
   .service-style {
     background-color: #fff;
-    padding: 3rem;
+    padding: 1.5rem; // Adjusted padding to make the container smaller
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
 
     .title {
-      margin-bottom: 10px;
+      margin-bottom: 5px;
+      font-size: 0.9rem; // Decreased font size
     }
 
     p {
-      margin-bottom: 25px;
+      margin-bottom: 20px;
+      font-size: 0.9rem; // Decreased font size
 
       @media (max-width:var(--sm)) {
-        margin-bottom: 15px;
+        margin-bottom: 10px;
       }
     }
   }
 
   .info-service {
-    border-top: 1px solid #ededed;
-    padding-top: 25px;
+    border-top: 0; // Removed the top border
+    padding-top: 20px;
 
     a {
       display: flex;
@@ -125,14 +129,15 @@
   background-color: white;
 
   .service-style {
-    padding: 4rem;
+    padding: 2.5rem; // Adjusted padding to make the container smaller
     text-align: center;
     position: relative;
 
     .title {
+      font-size: 0.9rem; // Decreased font size
 
       @media (max-width:var(--sm)) {
-        margin-bottom: 10px;
+        margin-bottom: 5px;
       }
     }
   }
@@ -169,8 +174,8 @@
     transition: var(--default-transition);
     border-radius: 50%;
     vertical-align: middle;
-    height: 110px;
-    width: 110px;
+    height: 100px; // Adjusted size
+    width: 100px; // Adjusted size
     max-width: none;
 
     @media (max-width:var(--md)) {
@@ -189,21 +194,23 @@
   }
 
   .service-style {
-    margin-left: 30px;
+    margin-left: 20px; // Adjusted margin to make the container smaller
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     @media (max-width:var(--lg)) {
-      margin-left: 25px;
+      margin-left: 15px;
     }
 
     .title {
       margin-bottom: 5px;
+      font-size: 0.9rem; // Decreased font size
     }
 
     p {
       width: 85%;
+      font-size: 0.9rem; // Decreased font size
 
       @media (max-width:var(--lg)) {
         width: 100%;
@@ -213,34 +220,46 @@
 }
 
 // service-style-05
+// service-style-05
+// service-style-05
 .service-style-05 {
   transition: var(--default-transition);
-  padding: 4rem;
+  padding: 0.8rem; // Adjusted padding to make the container smaller
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.08);
   background-color: #fff;
+  height: 150px; // Set fixed height for the container
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
 
-  @media (max-width:var(--lg)) {
-    padding: 3rem;
+  @media (max-width: var(--lg)) {
+    padding: 1rem;
+    height: 140px; // Adjusted height for smaller screens
   }
 
-  @media (max-width:var(--md)) {
-    padding: 4.5rem;
+  @media (max-width: var(--md)) {
+    padding: 1.2rem;
+    height: 130px; // Adjusted height for smaller screens
   }
 
-  @media (max-width:var(--xs)) {
-    padding: 50px;
+  @media (max-width: var(--xs)) {
+    padding: 1.5rem;
+    height: 120px; // Adjusted height for smaller screens
   }
 
   .title {
-    @media (max-width:var(--lg)) {
-      margin-bottom: 101%;
-    }
+    font-size: 0.9rem; // Decreased font size
+    margin-bottom: 0.5rem; // Adjusted margin
 
+    @media (max-width: var(--lg)) {
+      margin-bottom: 0.5rem;
+    }
   }
 
   .info-service {
-    border-top: 1px solid #ededed;
-    padding-top: 25px;
+    border-top: 0; // Removed the top border
+    padding-top: 0.5rem;
 
     a {
       transition-duration: 0.4s;
@@ -262,13 +281,13 @@
   }
 
   .img-wrapper {
-    margin-bottom: 15px;
+    margin-bottom: 0.5rem;
 
     span {
 
-      @media (max-width:var(--xs)) {
-        font-size: 16px;
-        line-height: 28px;
+      @media (max-width: var(--xs)) {
+        font-size: 0.8rem;
+        line-height: 1rem;
       }
     }
   }
@@ -277,22 +296,26 @@
     span {
       display: block;
       font-weight: 600;
-      font-size: 1.8rem;
-      line-height: 2.5rem;
-      letter-spacing: -.5px;
+      font-size: 1.2rem; // Adjusted font size
+      line-height: 1.5rem;
+      letter-spacing: -0.5px;
 
-      @media (max-width:var(--xs)) {
-        font-size: 20px;
-        line-height: 28px;
-        margin-bottom: 15px;
+      @media (max-width: var(--xs)) {
+        font-size: 1rem;
+        line-height: 1.2rem;
+        margin-bottom: 0.5rem;
       }
     }
 
     p {
-      margin-bottom: 25px;
+      margin-bottom: 0.5rem; // Adjusted margin
+      font-size: 0.8rem; // Decreased font size
+      overflow: hidden;
+      text-overflow: ellipsis; // Ensure text does not overflow
+      white-space: nowrap; // Prevent text from wrapping
 
-      @media (max-width:var(--xs)) {
-        margin-bottom: 15px;
+      @media (max-width: var(--xs)) {
+        margin-bottom: 0.5rem;
       }
     }
 
@@ -300,13 +323,15 @@
       a {
         i {
           float: right;
-          font-size: 18px;
-          line-height: 22px
+          font-size: 1rem;
+          line-height: 1.2rem;
         }
       }
     }
   }
 }
+
+
 
 // service-style-06
 .service-style-06 {
@@ -320,8 +345,8 @@
       border-width: 1px;
       border-style: dashed;
       border-color: #e4e4e4;
-      width: 200px;
-      height: 200px;
+      width: 180px; // Adjusted size
+      height: 180px; // Adjusted size
       padding: 10px;
     }
   }
@@ -335,9 +360,11 @@
       font-weight: 500;
       margin-bottom: 5px;
       color: #333045;
+      font-size: 0.9rem; // Decreased font size
     }
 
     p {
+      font-size: 0.9rem; // Decreased font size
 
       @media (max-width:var(--xs)) {
         width: 70%;

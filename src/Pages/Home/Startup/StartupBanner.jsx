@@ -9,20 +9,16 @@ const StartupPageBannerSlider = () => {
     const [activeSlide, setActiveSlide] = useState(0)
     const swiperData = [
         {
-            img: "https://via.placeholder.com/1920x1100",
-            // title: "Start your online business today",
-            // subTitle: "The best way to promote your business"
+            img: "/assets/img/webp/slider-01.jpg",
+            title: "Start your online business today",
+            subTitle: "The best way to promote your business"
         },
         {
-            img: "https://via.placeholder.com/1920x1100",
-            // title: "Combine thinking and technical",
-            // subTitle: "The best way to promote your business"
+            img: "/assets/img/webp/slider-02.jpg",
+            title: "Combine thinking and technical",
+            subTitle: "The best way to promote your business"
         },
-        {
-            img: "https://via.placeholder.com/1920x1100",
-            // title: "Delivering creative digital products",
-            // subTitle: "The best way to promote your business"
-        },
+        
     ]
 
     return (

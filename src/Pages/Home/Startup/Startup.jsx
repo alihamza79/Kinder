@@ -8,9 +8,7 @@ import { Link } from "react-router-dom";
 import * as Yup from "yup";
 
 // Functions
-import {
-  fadeIn
-} from "../../../Functions/GlobalAnimations";
+import { fadeIn } from "../../../Functions/GlobalAnimations";
 
 // Components
 import { Link as ScrollTo } from "react-scroll";
@@ -115,8 +113,6 @@ const iconWithTextData = [
   },
 ];
 
-
-
 const SocialIconsData = [
   {
     color: "#3b5998",
@@ -145,8 +141,6 @@ const SocialIconsData = [
   },
 ];
 
-
-
 const Footer_Data = [
   FooterData[0],
   FooterData[1],
@@ -159,7 +153,7 @@ const HomeStartupPage = (props) => {
     <div style={props.style}>
       {/* Header Start */}
       <Header topSpace={{ md: true }} type="reverse-scroll">
-        <Topbar className="bg-lightgray border-b border-[#0000001a] sm:hidden md:px-[15px]">
+        {/* <Topbar className="bg-lightgray border-b border-[#0000001a] sm:hidden md:px-[15px]">
           <Container fluid className="px-[50px]">
             <Row>
               <Col className="col-12 col-sm-auto text-center items-center flex text-sm-start me-auto ps-lg-0 !pl-[15px]">
@@ -188,11 +182,10 @@ const HomeStartupPage = (props) => {
                     Mon - Fri: 10:00 - 22:00
                   </span>
                 </div>
-                
               </Col>
             </Row>
           </Container>
-        </Topbar>
+        </Topbar> */}
         <HeaderNav
           fluid="fluid"
           theme="dark"
@@ -405,18 +398,29 @@ const HomeStartupPage = (props) => {
                   <div className="grow-[1]">
                     {" "}
                     <span className="text-basecolor uppercase">
-                      About our company
+                      About Us
                     </span>{" "}
                   </div>
                 </div>
                 <h1 className="heading-4 font-serif text-darkgray font-semibold w-[85%] mb-[35px] lg:w-full sm:mb-[25px]">
-                  Classic beautiful and modern decor presence of design
+                  Liebe Eltern, Kinder und Jugendliche!
                 </h1>
                 <p className="mb-[25px] w-[80%] lg:w-full">
-                  Lorem ipsum dolor sit amet consectetur adipiscing do eiusmod
-                  tempor incididunt ut labore dolore magna enim veniam nostrud
-                  exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                  consequat.
+                  Wir freuen uns, Sie auf der Internetseite der Kinderarztpraxis
+                  kunterbunt Waiblingen zu begrüßen. Für uns als Fachärzte für
+                  Kinder- und Jugendmedizin steht die körperliche und geistige
+                  Entwicklung Ihres Kindes vom Säugling bis zum Jugendlichen im
+                  Mittelpunkt unserer Arbeit. Dabei ist uns der einfühlsame und
+                  verantwortungsbewusste Umgang mit unseren kleinen und großen
+                  Patienten besonders wichtig. Schwerpunkt unserer Praxis ist
+                  die hausärztliche Versorgung und ganzheitliche Begleitung von
+                  Kindern. Wir versorgen alle akuten und chronischen
+                  Erkrankungen, wie z.B. Asthma, Allergien oder ADHS und haben
+                  dabei auch psychosomatische Beschwerden im Blick. Wir sind eng
+                  vernetzt mit den Kliniken und Spezialisten in der Region und
+                  stimmen mit Ihnen die Behandlung und Versorgung im Sinne Ihres
+                  Kindes ab. Wir freuen uns, Sie und Ihre Familie kennen zu
+                  lernen!
                 </p>
                 <ScrollTo
                   href="#"
@@ -427,15 +431,7 @@ const HomeStartupPage = (props) => {
                   smooth={true}
                   duration={800}
                 >
-                  <Buttons
-                    type="submit"
-                    ariaLabel="Our services"
-                    className="btn-fill btn-fancy rounded-none font-medium font-serif uppercase hover:text-black mt-[20px]"
-                    themeColor="#232323"
-                    size="md"
-                    color="#fff"
-                    title="Our services"
-                  />
+                  
                 </ScrollTo>
               </Col>
             </Row>
@@ -445,14 +441,14 @@ const HomeStartupPage = (props) => {
         {/* Services */}
         {/* Section Start */}
         <m.section
-          className="bg-lightgray border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
+          className=" border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
           {...fadeIn}
         >
           <Container>
             <Row className="justify-center">
               <Col md={12} className="text-center mb-[7%]">
                 <h6 className="font-serif text-darkgray font-medium">
-                  Services
+                LEISTUNGEN
                 </h6>
               </Col>
             </Row>
@@ -578,7 +574,6 @@ const HomeStartupPage = (props) => {
             </Container>
           </m.section>
         </section>
-        
 
         {/* Section Start */}
         <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">
