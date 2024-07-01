@@ -13,6 +13,7 @@ import ScrollToTopButton from "./Components/ScrollToTop";
 
 // Home
 import HomeStartupPage from "./Pages/Home/Startup/Startup";
+import Vertretung from "./Pages/Vertretung/Vertretung";
 const HomeBusinessPage = lazy(() => import("./Pages/Home/Business"));
 const CorporatePage = lazy(() => import("./Pages/Home/Corporate"));
 const FinancePage = lazy(() => import("./Pages/Home/Finance"));
@@ -1841,6 +1842,9 @@ function App() {
                     <Route path="checkout" element={<Checkout />} />
                     <Route path="login-register" element={<LoginRegister />} />
                   </Route>
+
+                  {/* vertretung */}
+                  <Route path="/vertretung" element={<Vertretung />}></Route>
                 </Routes>
               </Suspense>
             </AnimatePresence>
