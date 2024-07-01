@@ -21,7 +21,8 @@ import InViewPort from "../../../Components/InViewPort";
 import Services from "../../../Components/Services/Services";
 import { serviceData5 } from "../../../Components/Services/ServicesData";
 import Team from "../../../Components/Team/Team";
-import { TeamData05 } from "../../../Components/Team/TeamData";
+import { TeamData01 } from "../../../Components/Team/TeamData";
+import { TeamData04 } from "../../../Components/Team/TeamData";
 import TextBox from "../../../Components/TextBox/TextBox";
 import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
@@ -430,9 +431,7 @@ const HomeStartupPage = (props) => {
                   spy={true}
                   smooth={true}
                   duration={800}
-                >
-                  
-                </ScrollTo>
+                ></ScrollTo>
               </Col>
             </Row>
           </Container>
@@ -448,7 +447,7 @@ const HomeStartupPage = (props) => {
             <Row className="justify-center">
               <Col md={12} className="text-center mb-[7%]">
                 <h6 className="font-serif text-darkgray font-medium">
-                LEISTUNGEN
+                  LEISTUNGEN
                 </h6>
               </Col>
             </Row>
@@ -469,43 +468,57 @@ const HomeStartupPage = (props) => {
 
         {/* Team Section */}
 
-        {/* Team style 05 ( Light ) start */}
-        <section className="pt-[120px] lg:pt-[95px] md:pt-[80px] sm:pt-[50px] bg-gray-color switch-tabs">
-          <div className="text-center">
-            <h6 className="text-darkgray font-medium font-serif mb-14 xs:mb-20">
-              Team{" "}
-            </h6>
-          </div>
-          <section className="py-20 bg-lightgray">
-            <Container>
-              <Team
-                themeColor="dark"
-                theme="team-style-05"
-                className="text-white"
-                data={TeamData05}
-                grid="row row-cols-1 row-cols-sm-2 row-cols-lg-3 justify-center gap-y-10"
-                animation={fadeIn}
-                animationDelay={0.2}
-                carousel={false}
-                carouselOption={{
-                  slidesPerView: 1,
-                  spaceBetween: 30,
-                  loop: true,
-                  navigation: true,
-                  autoplay: { delay: 3000, disableOnInteraction: false },
-                  pagination: { dynamicBullets: true, clickable: true },
-                  breakpoints: {
-                    1200: { slidesPerView: 4 },
-                    992: { slidesPerView: 3 },
-                    768: { slidesPerView: 2 },
-                  },
-                }}
-              />
-            </Container>
-          </section>
+        <section className="py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+          <Container>
+            <Row>
+              <Col md={12} className="text-center  mb-[7%]">
+                <h5 className="font-serif text-darkgray font-medium">Team</h5>
+              </Col>
+            </Row>
+            <Team
+              themeColor="dark"
+              theme="team-style-04"
+              color={[
+                "#556fffcc",
+                "#b263e4cc",
+                "#e05fc4cc",
+                "#f767a6cc",
+                "#ff798ecc",
+              ]}
+              data={TeamData04}
+              animation={fadeIn}
+              carousel={true}
+              carouselOption={{
+                slidesPerView: 1,
+                spaceBetween: 30,
+                loop: true,
+                navigation: false,
+                autoplay: { delay: 3000, disableOnInteraction: false },
+                pagination: { dynamicBullets: true, clickable: true },
+                breakpoints: {
+                  1200: { slidesPerView: 4 },
+                  992: { slidesPerView: 3 },
+                  768: { slidesPerView: 2 },
+                },
+              }}
+            />
+          </Container>
+          <Container>
+            <Row className="justify-center">
+              <Col className="text-center md:flex md:flex-col md:items-center gap-y-10">
+                <Buttons
+                  ariaLabel="button"
+                  href="/page/our-team"
+                  className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
+                  size="lg"
+                  color="#ffffff"
+                  themeColor="#232323"
+                  title="All Team"
+                />
+              </Col>
+            </Row>
+          </Container>
         </section>
-
-        {/* Team style 05 ( Light ) End */}
 
         {/* Form Section                     */}
         {/* Section Start */}

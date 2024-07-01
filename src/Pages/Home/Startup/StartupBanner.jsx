@@ -9,20 +9,16 @@ const StartupPageBannerSlider = () => {
     const [activeSlide, setActiveSlide] = useState(0)
     const swiperData = [
         {
-            img: "https://via.placeholder.com/1920x1100",
+            img: "/assets/img/webp/slider-01.jpg",
             title: "Start your online business today",
             subTitle: "The best way to promote your business"
         },
         {
-            img: "https://via.placeholder.com/1920x1100",
+            img: "/assets/img/webp/slider-02.jpg",
             title: "Combine thinking and technical",
             subTitle: "The best way to promote your business"
         },
-        {
-            img: "https://via.placeholder.com/1920x1100",
-            title: "Delivering creative digital products",
-            subTitle: "The best way to promote your business"
-        },
+        
     ]
 
     return (
@@ -55,12 +51,7 @@ const StartupPageBannerSlider = () => {
                                             <m.h1 initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }} className="font-serif font-semibold pb-[10px] text-[70px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]">{item.title}</m.h1>
                                             <m.span initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.8, ease: "easeIn" }} className="font-serif block text-[19px] leading-[28px] mb-[35px] font-light text-white xs:text-base xs:mb-[20px]">{item.subTitle}</m.span>
                                             <m.div initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.9, ease: "easeIn" }}>
-                                                <Link aria-label="started now" to="/page/contact-classic" className="uppercase startup-link font-medium">
-                                                    Get started now
-                                                    <div>
-                                                        <i className="fas fa-play"></i>
-                                                    </div>
-                                                </Link>
+                                               
                                             </m.div>
                                         </Col>
                                     </Row>

@@ -102,63 +102,84 @@ const serviceData4 = [
 
 const serviceData5 = [
     {
-        title: "Developing strategy",
+        title: "Vorsorge- Untersuchungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Blazing performance",
+        title: "Jugendgesundheits- Untersuchungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Customer satisfaction",
+        title: "Jugendarbeitsschutz- Untersuchungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Developing strategy",
+        title: "Kindergarten-Eingangsuntersuchungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Blazing performance",
+        title: "Entwicklungsdiagnostik im Säuglings-, Kleinkind- und Schulalter",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Customer satisfaction",
+        title: "Impfungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Developing strategy",
+        title: "Säuglingssonographie",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Blazing performance",
+        title: "Laboruntersuchungen",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",
         // linkTitle: "More Info"
     },
     {
-        title: "Customer satisfaction",
+        title: "praeoperative Diagnostik",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "kleine Chirurgie (z.B. Wundversorgung)",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Seh- und Hörprüfungen",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Allergologie, Lungenfunktion, Allergie- Test",
         // icon: "feather-arrow-right",
         // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
         // link: "/page/about-me",

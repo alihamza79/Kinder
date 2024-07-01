@@ -1,8 +1,8 @@
-const TeamData01 = [
+const TeamData04 = [
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Alexander Harvard",
-    designation: "CO FOUNDER",
+    img: "/assets/img/team/bille-1.jpg",
+    name: "Dr. med. Sybille Walker",
+    designation: "Fachärztin Kinder- und Jugendheilkunde",
     social_links: [
       {
         title: "facebook",
@@ -22,9 +22,9 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Bryan Jonhson",
-    designation: "MANAGER",
+    img: "/assets/img/team/Andreas.jpg",
+    name: "Dr. med. Andreas Diekhöfer ",
+    designation: "Facharzt Kinder- und Jugendheilkunde",
     social_links: [
       {
         title: "facebook",
@@ -44,9 +44,9 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Jemmy Watson",
-    designation: "DESIGNER",
+    img: "/assets/img/team/lucia.png",
+    name: "Dr. med. Lucia Lupetto",
+    designation: "Kinder,- und Jugendärztin in Weiterbildung",
     social_links: [
       {
         title: "facebook",
@@ -66,9 +66,10 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Jeremy Dupont",
-    designation: "MANAGER",
+    
+    img: "/assets/img/team/Heike.jpg",
+    name: "Heike Winkler",
+    designation: "Medizinische Fachangestellte",
     social_links: [
       {
         title: "facebook",
@@ -88,9 +89,9 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Alexander Harvard",
-    designation: "CO FOUNDER",
+    img: "/assets/img/team/markio.png",
+    name: "Mariko Lutz",
+    designation: "Medizinische Fachangestellte",
     social_links: [
       {
         title: "facebook",
@@ -110,9 +111,9 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Bryan Jonhson",
-    designation: "MANAGER",
+    img: "/assets/img/team/frau.png",
+    name: "Frau Celina Kraus",
+    designation: "medizinische Fachangestellte",
     social_links: [
       {
         title: "facebook",
@@ -132,9 +133,9 @@ const TeamData01 = [
     ],
   },
   {
-    img: "https://via.placeholder.com/525x639",
-    name: "Jemmy Watson",
-    designation: "DESIGNER",
+    img: "/assets/img/team/Alina.png",
+    name: "Frau Alina Alizoti",
+    designation: "Auszubildende zur medizinischen Fachangestellten",
     social_links: [
       {
         title: "facebook",
@@ -153,28 +154,7 @@ const TeamData01 = [
       },
     ],
   },
-  {
-    img: "https://via.placeholder.com/525x639",
-    name: "Jeremy Dupont",
-    designation: "MANAGER",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
-  },
+  
 ];
 
 const TeamData02 = [
@@ -337,7 +317,7 @@ const TeamData03 = [
   },
 ];
 
-const TeamData04 = [
+const TeamData01 = [
   {
     img: "https://via.placeholder.com/800x1000",
     name: "JEMMY WATSON",
