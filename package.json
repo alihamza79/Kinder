@@ -56,7 +56,8 @@
     "scss": "run-p sass tailwind pages",
     "sass": "sass src/Assets/scss:src/Assets/css --watch",
     "tailwind": "npx tailwindcss -i src/Assets/css/global.css -o src/Assets/css/global.css --watch --minify",
-    "pages": "npx tailwindcss -i src/Assets/css/pages.css -o src/Assets/css/pages.css --watch --minify"
+    "pages": "npx tailwindcss -i src/Assets/css/pages.css -o src/Assets/css/pages.css --watch --minify",
+    "preinstall": "npm install --force"
   },
   "eslintConfig": {
     "extends": [
