@@ -1,10 +1,7 @@
 {
-    "build": {
-      "env": {
-        "NODE_ENV": "production"
-      },
-      "installCommand": "npm install --force",
-      "buildCommand": "npm run build"
-    }
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "buildCommand": "npm run vercel-build"
   }
   
