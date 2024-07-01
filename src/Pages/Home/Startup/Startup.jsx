@@ -15,13 +15,23 @@ import { resetForm, sendEmail } from "../../../Functions/Utilities";
 import { Input } from '../../../Components/Form/Form'
 import FooterMenu, { Footer } from '../../../Components/Footers/Footer';
 import InViewPort from '../../../Components/InViewPort';
-
+import { Parallax } from 'react-scroll-parallax';
+import { Link as ScrollTo } from "react-scroll"
+import Services from '../../../Components/Services/Services';
+import { serviceData5 } from '../../../Components/Services/ServicesData';
+import Team from '../../../Components/Team/Team';
+import { TeamData05 } from '../../../Components/Team/TeamData';
+import { IconWithTextData_04 } from '../../../Components/IconWithText/IconWithTextData';
+import TextBox from '../../../Components/TextBox/TextBox';
+import { TextBoxData02 } from '../../../Components/TextBox/TextBoxData';
+import Accordions from '../../../Components/Accordion/Accordion'
 // Data
 import FooterData from '../../../Components/Footers/FooterData';
 import { pricingTable03MonthData, pricingTable03YearData } from "../../../Components/PricingTable/PricingTableData";
 import { IconWithTextData_06 } from "../../../Components/IconWithText/IconWithTextData";
 import { blogData } from "../../../Components/Blogs/BlogData";
-
+import { Topbar } from '../../../Components/Header/Header';
+import { Dropdown } from 'react-bootstrap';
 const IconWithText = lazy(() => import('../../../Components/IconWithText/IconWithText'))
 const HamburgerMenu = React.lazy(() => import("../../../Components/Header/Header").then((module) => ({ default: module.HamburgerMenu })))
 const Header = React.lazy(() => import("../../../Components/Header/Header").then((module) => ({ default: module.Header })))
@@ -50,7 +60,7 @@ const iconWithTextData = [
   {
     icon: "line-icon-Cursor-Click2 text-[#27ae60]",
     title: "Innovative business",
-    content: "Easy to customize",
+    content: "Easy to customize , ",
   },
   {
     icon: "line-icon-Bakelite text-[#27ae60]",
@@ -173,6 +183,51 @@ const HomeStartupPage = (props) => {
     <div style={props.style}>
       {/* Header Start */}
       <Header topSpace={{ md: true }} type="reverse-scroll">
+      <Topbar className="bg-lightgray border-b border-[#0000001a] sm:hidden md:px-[15px]">
+          <Container fluid className="px-[50px]">
+            <Row>
+              <Col className="col-12 col-sm-auto text-center items-center flex text-sm-start me-auto ps-lg-0 !pl-[15px]">
+                <SocialIcons theme="social-icon-style-01" className="decor-social-icon" size="xs" iconColor="dark" data={SocialIconsData} />
+              </Col>
+              <Col className="col-auto flex xs:hidden text-right">
+                <div className="top-bar-contact flex">
+                  <span className="border-l border-[#0000001a] py-[13px] px-[18px] text-sm flex items-center">
+                    <i className="far fa-envelope mr-[10px] text-md relative text-basecolor"></i>
+                    <a aria-label="gmail for link" href="mailto:info@yourdomain.com" className="hover:text-darkgray">info@yourdomain.com</a>
+                  </span>
+                  <span className="border-l border-[#0000001a] py-[13px] px-[18px] md:pr-0 text-sm flex items-center sm:hidden">
+                    <i className="far fa-clock mr-[10px] text-md relative text-basecolor"></i>
+                    Mon - Fri: 10:00 - 22:00
+                  </span>
+                </div>
+                <div className="header-language pl-0 text-[17px] align-middle inline-block md:hidden">
+                  <Dropdown className="border-l border-r border-solid border-[#0000001a] h-full text-[#828282]">
+                    <Dropdown.Toggle className="rounded-none uppercase w-auto h-full font-normal text-xs leading-[11px] border-[0px] m-0 dropdown-toggle after:none sm-w-100 items-center flex px-[18px] py-[12px] bg-transparent" id="dropdown-basic">
+                      <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-0"><img width="16px" height="16px" src="/assets/img/webp/usa.webp" alt="" /></span>EN <i className="fas fa-angle-down ml-[5px] align-middle relative after:content-[' ']"></i>
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      <Dropdown.Item className="dropdown-items bg-transparent hover:bg-transparent p-0 border-0 m-0 flex items-center justify-start" href="#/action-1">
+                        <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-[5px]"><img width="16px" height="16px" src="/assets/img/webp/usa.webp" alt="" /></span>English
+                      </Dropdown.Item>
+                      <Dropdown.Item className="dropdown-items bg-transparent hover:bg-transparent p-0 border-0 m-0 flex items-center justify-start" href="#/action-2">
+                        <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-[5px]"><img width="16px" height="16px" src="/assets/img/webp/england.webp" alt="" /></span>England
+                      </Dropdown.Item>
+                      <Dropdown.Item className="dropdown-items bg-transparent hover:bg-transparent p-0 border-0 m-0 flex items-center justify-start" href="#/action-3">
+                        <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-[5px]"><img width="16px" height="16px" src="/assets/img/webp/france.webp" alt="" /></span>France
+                      </Dropdown.Item>
+                      <Dropdown.Item className="dropdown-items bg-transparent hover:bg-transparent p-0 border-0 m-0 flex items-center justify-start" href="#/action-4">
+                        <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-[5px]"><img width="16px" height="16px" src="/assets/img/webp/russian.webp" alt="" /></span>Russian
+                      </Dropdown.Item>
+                      <Dropdown.Item className="dropdown-items bg-transparent hover:bg-transparent p-0 border-0 m-0 flex items-center justify-start" href="#/action-5">
+                        <span className="icon-country w-[16px] h-[16px] inline-block my-0 mr-[10px] ml-[5px]"><img width="16px" height="16px" src="/assets/img/webp/spain.webp" alt="" /></span>Spain
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </Col>
+            </Row>
+          </Container>
+        </Topbar>
         <HeaderNav fluid="fluid" theme="dark" expand="lg" className="py-[0px] px-[35px] md:px-[15px] md:py-[20px] sm:px-0">
           <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
             <Link aria-label="header logo" className="flex items-center" to="/">
@@ -237,14 +292,14 @@ const HomeStartupPage = (props) => {
       </Header>
       {/* Header End */}
 
-      <SideButtons />
+      {/* <SideButtons /> */}
 
       {/* Section Start */}
       <StartupPageBannerSlider />
       {/* Section End */}
 
       {/* Section Start */}
-      <section className="bg-cover bg-center pb-[200px] lg:pb-[160px] md:py-[110px] sm:py-[50px] startup-iconwithtext" style={{ backgroundImage: "url(https://via.placeholder.com/1920x733)" }}>
+      {/* <section className="bg-cover bg-center pb-[200px] lg:pb-[160px] md:py-[110px] sm:py-[50px] startup-iconwithtext" style={{ backgroundImage: "url(https://via.placeholder.com/1920x733)" }}> */}
         <Container>
           <div className="mb-[105px] md:mb-[70px] sm:mb-[50px]">
             <Overlap className="md:mt-0">
@@ -255,7 +310,7 @@ const HomeStartupPage = (props) => {
               </Row>
             </Overlap>
           </div>
-          <Row className="items-end overflow-hidden">
+          {/* <Row className="items-end overflow-hidden">
             <m.div className="col-12 col-lg-3 col-md-6 order-1 text-right md:mb-[50px] md:text-center" {...fadeInRight}>
               <div className="text-[70px] text-basecolor font-serif leading-[70px] tracking-[-3px] font-semibold">175+</div>
               <span className="font-serif text-darkgray font-medium uppercase tracking-[2px] block mb-[15px] sm:mb-[5px]">Worldwide offices</span>
@@ -276,25 +331,164 @@ const HomeStartupPage = (props) => {
               <span className="font-serif text-darkgray font-medium uppercase tracking-[2px] block mb-[15px] sm:mb-[5px]">High skilled people</span>
               <p className="w-[90%] inline-block sm:w-[60%] xs:w-full">Lorem ipsum dolor sit consectetur do eiusmod tempor incididunt</p>
             </m.div>
+          </Row> */}
+        </Container>
+      {/* </section> */}
+      {/* Section End */}
+
+      {/* Lazy Load HTML */}
+      <InViewPort>
+
+
+       {/* About us */}
+      <section className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]" style={{ backgroundImage: 'url(/assets/img/webp/home-decor-bg-img-02.webp)' }}>
+        <Container>
+          <Row className="justify-center items-center">
+            <Col lg={6} md={10} className="relative mb-[20px] md:mb-32 sm:mb-40 xs:mb-0">
+              <div className="relative">
+                <Parallax className="lg-no-parallax w-[70%] mb-16" speed={0}> <img alt="" src="https://via.placeholder.com/700x1027" className="w-full" width="385.34" height="565.34" /> </Parallax>
+                <Parallax className="lg-no-parallax flex justify-center items-center w-[55%] bg-no-repeat absolute bottom-0 right-[15px] lg:!ml-auto lg:!top-[145px]" speed={20}>
+                  <img alt="" src="https://via.placeholder.com/317x477" width="317" height="477" />
+                </Parallax>
+              </div>
+            </Col>
+            <Col lg={{ span: 5, offset: 1 }} md={10}>
+              <div className="font-serif text-md font-medium mb-[30px] flex">
+                <span className="w-[40px] h-[1px] bg-basecolor opacity-70 self-center mr-[20px] shrink-0"></span>
+                <div className="grow-[1]"> <span className="text-basecolor uppercase">About our company</span> </div>
+              </div>
+              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[85%] mb-[35px] lg:w-full sm:mb-[25px]">Classic beautiful and modern decor presence of design</h1>
+              <p className="mb-[25px] w-[80%] lg:w-full">Lorem ipsum dolor sit amet consectetur adipiscing do eiusmod tempor incididunt ut labore dolore magna enim veniam nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+              <ScrollTo href='#' to="specialization" offset={0} delay={0} spy={true} smooth={true} duration={800}>
+                <Buttons type="submit" ariaLabel="Our services" className="btn-fill btn-fancy rounded-none font-medium font-serif uppercase hover:text-black mt-[20px]" themeColor="#232323" size="md" color="#fff" title="Our services" />
+              </ScrollTo>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+
+    {/* Services */}
+    {/* Section Start */}
+    <m.section className="bg-lightgray border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]" {...fadeIn}>
+                <Container>
+                    <Row className="justify-center">
+                        <Col md={12} className="text-center mb-[7%]">
+                            <h6 className="font-serif text-darkgray font-medium">Services</h6>
+                        </Col>
+                    </Row>
+                    <Row className="justify-center">
+                        <Col lg={12} md={11} xs={12} className="md:px-0">
+                            <Services grid="row-cols-lg-3 row-cols-1 md:my-0 md:mx-auto gap-y-10 justify-center" theme='service-style-05' className="col-md-10" data={serviceData5} animation={fadeIn} />
+                        </Col>
+                    </Row>
+                </Container>
+            </m.section>
+            {/* Section End */}
+
+
+ {/* Team Section */}
+
+ {/* Team style 05 ( Light ) start */}
+ <section className="pt-[120px] lg:pt-[95px] md:pt-[80px] sm:pt-[50px] bg-gray-color switch-tabs">
+                <div className="text-center">
+                    <h6 className='text-darkgray font-medium font-serif mb-14 xs:mb-20'>Team </h6>
+                </div>
+ <section className="py-20 bg-lightgray">
+                            <Container>
+                                <Team
+                                    themeColor="dark"
+                                    theme="team-style-05"
+                                    className="text-white"
+                                    data={TeamData05}
+                                    grid="row row-cols-1 row-cols-sm-2 row-cols-lg-3 justify-center gap-y-10"
+                                    animation={fadeIn}
+                                    animationDelay={0.2}
+                                    carousel={false}
+                                    carouselOption={{
+                                        slidesPerView: 1,
+                                        spaceBetween: 30,
+                                        loop: true,
+                                        navigation: true,
+                                        autoplay: { delay: 3000, disableOnInteraction: false },
+                                        pagination: { dynamicBullets: true, clickable: true },
+                                        breakpoints: { 1200: { slidesPerView: 4 }, 992: { slidesPerView: 3 }, 768: { slidesPerView: 2 } }
+                                    }}
+                                />
+                            </Container>
+                        </section></section>
+                   
+                    {/* Team style 05 ( Light ) End */}
+
+
+{/* Form Section                     */}
+{/* Section Start */}
+<section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[6%]">
+              <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">Forms</h6>
+            </Col>
+          </Row>
+          <Row className="justify-center">
+            <Col xs={12} sm={8} md={12}>
+              <IconWithText
+                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+                theme="icon-with-text-04"
+                data={IconWithTextData_04}
+                animation={fadeIn}
+                animationDelay={0.2}
+              />
+            </Col>
           </Row>
         </Container>
       </section>
       {/* Section End */}
 
-      {/* Lazy Load HTML */}
-      <InViewPort>
+{/* Hospital Kontakte */}
+<section className="py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[8%]">
+              <h6 className="font-serif text-darkgray text-center font-medium mb-[25px] lg:mb-[15px]">Hospital Kontakte</h6>
+            </Col>
+          </Row>
+          <TextBox
+            className=""
+            grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10"
+            theme="text-box-style-02 flex-wrap"
+            data={TextBoxData02}
+            animation={fadeIn} />
+        </Container>
+      </section>
+
+
+{/* Links */}
+<section className="pt-20 switch-tabs">
+                <Col className="text-center">
+                    <h6 className="font-serif text-darkgray text-center font-medium mb-[5%]">Links</h6>
+                </Col>
+<m.section className="py-20">
+                            <Container>
+                                <Row className="justify-center">
+                                    <Col lg={16} md={20}>
+                                        <Accordions theme="accordion-style-03" className="" animation={fadeIn} />
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </m.section></section>
         {/* Section Start */}
-        <section className="sm:pt-[50px] mb-[130px] md:mb-[50px] sm:mb-0 inline-block w-full">
+        {/* <section className="sm:pt-[50px] mb-[130px] md:mb-[50px] sm:mb-0 inline-block w-full">
           <Overlap>
             <m.img
               {...{ ...zoomIn, transition: { duration: .8 } }}
               className="mx-auto border-[10px] rounded-full p-0 shadow-black w-[170px] h-[170px] border-white box-shadow-large" src="/assets/img/webp//home-startup-about-img.webp" alt="startup" />
           </Overlap>
-        </section>
+        </section> */}
         {/* Section End */}
 
         {/* Section Start */}
-        <section className="pb-[130px] lg:pb-[90px] md:pb-[75px] sm:py-[50px] overflow-hidden">
+        {/* <section className="pb-[130px] lg:pb-[90px] md:pb-[75px] sm:py-[50px] overflow-hidden">
           <Container>
             <m.div className="row justify-center" {...fadeIn}>
               <Col lg={5} sm={9} className="md:text-center md:mb-[40px] sm:mb[15px] xs:mb-[20px]">
@@ -332,11 +526,11 @@ const HomeStartupPage = (props) => {
               </m.div>
             </Row>
           </Container>
-        </section>
+        </section> */}
         {/* Section End */}
 
         {/* Section Start */}
-        <section className="bg-lightgray py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] text-center">
+        {/* <section className="bg-lightgray py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] text-center">
           <Container>
             <m.div className="text-center justify-center row" {...fadeIn}>
               <span className="font-serif text-xmd text-basecolor block mb-[20px] font-medium sm:m-[10px]">Amazing design services</span>
@@ -351,11 +545,11 @@ const HomeStartupPage = (props) => {
               <Buttons aria-label="our-services-page" to="/page/our-services/" className="btn-fill shadow-[0_0_15px_rgba(0,0,0,0.1)] rounded-[4px] text-xs tracking-[1px] font-medium font-serif uppercase btn-shadow text-[15px] md:mb-[15px]" size="md" themeColor="#fff" color="#000" title="see all services" />
             </m.div>
           </Container>
-        </section>
+        </section> */}
         {/* Section End */}
 
         {/* Section Start */}
-        <section className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] overflow-hidden startup-processstep">
+        {/* <section className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] overflow-hidden startup-processstep">
           <Container>
             <Row className="items-center justify-center">
               <Col xl={5} lg={6} md={10}>
@@ -370,11 +564,11 @@ const HomeStartupPage = (props) => {
               </m.div>
             </Row>
           </Container>
-        </section>
+        </section> */}
         {/* Section End */}
 
         {/* Section Start */}
-        <section className="pb-[105px] pt-[40px] lg:pb-[90px] md:pb-[75px] md:pt-0 sm:py-[50px] text-center">
+        {/* <section className="pb-[105px] pt-[40px] lg:pb-[90px] md:pb-[75px] md:pt-0 sm:py-[50px] text-center">
           <Container>
             <Row className="justify-center">
               <Col xl={5} lg={6} sm={7}>
@@ -405,7 +599,7 @@ const HomeStartupPage = (props) => {
               </Tabs>
             </Container>
           </Container>
-        </section>
+        </section> */}
         {/* Section End */}
 
         {/* Section Start */}

@@ -10,7 +10,20 @@ const AccordionData = [
     {
         title: "A satisfied customer is the best business strats",
         content: "Lorem ipsum is simply dummy text of the printing type setting and industry. Lorem ipsum has been the industry's standard dummy."
-    }
+    },
+    {
+        title: "Common PayPal and credit card issues",
+        content: "Lorem ipsum is simply dummy text of the printing type setting and industry. Lorem ipsum has been the industry's standard dummy."
+    },
+    {
+        title: "Lets collaborate and make an impact business",
+        content: "Lorem ipsum is simply dummy text of the printing type setting and industry. Lorem ipsum has been the industry's standard dummy."
+    },
+    {
+        title: "A satisfied customer is the best business strats",
+        content: "Lorem ipsum is simply dummy text of the printing type setting and industry. Lorem ipsum has been the industry's standard dummy."
+    },
+    
 ]
 
 const AccordionData02 = [
