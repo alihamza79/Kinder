@@ -103,24 +103,66 @@ const serviceData4 = [
 const serviceData5 = [
     {
         title: "Developing strategy",
-        icon: "feather-arrow-right",
-        content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
-        link: "/page/about-me",
-        linkTitle: "More Info"
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
     },
     {
         title: "Blazing performance",
-        icon: "feather-arrow-right",
-        content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
-        link: "/page/about-me",
-        linkTitle: "More Info"
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
     },
     {
         title: "Customer satisfaction",
-        icon: "feather-arrow-right",
-        content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
-        link: "/page/about-me",
-        linkTitle: "More Info"
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Developing strategy",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Blazing performance",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Customer satisfaction",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Developing strategy",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Blazing performance",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
+    },
+    {
+        title: "Customer satisfaction",
+        // icon: "feather-arrow-right",
+        // content: "Lorem ipsum is simply dummy text of the printing typesetting lorem ipsum been dummy text.",
+        // link: "/page/about-me",
+        // linkTitle: "More Info"
     }
 ]
 
