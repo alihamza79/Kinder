@@ -1162,7 +1162,16 @@ const HeaderData = [
                 ]
             }
         ],
-    }
+    },
+    {
+        title: "Wichtige Information"
+        
+    },
+    {
+        title: "Vertretung",
+        link: "/vertretung"
+        
+    },
 ]
 
 export default HeaderData
