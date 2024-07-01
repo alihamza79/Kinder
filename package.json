@@ -48,12 +48,11 @@
     "yup": "^1.4.0"
   },
   "scripts": {
+    "preinstall": "npm install --force",
     "start": "react-scripts start",
     "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "install": "npm install --force",
-    "i": "npm install --force",
     "scss": "run-p sass tailwind pages",
     "sass": "sass src/Assets/scss:src/Assets/css --watch",
     "tailwind": "npx tailwindcss -i src/Assets/css/global.css -o src/Assets/css/global.css --watch --minify",
