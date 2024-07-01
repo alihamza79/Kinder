@@ -25,7 +25,7 @@ const TeamStyle04 = ({ item }) => {
             </div>
             <figcaption>
                 <div className='title-bottom'>
-                    <span className='title' >{item.name}</span>
+                    <span className='title text-black' >{item.name}</span>
                     <span className='sub-title'>{item.designation}</span>
                 </div>
             </figcaption>

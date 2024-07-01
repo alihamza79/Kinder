@@ -33,7 +33,7 @@ const TeamSwitch = (params, item, i) => {
         case "team-style-05":
             return <TeamStyle05 item={item} />
         default:
-            return <TeamStyle01 item={item} />
+            return <TeamStyle04 item={item} />
     }
 }
 
