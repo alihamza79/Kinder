@@ -1,0 +1,12 @@
+{
+    "build": {
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "commands": {
+        "installCommand": "npm install --force",
+        "buildCommand": "npm run build"
+      }
+    }
+  }
+  
