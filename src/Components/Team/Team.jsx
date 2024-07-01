@@ -90,7 +90,7 @@ const Team = (props) => {
 }
 
 Team.defaultProps = {
-    theme: "team-style-01",
+    theme: "team-style-05",
     data: TeamData01,
     overlay: ["#556fffcc", "#b263e4cc", "#e05fc4cc", "#f767a6cc", "#ff798ecc"],
     animationDelay: 0.5,

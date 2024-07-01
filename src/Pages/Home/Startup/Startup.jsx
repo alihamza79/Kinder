@@ -16,16 +16,16 @@ import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
 import FooterMenu, { Footer } from "../../../Components/Footers/Footer";
 import { Input } from "../../../Components/Form/Form";
-import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import InViewPort from "../../../Components/InViewPort";
-import Services from "../../../Components/Services/Services";
-import { serviceData5 } from "../../../Components/Services/ServicesData";
 import Team from "../../../Components/Team/Team";
 import { TeamData01 } from "../../../Components/Team/TeamData";
 import { TeamData04 } from "../../../Components/Team/TeamData";
 import TextBox from "../../../Components/TextBox/TextBox";
 import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
+import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
+import Services from "../../../Components/Services/Services";
+
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import FooterData from "../../../Components/Footers/FooterData";
@@ -90,6 +90,22 @@ const TiltBox = lazy(() =>
   }))
 );
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
+
+// Services Data
+const serviceData5 = [
+  { title: "Vorsorge- Untersuchungen" },
+  { title: "Jugendgesundheits- Untersuchungen" },
+  { title: "Jugendarbeitsschutz- Untersuchungen" },
+  { title: "Kindergarten-Eingangsuntersuchungen" },
+  { title: "Entwicklungsdiagnostik im Säuglings-, Kleinkind- und Schulalter" },
+  { title: "Impfungen" },
+  { title: "Säuglingssonographie" },
+  { title: "Laboruntersuchungen" },
+  { title: "praeoperative Diagnostik" },
+  { title: "kleine Chirurgie (z.B. Wundversorgung)" },
+  { title: "Seh- und Hörprüfungen" },
+  { title: "Allergologie, Lungenfunktion, Allergie- Test" },
+];
 
 // Filter the blog data category wise
 const blogMasonryData = blogData
@@ -438,8 +454,37 @@ const HomeStartupPage = (props) => {
         </section>
 
         {/* Services */}
+
+
         {/* Section Start */}
-        <m.section
+        <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+          <Container>
+            <Row>
+              <Col className="mb-[9%]">
+                <h6 className="font-serif text-[#000000] text-center font-medium mb-[25px] lg:mb-[15px]">
+                  Leistungen
+                </h6>
+              </Col>
+            </Row>
+            <div className="row row-cols-lg-4 row-cols-sm-2 row-cols-1 items-center md:mt-0 gap-y-[40px]">
+              {serviceData5.map((service, index) => (
+                <Col key={index}>
+                  <m.div className="flex items-center" {...{ ...fadeIn, transition: { delay: index * 0.2 } }}>
+                    <h6 className="mr-[25px] font-serif text-basecolor mb-0">{index + 1}</h6>
+                    <div className="flex-1 font-serif font-medium text-md text-spanishgray uppercase inline-block">
+                      <span className="w-[90%] block xs:w-[70%]">
+                        {service.title}
+                      </span>
+                    </div>
+                  </m.div>
+                </Col>
+              ))}
+            </div>
+          </Container>
+        </section>
+
+        {/* Section End */}
+  <m.section
           className=" border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
           {...fadeIn}
         >
@@ -464,7 +509,8 @@ const HomeStartupPage = (props) => {
             </Row>
           </Container>
         </m.section>
-        {/* Section End */}
+
+
 
         {/* Team Section */}
 
@@ -476,8 +522,8 @@ const HomeStartupPage = (props) => {
               </Col>
             </Row>
             <Team
-              themeColor="dark"
-              theme="team-style-04"
+              themeColor="light"
+              theme="team-style-05"
               color={[
                 "#556fffcc",
                 "#b263e4cc",
