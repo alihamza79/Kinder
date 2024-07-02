@@ -14,6 +14,7 @@ import ScrollToTopButton from "./Components/ScrollToTop";
 // Home
 import HomeStartupPage from "./Pages/Home/Startup/Startup";
 import Vertretung from "./Pages/Vertretung/Vertretung";
+import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
 const HomeBusinessPage = lazy(() => import("./Pages/Home/Business"));
 const CorporatePage = lazy(() => import("./Pages/Home/Corporate"));
 const FinancePage = lazy(() => import("./Pages/Home/Finance"));
@@ -1845,6 +1846,12 @@ function App() {
 
                   {/* vertretung */}
                   <Route path="/vertretung" element={<Vertretung />}></Route>
+
+                  {/* Wichtige Information */}
+                  <Route
+                    path="/wichtigeinfo"
+                    element={<WichtigeInfo />}
+                  ></Route>
                 </Routes>
               </Suspense>
             </AnimatePresence>

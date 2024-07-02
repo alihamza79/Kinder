@@ -1164,7 +1164,8 @@ const HeaderData = [
         ],
     },
     {
-        title: "Wichtige Information"
+        title: "Wichtige Information",
+        link: "/wichtigeinfo"
         
     },
     {

@@ -42,7 +42,7 @@ const Tab06 = (props) => {
                                                             {item.time && <span className='panel-time '><i className="feather-clock mr-[10px]"></i>{item.time}</span>}
                                                         </div>
                                                         <div className='feature-box-icon py-[7px] md:items-center flex sm:pt-[10px] sm:px-0 sm:pb-[7px]'>
-                                                            {item.img && <img height="" width="" src={item.img} className="md:h-[70px] md:w-[70px]" alt="" />}
+                                                            {/* {item.img && <img height="" width="" src={item.img} className="md:h-[70px] md:w-[70px]" alt="" />} */}
                                                             {
                                                                 (item.title || item.content) && (
                                                                     <div className='feature-box-content'>

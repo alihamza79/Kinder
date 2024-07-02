@@ -25,25 +25,25 @@ const Vertretung = () => {
             tabicons: "",
             activities: [
                 {
-                    time: '09:00 - 10:00',
+                    time: '9 May',
                     img: 'https://via.placeholder.com/197x197',
-                    title: 'Cultures of creativity',
-                    content: 'Lorem ipsum is simply dummy text of the and typesetting industry lorem ipsum.',
-                    author: 'By Edward Watson'
+                    title: 'Jakobsweg 1',
+                    content: '71364 Winnenden \n Tel.: 0180/ 6073614',
+                    author: 'der kinderärztliche Notdienst Winnenden'
                 },
                 {
-                    time: '10:00 - 12:30',
+                    time: '9 May',
                     img: 'https://via.placeholder.com/197x197',
-                    title: 'Reinventing experiences',
-                    content: 'Lorem ipsum is simply dummy text of the and typesetting industry lorem ipsum.',
-                    author: 'By Edward Watson'
+                    title: 'Hospital Name',
+                    content: 'Address \n Telephone Number',
+                    author: 'Doctor Name'
                 },
                 {
-                    time: '12:30 - 05:30',
+                    time: '9 May',
                     img: 'https://via.placeholder.com/197x197',
-                    title: 'Human centered design',
-                    content: 'Lorem ipsum is simply dummy text of the and typesetting industry lorem ipsum.',
-                    author: 'By Edward Watson'
+                    title: 'Hospital Name',
+                    content: 'Address \n Telephone Number',
+                    author: 'Doctor Name'
                 },
             ]
         },
