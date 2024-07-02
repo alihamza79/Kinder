@@ -357,7 +357,7 @@ const HomeStartupPage = (props) => {
                 <IconWithText
                   grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10 relative"
                   className="rounded-[4px] flex"
-                  theme="icon-with-text-04"
+                  theme="icon-with-text-11"
                   data={iconWithTextData}
                 />
               </Col>

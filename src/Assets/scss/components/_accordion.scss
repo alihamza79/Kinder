@@ -208,6 +208,7 @@
 }
 
 // Accordion_Style-03
+// Accordion_Style-03
 .accordion-style-03 {
   &.dark {
     .accordion-button {
@@ -254,11 +255,10 @@
     background-color: #fff;
 
     &:after {
-      content: "\f054";
+      content: "\f078"; // Unicode for down arrow
+      font-family: "Font Awesome 5 Free";
       font-weight: 900;
-      font-family: "Font Awesome 6 Free";
-      background-image: none;
-      transition: var(--default-transition);
+      transition: transform 0.2s ease-in-out;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -274,7 +274,7 @@
       box-shadow: none;
 
       &:after {
-        transform: rotate(90deg);
+        transform: rotate(180deg);
       }
     }
     .panel-title{
@@ -288,6 +288,7 @@
     color: #828282;
   }
 }
+
 
 // Accordion_Style-04
 .accordion-style-04 {

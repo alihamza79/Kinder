@@ -113,6 +113,7 @@
 }
 
 //Icon With Text Style 04
+// Icon With Text Style 04
 .icon-with-text-04 {
   >div {
     padding: 3rem;
@@ -164,6 +165,18 @@
       margin-bottom: 0;
     }
   }
+}
+
+// Update link colors and PDF icon color to match the theme
+a.btn-link,
+i.pdf-icon {
+  color: #02877F;
+  background: linear-gradient(20deg, #02877F 0%, #026358 100%); // Example gradient, adjust as needed
+}
+
+a.btn-link:hover,
+i.pdf-icon:hover {
+  color: #026358;
 }
 
 //Icon With Text Style 05

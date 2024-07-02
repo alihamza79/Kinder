@@ -50,8 +50,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "craco build",
-    "vercel-build": "npm install --force && npm run build",
-    "postinstall": "npm install --force",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "scss": "run-p sass tailwind pages",
