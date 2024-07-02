@@ -48,15 +48,15 @@ const MiniVersionPage = (props) => {
         <Container>
           <Row className="items-center justify-center">
             <Col xl={8} lg={6} className="md:justify-center md:flex">
-              <h1 className="font-serif text-darkgray font-medium mb-0 text-lg leading-[20px] text-left">Page title mini version</h1>
+              <h1 className="font-serif text-darkgray font-medium mb-0 text-lg leading-[20px] text-left">Page Title</h1>
             </Col>
-            <Col xl={4} lg={6} className="breadcrumb justify-end mb-0 text-sm font-serif md:justify-center md:mt-[10px]">
+            {/* <Col xl={4} lg={6} className="breadcrumb justify-end mb-0 text-sm font-serif md:justify-center md:mt-[10px]">
               <ul className="xs:text-center">
                 <li><Link aria-label="link for" to="/" className="hover:text-fastblue">Home</Link></li>
                 <li><Link aria-label="link for" to="#" className="hover:text-fastblue">Pages</Link></li>
                 <li>Page title mini version</li>
               </ul>
-            </Col>
+            </Col> */}
           </Row>
         </Container>
       </section>
