@@ -455,7 +455,6 @@ const HomeStartupPage = (props) => {
 
         {/* Services */}
 
-
         {/* Section Start */}
         <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
           <Container>
@@ -469,8 +468,13 @@ const HomeStartupPage = (props) => {
             <div className="row row-cols-lg-4 row-cols-sm-2 row-cols-1 items-center md:mt-0 gap-y-[40px]">
               {serviceData5.map((service, index) => (
                 <Col key={index}>
-                  <m.div className="flex items-center" {...{ ...fadeIn, transition: { delay: index * 0.2 } }}>
-                    <h6 className="mr-[25px] font-serif text-basecolor mb-0">{index + 1}</h6>
+                  <m.div
+                    className="flex items-center"
+                    {...{ ...fadeIn, transition: { delay: index * 0.2 } }}
+                  >
+                    <h6 className="mr-[25px] font-serif text-basecolor mb-0">
+                      {index + 1}
+                    </h6>
                     <div className="flex-1 font-serif font-medium text-md text-spanishgray uppercase inline-block">
                       <span className="w-[90%] block xs:w-[70%]">
                         {service.title}
@@ -484,7 +488,7 @@ const HomeStartupPage = (props) => {
         </section>
 
         {/* Section End */}
-  <m.section
+        <m.section
           className=" border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
           {...fadeIn}
         >
@@ -510,22 +514,20 @@ const HomeStartupPage = (props) => {
           </Container>
         </m.section>
 
-
-
         {/* Team Section */}
 
         <section className="py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
           <Container>
             <Row>
-              <Col md={12} className="text-center  mb-[7%]">
+              <Col md={12} className="text-center mb-[7%]">
                 <h5 className="font-serif text-darkgray font-medium">Team</h5>
               </Col>
             </Row>
             <Team
-              themeColor="light"
-              theme="team-style-05"
+              themeColor="dark"
+              theme="team-style-04"
               color={[
-                "#556fffcc",
+                "#05867E",
                 "#b263e4cc",
                 "#e05fc4cc",
                 "#f767a6cc",
@@ -558,7 +560,7 @@ const HomeStartupPage = (props) => {
                   className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
                   size="lg"
                   color="#ffffff"
-                  themeColor="#232323"
+                  themeColor="#05867E"
                   title="All Team"
                 />
               </Col>
@@ -569,27 +571,28 @@ const HomeStartupPage = (props) => {
         {/* Form Section                     */}
         {/* Section Start */}
         <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-          <Container>
-            <Row>
-              <Col className="mb-[6%]">
-                <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
-                  Forms
-                </h6>
-              </Col>
-            </Row>
-            <Row className="justify-center">
-              <Col xs={12} sm={8} md={12}>
-                <IconWithText
-                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-                  theme="icon-with-text-04"
-                  data={IconWithTextData_04}
-                  animation={fadeIn}
-                  animationDelay={0.2}
-                />
-              </Col>
-            </Row>
-          </Container>
-        </section>
+  <Container>
+    <Row>
+      <Col className="mb-[6%]">
+        <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
+          Forms
+        </h6>
+      </Col>
+    </Row>
+    <Row className="justify-center">
+      <Col xs={12} sm={8} md={12}>
+        <IconWithText
+          grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+          theme="icon-with-text-04"
+          data={IconWithTextData_04}
+          animation={fadeIn}
+          animationDelay={0.2}
+        />
+      </Col>
+    </Row>
+  </Container>
+</section>
+
         {/* Section End */}
 
         {/* Hospital Kontakte */}
