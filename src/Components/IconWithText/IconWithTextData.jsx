@@ -79,21 +79,28 @@ const IconWithTextData_03 = [
 
 const IconWithTextData_04 = [
     {
-        icon: "line-icon-Cursor-Click2 text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
-        title: "Innovative business",
-        content: "Easy to customize",
+        icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+        title: "PDF 1",
+        content: "Preview and download PDF 1",
+        previewLink: "/path/to/pdf1/preview",
+        downloadLink: "/path/to/pdf1/download",
     },
     {
-        icon: "line-icon-Bakelite text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
-        title: "Expertly marketing",
-        content: "High quality services",
+        icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+        title: "PDF 2",
+        content: "Preview and download PDF 2",
+        previewLink: "/path/to/pdf2/preview",
+        downloadLink: "/path/to/pdf2/download",
     },
     {
-        icon: "line-icon-Boy text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
-        title: "Engaging audiences",
-        content: "Build perfect websites",
+        icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+        title: "PDF 3",
+        content: "Preview and download PDF 3",
+        previewLink: "/path/to/pdf3/preview",
+        downloadLink: "/path/to/pdf3/download",
     },
 ]
+
 
 const IconWithTextData_05 = [
     {
