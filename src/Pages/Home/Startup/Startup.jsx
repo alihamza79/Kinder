@@ -14,25 +14,23 @@ import { fadeIn } from "../../../Functions/GlobalAnimations";
 import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
-import FooterMenu, { Footer } from "../../../Components/Footers/Footer";
 import { Input } from "../../../Components/Form/Form";
+import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import InViewPort from "../../../Components/InViewPort";
+import Services from "../../../Components/Services/Services";
 import Team from "../../../Components/Team/Team";
-import { TeamData01 } from "../../../Components/Team/TeamData";
 import { TeamData04 } from "../../../Components/Team/TeamData";
 import TextBox from "../../../Components/TextBox/TextBox";
 import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
-import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
-import Services from "../../../Components/Services/Services";
 // Icons
-import { FaAmbulance, FaHospitalAlt, FaClock } from "react-icons/fa";
 
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import FooterData from "../../../Components/Footers/FooterData";
-import { Topbar } from "../../../Components/Header/Header";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
+import FooterSection from "../../Footer/FooterSection";
+import HeaderSection from "../../Header/HeaderSection";
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
 );
@@ -211,187 +209,7 @@ const HomeStartupPage = (props) => {
   return (
     <div style={props.style}>
       {/* Header Start */}
-      <Header topSpace={{ md: true }} type="reverse-scroll">
-        {/* <Topbar className="bg-lightgray border-b border-[#0000001a] sm:hidden md:px-[15px]">
-          <Container fluid className="px-[50px]">
-            <Row>
-              <Col className="col-12 col-sm-auto text-center items-center flex text-sm-start me-auto ps-lg-0 !pl-[15px]">
-                <SocialIcons
-                  theme="social-icon-style-01"
-                  className="decor-social-icon"
-                  size="xs"
-                  iconColor="dark"
-                  data={SocialIconsData}
-                />
-              </Col>
-              <Col className="col-auto flex xs:hidden text-right">
-                <div className="top-bar-contact flex">
-                  <span className="border-l border-[#0000001a] py-[13px] px-[18px] text-sm flex items-center">
-                    <i className="far fa-envelope mr-[10px] text-md relative text-basecolor"></i>
-                    <a
-                      aria-label="gmail for link"
-                      href="mailto:info@yourdomain.com"
-                      className="hover:text-darkgray"
-                    >
-                      info@yourdomain.com
-                    </a>
-                  </span>
-                  <span className="border-l border-[#0000001a] py-[13px] px-[18px] md:pr-0 text-sm flex items-center sm:hidden">
-                    <i className="far fa-clock mr-[10px] text-md relative text-basecolor"></i>
-                    Mon - Fri: 10:00 - 22:00
-                  </span>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </Topbar> */}
-        <HeaderNav
-          fluid="fluid"
-          theme="dark"
-          expand="lg"
-          className="py-[0px] px-[35px] md:px-[15px] md:py-[20px] sm:px-0"
-        >
-          <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
-            <Link aria-label="header logo" className="flex items-center" to="/">
-              <Navbar.Brand className="d-flex align-items-center bg-white p-2 rounded-lg shadow-sm">
-                <img
-                  className="default-logo"
-                  width="150" // Adjust width as needed
-                  height="50" // Adjust height as needed
-                  src="/assets/img/webp/logo-cropped.png"
-                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                  alt="logo"
-                />
-                <img
-                  className="alt-logo"
-                  width="150" // Adjust width as needed
-                  height="50" // Adjust height as needed
-                  src="/assets/img/webp/logo-cropped.png"
-                  data-rjs="/assets/img/webp/logo-cropped.png"
-                  alt="logo"
-                />
-                <img
-                  className="mobile-logo"
-                  width="150" // Adjust width as needed
-                  height="50" // Adjust height as needed
-                  src="/assets/img/webp/logo-cropped.png"
-                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                  alt="logo"
-                />
-                <span
-                  style={{
-                    marginLeft: "10px",
-                    color: "#028780",
-                    fontSize: "15px",
-                    fontWeight: "bold",
-                  }}
-                >
-                  Kinder- und Jugendarztpraxis
-                </span>
-              </Navbar.Brand>
-            </Link>
-          </Col>
-          <Navbar.Toggle className="order-last md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
-            <span className="navbar-toggler-line"></span>
-            <span className="navbar-toggler-line"></span>
-            <span className="navbar-toggler-line"></span>
-            <span className="navbar-toggler-line"></span>
-          </Navbar.Toggle>
-          <Navbar.Collapse className="justify-center col-auto col-lg-8">
-            <Menu {...props} />
-          </Navbar.Collapse>
-          <Col
-            lg={2}
-            xs={"auto"}
-            className="justify-end pe-0 flex items-center"
-          >
-            <SearchBar />
-            <div className="md:hidden pl-[17px]">
-              <HamburgerMenu className="" theme="dark">
-                <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_20px_rgba(0,0,0,0.3)] right-0 text-center bg-white">
-                  <ReactCustomScrollbar className="pl-[15px]" theme="dark">
-                    <div>
-                      <h1 className="mb-0 font-bold tracking-[-3px] text-darkgray font-serif uppercase">
-                        Hello
-                      </h1>
-                      <p className="text-lg text-[#27ae60] font-serif uppercase block">
-                        Let's be friends.
-                      </p>
-                      <div className="my-20 w-full">
-                        <StaticInstagram className="" />
-                      </div>
-                      <p className="w-[70%] mb-12 text-darkgray leading-[26px] text-lg font-serif mx-auto inline-block">
-                        Get latest update for our trusted applications
-                      </p>
-                      <Formik
-                        initialValues={{ email: "" }}
-                        validationSchema={Yup.object().shape({
-                          email: Yup.string()
-                            .email("Invalid email.")
-                            .required("Field is required."),
-                        })}
-                        onSubmit={async (values, actions) => {
-                          actions.setSubmitting(true);
-                          const response = await sendEmail(values);
-                          response.status === "success" && resetForm(actions);
-                        }}
-                      >
-                        {({ isSubmitting, status }) => (
-                          <div className="relative subscribe-style-05 mb-20">
-                            <Form className="relative">
-                              <Input
-                                showErrorMsg={false}
-                                type="email"
-                                name="email"
-                                className="border-[1px] medium-input rounded-[5px] border-solid border-[#dfdfdf]"
-                                placeholder="Enter your email address"
-                              />
-                              <button
-                                aria-label="Subscribe"
-                                type="submit"
-                                className={`text-xs leading-[18px] py-[12px] px-[28px] uppercase xs:text-center${
-                                  isSubmitting ? " loading" : ""
-                                }`}
-                              >
-                                <i className="far fa-envelope text-basecolor text-sm leading-none mr-[10px] xs:mr-0"></i>
-                                Subscribe
-                              </button>
-                            </Form>
-                            <AnimatePresence>
-                              {status && (
-                                <m.div
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  exit={{ opacity: 0 }}
-                                  className="mt-[25px] top-[115%] left-0 w-full"
-                                >
-                                  <MessageBox
-                                    className="rounded-[4px] text-md py-[10px] px-[22px] z-10"
-                                    theme="message-box01"
-                                    variant="success"
-                                    message="Your message has been sent successfully subscribed to our email list!"
-                                  />
-                                </m.div>
-                              )}
-                            </AnimatePresence>
-                          </div>
-                        )}
-                      </Formik>
-                      <SocialIcons
-                        theme="social-icon-style-05"
-                        size="sm"
-                        iconColor="dark"
-                        data={SocialIconsData}
-                      />
-                    </div>
-                  </ReactCustomScrollbar>
-                </Col>
-              </HamburgerMenu>
-            </div>
-          </Col>
-        </HeaderNav>
-      </Header>
-      {/* Header End */}
+      <HeaderSection {...props}  />      {/* Header End */}
 
       {/* <SideButtons /> */}
 
@@ -821,70 +639,7 @@ const HomeStartupPage = (props) => {
         </m.section>
         {/* Section End */}
 
-        {/* Footer Start */}
-        <Footer
-          className="startup-footer bg-no-repeat bg-right"
-          theme="light"
-          style={{
-            backgroundImage:
-              "url(/assets/img/webp/home-startup-footer-down-bg.webp)",
-          }}
-        >
-          <Container fluid className="xs:opacity-0 xs:hidden">
-            <Row>
-              <Col
-                className="h-[65px] lg:h-[30px] bg-top bg-no-repeat"
-                style={{
-                  backgroundImage:
-                    "url(/assets/img/webp/home-startup-footer-shadow.webp)",
-                }}
-              ></Col>
-            </Row>
-          </Container>
-          <div className="py-[4%] lg:py-[7%] md:py-[50px]">
-            <Container>
-              <Row md={4} className="justify-center gap-y-[25px]">
-                <FooterMenu
-                  data={Footer_Data}
-                  md={3}
-                  sm={6}
-                  className="xl:px-[15px]"
-                  titleClass="capitalize text-dark"
-                />
-              </Row>
-            </Container>
-          </div>
-          <div className="pt-[1%] pb-[6%] border-t border-[#ffffff1a]">
-            <Container>
-              <Row>
-                <Link
-                  to="/"
-                  className="col-sm-4 col-12 sm:mb-[20px] flex justify-start xs:justify-center"
-                >
-                  <img
-                    src="/assets/img/webp/logo-green-dark.webp"
-                    alt="logo"
-                    width="111"
-                    height="36"
-                  />
-                </Link>
-                <p className="col-sm-8 col-12 flex justify-end items-center sm:mb-[20px] xs:text-center xs:justify-center mb-0">
-                  © {new Date().getFullYear()} Kinder- und Jugendarztpraxis is Proudly Powered by&nbsp;
-                  <a
-                    aria-label="ThemeZaa link"
-                    className="text-darkgray font-sans underline underline-offset-4 font-medium text-base inline-block hover:text-basecolor"
-                    href="https://www.syntax-ai.tech/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    SYNTAX
-                  </a>
-                </p>
-              </Row>
-            </Container>
-          </div>
-        </Footer>
-        {/* Footer End */}
+       <FooterSection/>
       </InViewPort>
     </div>
   );

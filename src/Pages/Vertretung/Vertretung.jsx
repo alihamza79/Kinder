@@ -18,6 +18,8 @@ import SideButtons from "../../Components/SideButtons";
 import Tab05 from '../../Components/Tab/Tab05';
 import HeroIconWithText from '../../Components/IconWithText/HeroIconWithText';
 import IconWithText from '../../Components/IconWithText/IconWithText';
+import FooterSection from '../Footer/FooterSection';
+import HeaderSection from '../Header/HeaderSection';
 
 const Vertretung = () => {
     const TabData06 = [
@@ -213,33 +215,7 @@ const Vertretung = () => {
     return (
         <div>
             {/* Header Start */}
-            <Header topSpace={{ desktop: true }} type="reverse-scroll">
-                <HeaderNav theme="light" expand="lg" menu="light" className="py-[0px] lg:px-[15px] md:px-0" containerClass="sm:px-0">
-                    <Col className="col-auto col-sm-6 col-lg-2 me-auto ps-lg-0">
-                        <Link aria-label="header logo" className="flex items-center" to="/">
-                            <Navbar.Brand className="inline-block p-0 m-0">
-                                <img className="default-logo" width="111" height="36" loading="lazy" src='/assets/img/webp/logo-fast-blue-black.webp' alt='logo' />
-                            </Navbar.Brand>
-                        </Link>
-                    </Col>
-                    <div className="col-auto hidden order-last md:block">
-                        <Navbar.Toggle className="md:ml-[10px] sm:ml-0">
-                            <span className="navbar-toggler-line"></span>
-                            <span className="navbar-toggler-line"></span>
-                            <span className="navbar-toggler-line"></span>
-                            <span className="navbar-toggler-line"></span>
-                        </Navbar.Toggle>
-                    </div>
-                    <Navbar.Collapse className="col-auto px-0 justify-end">
-                        <Menu />
-                    </Navbar.Collapse>
-                    {/* <Col className="col-auto text-right pe-0">
-                        <SearchBar className="pr-0 xs:pl-[15px]" />
-                        <HeaderLanguage className="xs:pl-[15px]" />
-                        <HeaderCart className="xs:pl-[15px]" style={{ "--base-color": "#0038e3" }} />
-                    </Col> */}
-                </HeaderNav>
-            </Header>
+            <HeaderSection  theme="light" /> 
             {/* Header End */}
             <SideButtons />
 
@@ -288,7 +264,7 @@ const Vertretung = () => {
             </m.section>    */}
 
             {/* Footer Start */}
-            <FooterStyle01 theme="dark" className="bg-[#262b35] text-slateblue" />
+            <FooterSection/>
             {/* Footer End */}
         </div>
     );

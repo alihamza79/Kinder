@@ -10,6 +10,7 @@ import BlogSimple from '../../Components/Blogs/BlogSimple';
 // Data
 import { blogData } from '../../Components/Blogs/BlogData';
 
+
 // Filter the blog data category wise
 const blogSimpleData = blogData.filter((item) => item.blogType === "simple");
 
@@ -40,6 +41,7 @@ const BlogSimplePage = () => {
           </Row>
         </Container>
       </section>
+
       {/* Section End */}
     </>
   )
