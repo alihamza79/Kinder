@@ -26,9 +26,7 @@ import { resetForm, sendEmail } from "../../../Functions/Utilities";
 import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import Services from "../../../Components/Services/Services";
 // Icons
-import { FaAmbulance, FaHospitalAlt, FaClock } from 'react-icons/fa';
-
-
+import { FaAmbulance, FaHospitalAlt, FaClock } from "react-icons/fa";
 
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
@@ -96,7 +94,6 @@ const TiltBox = lazy(() =>
 );
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
 
-
 // Services Data
 const serviceData5 = [
   { title: "Vorsorge- Untersuchungen" },
@@ -122,17 +119,20 @@ const iconWithTextData = [
   {
     icon: "line-icon-Cursor-Click2 text-[#27ae60]",
     title: "NOTFALL",
-    content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
+    content:
+      "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
   },
   {
     icon: "line-icon-Bakelite text-[#27ae60]",
     title: "NOTDIENST",
-    content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
+    content:
+      "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
   },
   {
     icon: "line-icon-Boy text-[#27ae60]",
     title: "OPENING HOURS",
-    content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
+    content:
+      "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
   },
 ];
 
@@ -217,31 +217,41 @@ const HomeStartupPage = (props) => {
         >
           <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
             <Link aria-label="header logo" className="flex items-center" to="/">
-              <Navbar.Brand className="inline-block p-0 m-0">
+              <Navbar.Brand className="d-flex align-items-center bg-white p-2 rounded-lg shadow-sm">
                 <img
                   className="default-logo"
-                  width="111"
-                  height="36"
-                  src="/assets/img/webp/logo-white.webp"
-                  data-rjs="/assets/img/webp/logo-white@2x.webp"
+                  width="150" // Adjust width as needed
+                  height="50" // Adjust height as needed
+                  src="/assets/img/webp/logo-cropped.png"
+                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
                   alt="logo"
                 />
                 <img
                   className="alt-logo"
-                  width="111"
-                  height="36"
-                  src="/assets/img/webp/logo-green-dark.webp"
-                  data-rjs="/assets/img/webp/logo-green-dark@2x.webp"
+                  width="150" // Adjust width as needed
+                  height="50" // Adjust height as needed
+                  src="/assets/img/webp/logo-cropped.png"
+                  data-rjs="/assets/img/webp/logo-cropped.png"
                   alt="logo"
                 />
                 <img
                   className="mobile-logo"
-                  width="111"
-                  height="36"
-                  src="/assets/img/webp/logo-green-dark.webp"
-                  data-rjs="/assets/img/webp/logo-green-dark@2x.webp"
+                  width="150" // Adjust width as needed
+                  height="50" // Adjust height as needed
+                  src="/assets/img/webp/logo-cropped.png"
+                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
                   alt="logo"
                 />
+                <span
+                  style={{
+                    marginLeft: "10px",
+                    color: "#028780",
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Kinder- und Jugendarztpraxis
+                </span>
               </Navbar.Brand>
             </Link>
           </Col>
@@ -355,20 +365,20 @@ const HomeStartupPage = (props) => {
       {/* Three Cards on Hero Section Start */}
       {/* <section className="bg-cover bg-center pb-[100px] lg:pb-[10px] md:py-[110px] sm:py-[50px] startup-iconwithtext" > */}
       {/* <Container> */}
-        <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
-          <Overlap className="md:mt-0">
-            <Row className="justify-center">
-              <Col xs={12} sm={9} lg={12} md={12}>
-                <HeroIconWithText
-                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
-                  className="rounded-[4px] flex "
-                  theme="icon-with-text-11"
-                  data={iconWithTextData}
-                />
-              </Col>
-            </Row>
-          </Overlap>
-        </div>
+      <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
+        <Overlap className="md:mt-0">
+          <Row className="justify-center">
+            <Col xs={12} sm={9} lg={12} md={12}>
+              <HeroIconWithText
+                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
+                className="rounded-[4px] flex "
+                theme="icon-with-text-11"
+                data={iconWithTextData}
+              />
+            </Col>
+          </Row>
+        </Overlap>
+      </div>
       {/* </Container> */}
       {/* </section> */}
       {/* Section End */}
@@ -575,27 +585,27 @@ const HomeStartupPage = (props) => {
         {/* Form Section                     */}
         {/* Section Start */}
         <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-  <Container>
-    <Row>
-      <Col className="mb-[6%]">
-        <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
-          Forms
-        </h6>
-      </Col>
-    </Row>
-    <Row className="justify-center">
-      <Col xs={12} sm={8} md={12}>
-        <IconWithText
-          grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-          theme="icon-with-text-04"
-          data={IconWithTextData_04}
-          animation={fadeIn}
-          animationDelay={0.2}
-        />
-      </Col>
-    </Row>
-  </Container>
-</section>
+          <Container>
+            <Row>
+              <Col className="mb-[6%]">
+                <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
+                  Forms
+                </h6>
+              </Col>
+            </Row>
+            <Row className="justify-center">
+              <Col xs={12} sm={8} md={12}>
+                <IconWithText
+                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+                  theme="icon-with-text-04"
+                  data={IconWithTextData_04}
+                  animation={fadeIn}
+                  animationDelay={0.2}
+                />
+              </Col>
+            </Row>
+          </Container>
+        </section>
 
         {/* Section End */}
 
