@@ -55,12 +55,12 @@ const FooterSection = () => {
                   to="/"
                   className="col-sm-4 col-12 sm:mb-[20px] flex justify-start xs:justify-center"
                 >
-                  <img
+                  {/* <img
                     src="/assets/img/webp/logo-green-dark.webp"
                     alt="logo"
                     width="111"
                     height="36"
-                  />
+                  /> */}
                 </Link>
                 <p className="col-sm-8 col-12 flex justify-end items-center sm:mb-[20px] xs:text-center xs:justify-center mb-0">
                   © {new Date().getFullYear()} Kinder- und Jugendarztpraxis is Proudly Powered by&nbsp;
