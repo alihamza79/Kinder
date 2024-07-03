@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo } from 'react';
 
 // Libraries
 import { Row } from 'react-bootstrap';
@@ -6,16 +6,16 @@ import { m } from 'framer-motion';
 import { PropTypes } from "prop-types";
 import { Link } from 'react-router-dom';
 
-// components
-import Buttons from '../Button/Buttons'
+// Components
+import Buttons from '../Button/Buttons';
 
 // Data
-import { IconWithTextData_01 } from './IconWithTextData'
+import { IconWithTextData_01 } from './IconWithTextData';
 
-// css
-import "../../Assets/scss/components/_iconwithtext.scss"
+// CSS
+import "../../Assets/scss/components/_iconwithtext.scss";
 
-const IconWithText = (props) => {
+const HeroIconWithText = (props) => {
   return (
     <Row className={`${props.grid} md:justify-center`}>
       {
@@ -23,21 +23,24 @@ const IconWithText = (props) => {
           return (
             <m.div key={i} className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}` : ""}`} {...{ ...props.animation, transition: { delay: i * props.animationDelay, ease: props.animationTransition, duration: props.animationDuration } }}>
               <div className="rounded-md w-full">
-                {
-                  item.img ? (
-                    <img height={42} width={51} className="inline-block items-center justify-center mb-[30px]" src={item.img} alt="featurebox" />
-                  )
-                    :
-                    item.icon ? (props.theme === "icon-with-text-05" ? <Link aria-label="link for icon" to="#"><i className={item.icon}></i></Link> : <i className={item.icon}></i>
+                <div className="flex items-center"> {/* Added flex container for icon and title */}
+                  {
+                    item.img ? (
+                      <img height={42} width={51} className="inline-block items-center justify-center mr-4 mb-[30px]" src={item.img} alt="featurebox" /> // Added margin-right to space out the icon and title
                     )
                       :
-                      item.textIcon ? (<span className="text-basecolor inline-block icon-text">{item.textIcon}</span>)
+                      item.icon ? (props.theme === "icon-with-text-05" ? <Link aria-label="link for icon" to="#"><i className={item.icon}></i></Link> : <i className={item.icon}></i>
+                      )
                         :
-                        <span className="text-basecolor inline-block icon-text">{`${i <= 9 ? "0" : ""}${i + 1}`}</span>
-                }
+                        item.textIcon ? (<span className="text-basecolor inline-block icon-text mr-4">{item.textIcon}</span>) // Added margin-right to space out the icon and title
+                          :
+                          <span className="text-basecolor inline-block icon-text mr-4">{`${i <= 9 ? "0" : ""}${i + 1}`}</span> // Added margin-right to space out the icon and title
+                  }
 
+                  {item.title && <span className="mb-4 ml-5 text-lg font-medium title font-serif">{item.title}</span>}
+                </div> {/* Closed flex container */}
+                
                 <div className='feature-box-content'>
-                  {item.title && <span className="font-medium title font-serif">{item.title}</span>}
                   {item.content && <p>{item.content}</p>}
                   {/* {props.theme === "icon-with-text-11" ? <Buttons ariaLabel="iconwithtext" href="#" className="font-medium font-serif uppercase btn-link after:h-[2px] after:bg-darkgray md:text-md md:mb-[15px]" size="xl" color="#232323" title="Read more" /> : ""} */}
                 </div>
@@ -51,7 +54,7 @@ const IconWithText = (props) => {
   )
 }
 
-IconWithText.defaultProps = {
+HeroIconWithText.defaultProps = {
   data: IconWithTextData_01,
   animationDelay: 0.6,
   animationDuration: 0.8,
@@ -59,7 +62,7 @@ IconWithText.defaultProps = {
   theme: "icon-with-text-01",
 }
 
-IconWithText.propTypes = {
+HeroIconWithText.propTypes = {
   className: PropTypes.string,
   data: PropTypes.arrayOf(
     PropTypes.exact({
@@ -78,5 +81,4 @@ IconWithText.propTypes = {
   grid: PropTypes.string,
 }
 
-
-export default memo(IconWithText)
+export default memo(HeroIconWithText);

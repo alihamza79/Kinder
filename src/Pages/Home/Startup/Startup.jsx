@@ -25,11 +25,16 @@ import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
 import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import Services from "../../../Components/Services/Services";
+// Icons
+import { FaAmbulance, FaHospitalAlt, FaClock } from 'react-icons/fa';
+
+
 
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import FooterData from "../../../Components/Footers/FooterData";
 import { Topbar } from "../../../Components/Header/Header";
+import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
 );
@@ -90,6 +95,7 @@ const TiltBox = lazy(() =>
   }))
 );
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
+
 
 // Services Data
 const serviceData5 = [
@@ -353,7 +359,7 @@ const HomeStartupPage = (props) => {
           <Overlap className="md:mt-0">
             <Row className="justify-center">
               <Col xs={12} sm={9} lg={12} md={12}>
-                <IconWithText
+                <HeroIconWithText
                   grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
                   className="rounded-[4px] flex "
                   theme="icon-with-text-11"

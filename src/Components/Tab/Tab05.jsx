@@ -9,6 +9,7 @@ import Accordions from '../Accordion/Accordion'
 
 // Data
 import { TabData05 } from './TabData'
+import SimpleAccordion from '../Accordion/SimpleAccordion';
 
 const Tab05 = (props) => {
     return (
@@ -38,12 +39,10 @@ const Tab05 = (props) => {
                                         <Tab.Pane eventKey={i} key={i}>
                                             <Row className="justify-center">
                                                 <Col lg={10} className='md:px-0'>
-                                                    <Accordions
-                                                        theme="accordion-style-05"
+                                                    <SimpleAccordion  theme="accordion-style-05"
                                                         className=""
                                                         themeColor="light"
-                                                        data={item.activities}
-                                                    />
+                                                        data={item.activities}/>
                                                 </Col>
                                             </Row>
                                         </Tab.Pane>

@@ -11,7 +11,7 @@ const Overlap = (props) => {
       function setOverlapHeight() {
         if (overlap.current) {
           let sectionHeight = overlap?.current.clientHeight,
-            Height = window.innerWidth >= 768 ? 175 : 0;
+            Height = window.innerWidth >= 768 ? 125 : 0;
           overlap?.current.style.setProperty("--overlapheight", `-${Height}px`);
         }
       }
