@@ -115,18 +115,18 @@ const blogMasonryData = blogData
 const iconWithTextData = [
   {
     icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-    title: "Innovative business",
-    content: "Easy to customize , ",
+    title: "NOTFALL",
+    content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
   },
   {
     icon: "line-icon-Bakelite text-[#27ae60]",
-    title: "Expertly marketing",
-    content: "High quality services",
+    title: "NOTDIENST",
+    content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
   },
   {
     icon: "line-icon-Boy text-[#27ae60]",
-    title: "Engaging audiences",
-    content: "Build perfect websites",
+    title: "OPENING HOURS",
+    content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
   },
 ];
 
@@ -343,20 +343,19 @@ const HomeStartupPage = (props) => {
 
       {/* <SideButtons /> */}
 
-      {/* Section Start */}
+      {/* Hero Section SLider Start */}
       <StartupPageBannerSlider />
-      {/* Section End */}
 
-      {/* Section Start */}
-      {/* <section className="bg-cover bg-center pb-[200px] lg:pb-[160px] md:py-[110px] sm:py-[50px] startup-iconwithtext" style={{ backgroundImage: "url(https://via.placeholder.com/1920x733)" }}> */}
-      <Container>
-        <div className="mb-[105px] md:mb-[70px] sm:mb-[50px]">
+      {/* Three Cards on Hero Section Start */}
+      {/* <section className="bg-cover bg-center pb-[100px] lg:pb-[10px] md:py-[110px] sm:py-[50px] startup-iconwithtext" > */}
+      {/* <Container> */}
+        <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
           <Overlap className="md:mt-0">
             <Row className="justify-center">
               <Col xs={12} sm={9} lg={12} md={12}>
                 <IconWithText
-                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10 relative"
-                  className="rounded-[4px] flex"
+                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
+                  className="rounded-[4px] flex "
                   theme="icon-with-text-11"
                   data={iconWithTextData}
                 />
@@ -364,8 +363,7 @@ const HomeStartupPage = (props) => {
             </Row>
           </Overlap>
         </div>
-        =
-      </Container>
+      {/* </Container> */}
       {/* </section> */}
       {/* Section End */}
 
