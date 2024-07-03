@@ -708,16 +708,16 @@ const HomeStartupPage = (props) => {
           </m.section>
         </section>
 
-        {/* Section Start */}
+        {/* News Section Start */}
         <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">
           <Container>
             <Row className="justify-center">
               <Col lg={4} sm={6} className="text-center mb-12 md:mb-8">
-                <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px]">
-                  Latest blogs
-                </span>
+                {/* <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px]">
+                  News
+                </span> */}
                 <h2 className="heading-5 font-serif font-semibold text-darkgray inline-block tracking-[-1px]">
-                  Attractive articles updated daily basis
+                  Latest News
                 </h2>
               </Col>
             </Row>
@@ -729,6 +729,17 @@ const HomeStartupPage = (props) => {
               grid="grid grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-double-extra-large"
               data={blogMasonryData}
             />
+           <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
+                <Buttons
+                  ariaLabel="button"
+                  href="/Blogs/blog-Simple"
+                  className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
+                  size="lg"
+                  color="#ffffff"
+                  themeColor="#05867E"
+                  title="All News"
+                />
+              </Col>
           </Container>
         </section>
         {/* Section End */}

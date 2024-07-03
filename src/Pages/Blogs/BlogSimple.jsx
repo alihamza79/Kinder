@@ -22,8 +22,8 @@ const BlogSimplePage = () => {
         <Container className="h-full relative">
           <Row className="justify-center h-[300px] sm:h-[250px]">
             <Col xl={6} lg={6} md={8} className="text-center flex justify-center flex-col font-serif">
-              <h1 className="text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] to-[#ff798e] mb-[15px] inline-block text-xmd leading-[20px]">Blog simple layout</h1>
-              <h2 className="text-darkgray font-medium -tracking-[1px] mb-0">Attractive articles updated daily</h2>
+              {/* <h1 className="text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] to-[#ff798e] mb-[15px] inline-block text-xmd leading-[20px]">Blog simple layout</h1> */}
+              <h2 className="text-darkgray font-medium -tracking-[1px] mb-0">All News</h2>
             </Col>
           </Row>
         </Container>
