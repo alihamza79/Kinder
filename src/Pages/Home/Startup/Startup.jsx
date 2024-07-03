@@ -377,7 +377,7 @@ const HomeStartupPage = (props) => {
         </section>
 
         {/* Section End */}
-        <m.section
+        {/* <m.section
           className=" border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
           {...fadeIn}
         >
@@ -401,7 +401,7 @@ const HomeStartupPage = (props) => {
               </Col>
             </Row>
           </Container>
-        </m.section>
+        </m.section> */}
 
         {/* Team Section */}
 
@@ -547,7 +547,7 @@ const HomeStartupPage = (props) => {
               grid="grid grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-double-extra-large"
               data={blogMasonryData}
             />
-           <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
+           {/* <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
                 <Buttons
                   ariaLabel="button"
                   href="/Blogs/blog-Simple"
@@ -557,7 +557,7 @@ const HomeStartupPage = (props) => {
                   themeColor="#05867E"
                   title="All News"
                 />
-              </Col>
+              </Col> */}
           </Container>
         </section>
         {/* Section End */}
