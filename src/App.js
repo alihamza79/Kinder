@@ -594,7 +594,7 @@ function App() {
             <AnimatePresence mode="wait">
               <Suspense fallback={<></>}>
                 <Routes>
-                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/" element={ <HomeStartupPage style={{ "--base-color": "#27ae60" }} />} />
 
                   {/* Headers */}
                   <Route path="headers">
