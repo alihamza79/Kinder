@@ -801,15 +801,15 @@ const HomeStartupPage = (props) => {
                   />
                 </Link>
                 <p className="col-sm-8 col-12 flex justify-end items-center sm:mb-[20px] xs:text-center xs:justify-center mb-0">
-                  © {new Date().getFullYear()} Litho is Proudly Powered by&nbsp;
+                  © {new Date().getFullYear()} Kinder- und Jugendarztpraxis is Proudly Powered by&nbsp;
                   <a
                     aria-label="ThemeZaa link"
                     className="text-darkgray font-sans underline underline-offset-4 font-medium text-base inline-block hover:text-basecolor"
-                    href="https://www.themezaa.com/"
+                    href="https://www.syntax-ai.tech/"
                     target="_blank"
                     rel="noreferrer"
                   >
-                    ThemeZaa
+                    SYNTAX
                   </a>
                 </p>
               </Row>
