@@ -6,15 +6,15 @@ import { AnimatePresence } from "framer-motion";
 
 
 
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./Assets/css/bootstrap.min.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./Assets/css/bootstrap.min.css";
 
-// import "./Assets/css/style.css";
+import "./Assets/css/style.css";
 
-// import "./Assets/css/select2.min.css";
+import "./Assets/css/select2.min.css";
 
-// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-// import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
 
 // Dashboard Components
 import Login from "./Pages/login";

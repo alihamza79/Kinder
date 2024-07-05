@@ -1,7 +1,7 @@
 const HeaderData = [
     {
  title: 'Home',
-                        link: '/home-startup'
+                        link: '/'
 
         // title: 'Home',
         // megamenu: [
@@ -1178,6 +1178,11 @@ const HeaderData = [
     {
         title: "Vertretung",
         link: "/vertretung"
+        
+    },
+    {
+        title: "Login",
+        link: "/login"
         
     },
 ]
