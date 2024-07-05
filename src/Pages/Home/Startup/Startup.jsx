@@ -17,7 +17,6 @@ import Accordions from "../../../Components/Accordion/Accordion";
 import { Input } from "../../../Components/Form/Form";
 import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import InViewPort from "../../../Components/InViewPort";
-import Services from "../../../Components/Services/Services";
 import Team from "../../../Components/Team/Team";
 import { TeamData04 } from "../../../Components/Team/TeamData";
 import TextBox from "../../../Components/TextBox/TextBox";

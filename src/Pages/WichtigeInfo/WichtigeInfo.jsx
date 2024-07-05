@@ -19,7 +19,6 @@ import SideButtons from "../../Components/SideButtons";
 
 // Data
 import SimpleAccordion from "../../Components/Accordion/SimpleAccordion";
-import MiniVersionPage from "../PageTitle/MiniVersionPage";
 import Accordion from "../../Components/Accordion/Accordion";
 import { data } from "isotope-layout";
 import FooterSection from "../Footer/FooterSection";
