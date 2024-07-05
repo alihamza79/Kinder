@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 import { LazyMotion, domMax, m } from 'framer-motion';
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
 
 const StartupPageBannerSlider = () => {
     const [activeSlide, setActiveSlide] = useState(0)
@@ -14,7 +13,7 @@ const StartupPageBannerSlider = () => {
             // subTitle: "The best way to promote your business"
         },
         {
-            img: "/assets/img/webp/slider-02.jpg",
+             img: "/assets/img/webp/slider-02.jpg",
             title: "Kinder- und Jugendarztpraxis",
             // subTitle: "The best way to promote your business"
         },

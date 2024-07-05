@@ -39,19 +39,19 @@ import InViewPort from '../../Components/InViewPort';
 
 const SwiperData = [
   {
-    img: " https://via.placeholder.com/1920x950 ",
+    img: "/assets/img/webp/slider-02.jpg",
     title: "Global ",
     titlebold: "agency making",
     titlelast: " a world of difference",
   },
   {
-    img: "https://via.placeholder.com/1920x950",
+    img: "/assets/img/webp/slider-02.jpg",
     title: "Constantly thinking of ",
     titlebold: "new and effective",
     titlelast: " ways",
   },
   {
-    img: "https://via.placeholder.com/1920x950",
+    img: "/assets/img/webp/slider-02.jpg",
     title: "Superlative services with ",
     titlebold: "highly technology",
     titlelast: "",
