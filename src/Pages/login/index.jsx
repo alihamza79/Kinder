@@ -12,9 +12,13 @@ const Login = () => {
   };
 
   useEffect(() => {
-    if (!sessionStorage.getItem('reloaded')) {
-      sessionStorage.setItem('reloaded', 'true');
+    const reloadKey = 'loginPageReloaded';
+
+    if (!localStorage.getItem(reloadKey)) {
+      localStorage.setItem(reloadKey, 'true');
       window.location.reload();
+    } else {
+      localStorage.removeItem(reloadKey);
     }
   }, []);
 
