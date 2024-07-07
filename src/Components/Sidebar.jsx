@@ -114,7 +114,7 @@ const Sidebar = (props) => {
                             ? "active"
                             : ""
                         }
-                        to="/landingpage/coursecontentheading"
+                        to="/informationcard"
                       >
                       Information Cards
                       </Link>
@@ -122,10 +122,27 @@ const Sidebar = (props) => {
                   </ul>
                 </li>
 
+                {/* About Us */}
+
+                <li className="submenu">
+                  <Link
+                    to="/aboutlist"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>About Us</span> 
+                  </Link>
+                  
+                </li>
+
                 
 
                 
-      
+
+
               </ul>
               <div className="logout-btn">
                 <Link to="/login">

@@ -1,22 +1,21 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import Header from "../../../../Components/Header";
-import Sidebar from "../../../../Components/Sidebar";
+import Header from "../../Components/Header";
+import Sidebar from "../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import ImageUpload from "../../../../Components/ImageUpload"; // Import the ImageUpload component
+import db from "../../appwrite/Services/dbServices"; // Import Appwrite db services
+import storageServices from "../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import ImageUpload from "../../Components/ImageUpload"; // Import the ImageUpload component
 
-const EditCarouselItem = () => {
+const EditAboutItem = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        text: "",
+        title: "",
+        description: "",
         image: "",
         newImage: "", // State to handle new image URL
     });
@@ -24,7 +23,7 @@ const EditCarouselItem = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.heroCarousel.get(id);
+                const documentSnapshot = await db.about.get(id);
                 if (documentSnapshot) {
                     setFormData({
                         ...documentSnapshot,
@@ -54,8 +53,8 @@ const EditCarouselItem = () => {
         if (file) {
             const toastId = toast.loading("Uploading image...");
             try {
-                const uploadedImage = await storageServices.heroCarousel.createFile(file);
-                const uploadedImageURL = storageServices.heroCarousel.getFileView(uploadedImage.$id);
+                const uploadedImage = await storageServices.about.createFile(file);
+                const uploadedImageURL = storageServices.about.getFileView(uploadedImage.$id);
                 setFormData((prevData) => ({
                     ...prevData,
                     newImage: uploadedImageURL,
@@ -73,14 +72,15 @@ const EditCarouselItem = () => {
         try {
             // Delete old image if a new one is uploaded
             if (formData.newImage && formData.image !== formData.newImage) {
-                await storageServices.heroCarousel.deleteFile(formData.image);
+                await storageServices.about.deleteFile(formData.image);
             }
-            await db.heroCarousel.update(id, {
-                text: formData.text,
+            await db.about.update(id, {
+                title: formData.title,
+                description: formData.description,
                 image: formData.newImage || formData.image,
             });
-            sessionStorage.setItem('updateCarouselItemSuccess', 'true'); // Set update flag
-            navigate("/herocarousel");
+            sessionStorage.setItem('updateAboutItemSuccess', 'true'); // Set update flag
+            navigate("/aboutlist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
         } finally {
@@ -94,7 +94,7 @@ const EditCarouselItem = () => {
             <Sidebar
                 id="menu-item4"
                 id1="menu-items4"
-                activeClassName="carousel"
+                activeClassName="about"
             />
             <div className="page-wrapper">
                 <div className="content">
@@ -103,7 +103,7 @@ const EditCarouselItem = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/carousel">Landing Page </Link>
+                                        <Link to="/about">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -111,14 +111,14 @@ const EditCarouselItem = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/carousel">Carousel</Link>
+                                        <Link to="/about">About</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Edit Carousel Item</li>
+                                    <li className="breadcrumb-item active">Edit About Item</li>
                                 </ul>
                             </div>
                         </div>
@@ -131,18 +131,31 @@ const EditCarouselItem = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Edit Carousel Item</h4>
+                                                    <h4>Edit About Item</h4>
                                                 </div>
                                             </div>
-                                            {/* Text */}
+                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
-                                                    <label>Text <span className="login-danger">*</span></label>
+                                                    <label>Title <span className="login-danger">*</span></label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="text"
-                                                        value={formData.text}
+                                                        name="title"
+                                                        value={formData.title}
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                            </div>
+                                            {/* Description */}
+                                            <div className="col-12 col-md-6 col-xl-6">
+                                                <div className="form-group local-forms">
+                                                    <label>Description <span className="login-danger">*</span></label>
+                                                    <textarea
+                                                        className="form-control"
+                                                        rows="4"
+                                                        name="description"
+                                                        value={formData.description}
                                                         onChange={handleChange}
                                                     />
                                                 </div>
@@ -162,7 +175,7 @@ const EditCarouselItem = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
-                                                        onClick={() => navigate("/herocarousel")}
+                                                        onClick={() => navigate("/aboutlist")}
                                                     >
                                                         Cancel
                                                     </button>
@@ -181,4 +194,4 @@ const EditCarouselItem = () => {
     );
 };
 
-export default EditCarouselItem;
+export default EditAboutItem;

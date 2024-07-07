@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Table, Modal } from "antd";
-import Header from "../../../../Components/Header";
-import Sidebar from "../../../../Components/Sidebar";
+import Header from "../../Components/Header";
+import Sidebar from "../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import { imagesend, plusicon, refreshicon } from "../../../../Components/imagepath";
-import { onShowSizeChange, itemRender } from "../../../../Components/Pagination";
+import db from "../../appwrite/Services/dbServices";
+import { plusicon, refreshicon } from "../../Components/imagepath";
+import { onShowSizeChange, itemRender } from "../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CarouselList = () => {
+const InformationCardList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState(null);
@@ -20,15 +19,15 @@ const CarouselList = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const updateSuccess = sessionStorage.getItem("updateCarouselItemSuccess");
-    const addSuccess = sessionStorage.getItem("addCarouselItemSuccess");
+    const updateSuccess = sessionStorage.getItem("updateInformationCardSuccess");
+    const addSuccess = sessionStorage.getItem("addInformationCardSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateInformationCardSuccess"); // Clear the flag after showing the toast
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addInformationCardSuccess"); // Clear the flag after showing the toast
     }
     fetchData();
   }, [location]);
@@ -36,7 +35,7 @@ const CarouselList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await db.informationCard.list(); // Fetch documents from Appwrite collection
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
@@ -51,18 +50,13 @@ const CarouselList = () => {
 
   const handleDelete = async () => {
     try {
-      const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
-      if (selectedRecord && selectedRecord.image) {
-        // Delete image from Appwrite storage if it exists
-        await storageServices.heroCarousel.deleteFile(selectedRecord.image);
-      }
-      await db.heroCarousel.delete(selectedRecordId); // Delete the document from Appwrite
-      toast.success("Carousel item deleted successfully!", { autoClose: 2000 });
+      await db.informationCard.delete(selectedRecordId); // Delete the document from Appwrite
+      toast.success("Information card deleted successfully!", { autoClose: 2000 });
       fetchData(); // Refresh data after deletion
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
-      console.error("Error deleting document and image:", error);
+      console.error("Error deleting document:", error);
     }
   };
 
@@ -83,22 +77,14 @@ const CarouselList = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (text) => (
-        <img
-          src={text}
-          alt="Image"
-          className="image-column"
-          style={{ width: "100px", height: "100px", objectFit: "cover" }}
-        />
-      ),
+      title: "Title",
+      dataIndex: "Title",
+      key: "Title",
     },
     {
-      title: "Text",
-      dataIndex: "text",
-      key: "text",
+      title: "Description",
+      dataIndex: "Description",
+      key: "Description",
       render: (text) => (
         <div className={text && text.length > 20 ? "multiline-text" : ""}>
           {text}
@@ -122,7 +108,7 @@ const CarouselList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/herocarousel/editherocarousel/${record.id}`}
+                to={`/informationcard/editinformationcard/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit
@@ -151,7 +137,7 @@ const CarouselList = () => {
       <Sidebar
         id="menu-item4"
         id1="menu-items4"
-        activeClassName="carousel"
+        activeClassName="informationcard"
       />
       <>
         <div className="page-wrapper">
@@ -159,20 +145,12 @@ const CarouselList = () => {
             {/* Page Navbar*/}
             <div className="settings-menu-links">
               <ul className="nav nav-tabs menu-tabs">
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    to="/landingpage/coursecontentheading"
-                  >
-                    Course Content Heading
-                  </Link>
-                </li>
                 <li className="nav-item active">
                   <Link
                     className="nav-link"
-                    to="/landingpage/carousel"
+                    to="/landingpage/informationcard"
                   >
-                    Carousel
+                    Information Card
                   </Link>
                 </li>
               </ul>
@@ -190,7 +168,7 @@ const CarouselList = () => {
                       </i>
                     </li>
                     <li className="breadcrumb-item active">
-                      Carousel
+                      Information Card
                     </li>
                   </ul>
                 </div>
@@ -204,11 +182,11 @@ const CarouselList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>Carousel Items</h3>
+                            <h3>Information Cards</h3>
                             <div className="doctor-search-blk">
                               <div className="add-group">
                                 <Link
-                                  to="/herocarousel/addherocarousel"
+                                  to="/informationcard/addinformationcard"
                                   className="btn btn-primary add-pluss ms-2"
                                 >
                                   <img src={plusicon} alt="#" />
@@ -264,7 +242,7 @@ const CarouselList = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this carousel item?</h3>
+                <h3>Are you sure you want to delete this information card?</h3>
                 <div className="m-t-20">
                   <Button
                     onClick={hideDeleteModal}
@@ -290,4 +268,4 @@ const CarouselList = () => {
   );
 };
 
-export default CarouselList;
+export default InformationCardList;

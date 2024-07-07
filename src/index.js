@@ -127,6 +127,12 @@ const LoadStyles = () => {
         "/herocarousel",
         "/herocarousel/addherocarousel",
         "/herocarousel/editherocarousel/:id",
+        "/informationcard",
+        "/informationcard/addinformationcard",
+        "/informationcard/editinformationcard/:id",
+        "/aboutlist",
+        "/aboutlist/editaboutitem/:id",
+        "/about/addaboutitem"
       ];
 
       try {

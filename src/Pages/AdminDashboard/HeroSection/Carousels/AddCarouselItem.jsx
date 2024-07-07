@@ -48,7 +48,7 @@ const AddCarouselItem = () => {
             });
 
             sessionStorage.setItem('addCarouselItemSuccess', 'true'); // Set update flag
-            navigate("/landingpage/carousel");
+            navigate("/herocarousel");
 
         } catch (error) {
             toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
@@ -191,7 +191,7 @@ const AddCarouselItem = () => {
                                                     >
                                                         {loading ? "Adding..." : "Add"}
                                                     </button>
-                                                    <Link to="/landingpage/carousel">
+                                                    <Link to="/herocarousel">
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary cancel-form"

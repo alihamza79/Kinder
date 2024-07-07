@@ -32,7 +32,11 @@ import Admin_Dashboard from "./Components/Dashboard/Admin_Dashboard/Admin_Dashbo
 import AddCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/AddCarouselItem";
 import CarouselList from "./Pages/AdminDashboard/HeroSection/Carousels/CarouselList";
 import EditCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/EditCarouselItem";
-
+import InformationCardList from "./Pages/InformationCard/InformationCardList";
+import EditInformationCard from "./Pages/InformationCard/EditInformationCard";
+import AddInformationCard from "./Pages/InformationCard/AddInformationCard";
+import AboutList from "./Pages/about/AboutList";
+import EditAboutItem from "./Pages/about/EditAboutItem";
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -54,7 +58,7 @@ const DashboardRoutes = () => (
 
         {/* Hero Section */}
         {/* Hero Carousel */}
-        <Route path="herocarousel" element={<CarouselList />} />
+        <Route path="/herocarousel" element={<CarouselList />} />
 
         <Route
           path="/herocarousel/addherocarousel"
@@ -65,6 +69,19 @@ const DashboardRoutes = () => (
           path="/herocarousel/editherocarousel/:id"
           element={<EditCarouselItem />}
         />
+
+        {/* InformationCard */}
+
+        <Route path="/informationcard" element={<InformationCardList />} />
+        <Route path="/informationcard/editinformationcard/:id" element={<EditInformationCard />} />
+        <Route path="/informationcard/addinformationcard" element={<AddInformationCard />} />
+        
+        {/* About list */}
+
+        <Route path="/aboutlist" element={<AboutList />} />
+        <Route path="/aboutlist/editaboutitem/:id" element={<EditAboutItem />} />
+
+
       </Routes>
     </Suspense>
   </AnimatePresence>
