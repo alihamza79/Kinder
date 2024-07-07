@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../Components/Header";
-import Sidebar from "../../Components/Sidebar";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import ImageUpload from "../../Components/ImageUpload"; // Import the ImageUpload component
+import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import ImageUpload from "../../../Components/ImageUpload"; // Import the ImageUpload component
 
-const EditAboutItem = () => {
+const EditTeamMember = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
-        title: "",
-        description: "",
+        name: "",
+        designation: "",
         image: "",
         newImage: "", // State to handle new image URL
     });
@@ -23,7 +23,7 @@ const EditAboutItem = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.about.get(id);
+                const documentSnapshot = await db.teamBody.get(id);
                 if (documentSnapshot) {
                     setFormData({
                         ...documentSnapshot,
@@ -53,8 +53,8 @@ const EditAboutItem = () => {
         if (file) {
             const toastId = toast.loading("Uploading image...");
             try {
-                const uploadedImage = await storageServices.about.createFile(file);
-                const uploadedImageURL = storageServices.about.getFileView(uploadedImage.$id);
+                const uploadedImage = await storageServices.kinder.createFile(file);
+                const uploadedImageURL = storageServices.kinder.getFileView(uploadedImage.$id);
                 setFormData((prevData) => ({
                     ...prevData,
                     newImage: uploadedImageURL,
@@ -72,15 +72,15 @@ const EditAboutItem = () => {
         try {
             // Delete old image if a new one is uploaded
             if (formData.newImage && formData.image !== formData.newImage) {
-                await storageServices.about.deleteFile(formData.image);
+                await storageServices.kinder.deleteFile(formData.image);
             }
-            await db.about.update(id, {
-                title: formData.title,
-                description: formData.description,
+            await db.teamBody.update(id, {
+                name: formData.name,
+                designation: formData.designation,
                 image: formData.newImage || formData.image,
             });
-            sessionStorage.setItem('updateAboutItemSuccess', 'true'); // Set update flag
-            navigate("/aboutlist");
+            sessionStorage.setItem('updateTeamBodySuccess', 'true'); // Set update flag
+            navigate("/teamlist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
         } finally {
@@ -94,7 +94,7 @@ const EditAboutItem = () => {
             <Sidebar
                 id="menu-item4"
                 id1="menu-items4"
-                activeClassName="about"
+                activeClassName="team"
             />
             <div className="page-wrapper">
                 <div className="content">
@@ -103,7 +103,7 @@ const EditAboutItem = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/about">Landing Page </Link>
+                                        <Link to="/landingpage/team">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -111,14 +111,14 @@ const EditAboutItem = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/about">About</Link>
+                                        <Link to="/landingpage/team">Team</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Edit About Item</li>
+                                    <li className="breadcrumb-item active">Edit Team Member</li>
                                 </ul>
                             </div>
                         </div>
@@ -131,31 +131,31 @@ const EditAboutItem = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Edit About Item</h4>
+                                                    <h4>Edit Team Member</h4>
                                                 </div>
                                             </div>
-                                            {/* Title */}
+                                            {/* Name */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
-                                                    <label>Title <span className="login-danger">*</span></label>
+                                                    <label>Name <span className="login-danger">*</span></label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="title"
-                                                        value={formData.title}
+                                                        name="name"
+                                                        value={formData.name}
                                                         onChange={handleChange}
                                                     />
                                                 </div>
                                             </div>
-                                            {/* Description */}
+                                            {/* Designation */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
-                                                    <label>Description <span className="login-danger">*</span></label>
-                                                    <textarea
+                                                    <label>Designation <span className="login-danger">*</span></label>
+                                                    <input
                                                         className="form-control"
-                                                        rows="4"
-                                                        name="description"
-                                                        value={formData.description}
+                                                        type="text"
+                                                        name="designation"
+                                                        value={formData.designation}
                                                         onChange={handleChange}
                                                     />
                                                 </div>
@@ -175,7 +175,7 @@ const EditAboutItem = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
-                                                        onClick={() => navigate("/aboutlist")}
+                                                        onClick={() => navigate("/teamlist")}
                                                     >
                                                         Cancel
                                                     </button>
@@ -194,4 +194,4 @@ const EditAboutItem = () => {
     );
 };
 
-export default EditAboutItem;
+export default EditTeamMember;

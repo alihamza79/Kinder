@@ -1,17 +1,18 @@
-import { Button, Table } from "antd";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Table } from "antd";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
+import { Button } from "antd";
+import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import db from "../../../appwrite/Services/dbServices";
+import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import { plusicon, refreshicon } from "../../../Components/imagepath";
+import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import Header from "../../../../Components/Header";
-import { plusicon, refreshicon } from "../../../../Components/imagepath";
-import { itemRender, onShowSizeChange } from "../../../../Components/Pagination";
-import Sidebar from "../../../../Components/Sidebar";
 
-const CarouselList = () => {
+const TeamBodyList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState(null);
@@ -19,15 +20,15 @@ const CarouselList = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const updateSuccess = sessionStorage.getItem("updateCarouselItemSuccess");
-    const addSuccess = sessionStorage.getItem("addCarouselItemSuccess");
+    const updateSuccess = sessionStorage.getItem("updateTeamBodySuccess");
+    const addSuccess = sessionStorage.getItem("addTeamBodySuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateTeamBodySuccess"); // Clear the flag after showing the toast
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addTeamBodySuccess"); // Clear the flag after showing the toast
     }
     fetchData();
   }, [location]);
@@ -35,7 +36,7 @@ const CarouselList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await db.teamBody.list(); // Fetch documents from Appwrite collection
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
@@ -53,10 +54,10 @@ const CarouselList = () => {
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.image) {
         // Delete image from Appwrite storage if it exists
-        await storageServices.heroCarousel.deleteFile(selectedRecord.image);
+        await storageServices.kinder.deleteFile(selectedRecord.image);
       }
-      await db.heroCarousel.delete(selectedRecordId); // Delete the document from Appwrite
-      toast.success("Carousel item deleted successfully!", { autoClose: 2000 });
+      await db.teamBody.delete(selectedRecordId); // Delete the document from Appwrite
+      toast.success("Team member deleted successfully!", { autoClose: 2000 });
       fetchData(); // Refresh data after deletion
       setSelectedRecordId(null);
       hideDeleteModal();
@@ -95,9 +96,14 @@ const CarouselList = () => {
       ),
     },
     {
-      title: "Text",
-      dataIndex: "text",
-      key: "text",
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Designation",
+      dataIndex: "designation",
+      key: "designation",
       render: (text) => (
         <div className={text && text.length > 20 ? "multiline-text" : ""}>
           {text}
@@ -121,7 +127,7 @@ const CarouselList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/herocarousel/editherocarousel/${record.id}`}
+                to={`/teamlist/editteammember/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit
@@ -150,13 +156,32 @@ const CarouselList = () => {
       <Sidebar
         id="menu-item4"
         id1="menu-items4"
-        activeClassName="carousel"
+        activeClassName="team"
       />
       <>
         <div className="page-wrapper">
           <div className="content">
             {/* Page Navbar*/}
-            
+            <div className="settings-menu-links">
+              <ul className="nav nav-tabs menu-tabs">
+                <li className="nav-item">
+                  <Link
+                    className="nav-link"
+                    to="/teamheader"
+                  >
+                    Team Header
+                  </Link>
+                </li>
+                <li className="nav-item active">
+                  <Link
+                    className="nav-link"
+                    to="/teamlist"
+                  >
+                    Team
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">
@@ -170,7 +195,7 @@ const CarouselList = () => {
                       </i>
                     </li>
                     <li className="breadcrumb-item active">
-                      Carousel
+                      Team
                     </li>
                   </ul>
                 </div>
@@ -184,11 +209,11 @@ const CarouselList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>Carousel Items</h3>
+                            <h3>Team Members</h3>
                             <div className="doctor-search-blk">
                               <div className="add-group">
                                 <Link
-                                  to="/herocarousel/addherocarousel"
+                                  to="/teamlist/addteammember"
                                   className="btn btn-primary add-pluss ms-2"
                                 >
                                   <img src={plusicon} alt="#" />
@@ -244,7 +269,7 @@ const CarouselList = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this carousel item?</h3>
+                <h3>Are you sure you want to delete this team member?</h3>
                 <div className="m-t-20">
                   <Button
                     onClick={hideDeleteModal}
@@ -270,4 +295,4 @@ const CarouselList = () => {
   );
 };
 
-export default CarouselList;
+export default TeamBodyList;

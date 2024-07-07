@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import Header from "../../Components/Header";
-import Sidebar from "../../Components/Sidebar";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../appwrite/Services/dbServices"; // Import Appwrite database service
+import db from "../../../appwrite/Services/dbServices"; // Import Appwrite database service
 import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 
-const AddInformationCard = () => {
+const AddServiceHeader = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async (event) => {
@@ -19,13 +18,12 @@ const AddInformationCard = () => {
 
         try {
             // Store data in Appwrite database
-            await db.informationCard.create({
-                Title: title,
-                Description: description,
+            await db.serviceHeader.create({
+                title: title,
             });
 
-            sessionStorage.setItem('addInformationCardSuccess', 'true'); // Set update flag
-            navigate("/informationcard");
+            sessionStorage.setItem('addServiceHeaderSuccess', 'true'); // Set update flag
+            navigate("/serviceheader");
 
         } catch (error) {
             toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
@@ -41,7 +39,7 @@ const AddInformationCard = () => {
             <Sidebar
                 id="menu-item4"
                 id1="menu-items4"
-                activeClassName="informationcard"
+                activeClassName="serviceheader"
             />
             <div className="page-wrapper">
                 <div className="content">
@@ -51,14 +49,14 @@ const AddInformationCard = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/informationcard">Information Card</Link>
+                                        <Link to="/landingpage/serviceheader">Service Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Add Information Card</li>
+                                    <li className="breadcrumb-item active">Add Service Header</li>
                                 </ul>
                             </div>
                         </div>
@@ -72,7 +70,7 @@ const AddInformationCard = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Add Information Card</h4>
+                                                    <h4>Add Service Header</h4>
                                                 </div>
                                             </div>
 
@@ -92,22 +90,6 @@ const AddInformationCard = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
-                                                <div className="form-group local-forms">
-                                                    <label>
-                                                        Description <span className="login-danger">*</span>
-                                                    </label>
-                                                    <textarea
-                                                        className="form-control"
-                                                        rows="4"
-                                                        value={description}
-                                                        onChange={(e) => setDescription(e.target.value)}
-                                                        disabled={loading}
-                                                    />
-                                                </div>
-                                            </div>
-
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
@@ -118,7 +100,7 @@ const AddInformationCard = () => {
                                                     >
                                                         {loading ? "Adding..." : "Add"}
                                                     </button>
-                                                    <Link to="/informationcard">
+                                                    <Link to="/serviceheader">
                                                         <button
                                                             type="button"
                                                             className="btn btn-primary cancel-form"
@@ -142,4 +124,4 @@ const AddInformationCard = () => {
     );
 };
 
-export default AddInformationCard;
+export default AddServiceHeader;

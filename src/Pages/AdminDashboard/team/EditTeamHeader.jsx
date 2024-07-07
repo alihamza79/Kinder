@@ -1,30 +1,23 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../Components/Header";
-import Sidebar from "../../Components/Sidebar";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../appwrite/Services/dbServices"; // Import Appwrite db services
-
-const EditInformationCard = () => {
+import db from "../../../appwrite/Services/dbServices";
+const EditTeamHeader = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        Title: "",
-        Description: "",
-    });
+    const [title, setTitle] = useState("");
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.informationCard.get(id);
+                const documentSnapshot = await db.teamHeader.get(id);
                 if (documentSnapshot) {
-                    setFormData({
-                        Title: documentSnapshot.Title,
-                        Description: documentSnapshot.Description,
-                    });
+                    setTitle(documentSnapshot.title);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -36,24 +29,15 @@ const EditInformationCard = () => {
         fetchDocumentData();
     }, [id]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         try {
-            await db.informationCard.update(id, {
-                Title: formData.Title,
-                Description: formData.Description,
+            await db.teamHeader.update(id, {
+                title: title,
             });
-            sessionStorage.setItem('updateInformationCardSuccess', 'true'); // Set update flag
-            navigate("/informationcard");
+            sessionStorage.setItem('updateTeamHeaderSuccess', 'true'); // Set update flag
+            navigate("/teamheader");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
         } finally {
@@ -67,7 +51,7 @@ const EditInformationCard = () => {
             <Sidebar
                 id="menu-item4"
                 id1="menu-items4"
-                activeClassName="informationcard"
+                activeClassName="teamheader"
             />
             <div className="page-wrapper">
                 <div className="content">
@@ -76,7 +60,7 @@ const EditInformationCard = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/informationcard">Landing Page </Link>
+                                        <Link to="/landingpage/teamheader">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -84,14 +68,14 @@ const EditInformationCard = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/informationcard">Information Card</Link>
+                                        <Link to="/landingpage/teamheader">Team Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Edit Information Card</li>
+                                    <li className="breadcrumb-item active">Edit Team Header</li>
                                 </ul>
                             </div>
                         </div>
@@ -104,7 +88,7 @@ const EditInformationCard = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Edit Information Card</h4>
+                                                    <h4>Edit Team Header</h4>
                                                 </div>
                                             </div>
                                             {/* Title */}
@@ -114,22 +98,10 @@ const EditInformationCard = () => {
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="Title"
-                                                        value={formData.Title}
-                                                        onChange={handleChange}
-                                                    />
-                                                </div>
-                                            </div>
-                                            {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
-                                                <div className="form-group local-forms">
-                                                    <label>Description <span className="login-danger">*</span></label>
-                                                    <textarea
-                                                        className="form-control"
-                                                        rows="4"
-                                                        name="Description"
-                                                        value={formData.Description}
-                                                        onChange={handleChange}
+                                                        name="title"
+                                                        value={title}
+                                                        onChange={(e) => setTitle(e.target.value)}
+                                                        disabled={loading}
                                                     />
                                                 </div>
                                             </div>
@@ -146,7 +118,7 @@ const EditInformationCard = () => {
                                                     <button
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
-                                                        onClick={() => navigate("/informationcard")}
+                                                        onClick={() => navigate("/teamheader")}
                                                     >
                                                         Cancel
                                                     </button>
@@ -165,4 +137,4 @@ const EditInformationCard = () => {
     );
 };
 
-export default EditInformationCard;
+export default EditTeamHeader;

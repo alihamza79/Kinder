@@ -4,26 +4,26 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../appwrite/Services/dbServices"; // Import Appwrite db services
-import Header from "../../Components/Header";
-import { itemRender, onShowSizeChange } from "../../Components/Pagination";
-import Sidebar from "../../Components/Sidebar";
+import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import Header from "../../../Components/Header";
+import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
+import Sidebar from "../../../Components/Sidebar";
 
-const AboutList = () => {
+const ServiceHeaderList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const updateSuccess = sessionStorage.getItem("updateAboutItemSuccess");
-    const addSuccess = sessionStorage.getItem("addAboutItemSuccess");
+    const updateSuccess = sessionStorage.getItem("updateServiceHeaderSuccess");
+    const addSuccess = sessionStorage.getItem("addServiceHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateAboutItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateServiceHeaderSuccess"); // Clear the flag after showing the toast
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addAboutItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addServiceHeaderSuccess"); // Clear the flag after showing the toast
     }
     fetchData();
   }, [location]);
@@ -31,11 +31,20 @@ const AboutList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await db.serviceHeader.list(); // Fetch documents from Appwrite collection
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
       }));
+
+      if (data.length === 0) {
+        // Add a new document with "Dummy Title" if the collection is empty
+        const newDocument = await db.serviceHeader.create({
+          title: "Dummy Title",
+        });
+        data.push({ id: newDocument.$id, ...newDocument });
+      }
+
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -52,32 +61,9 @@ const AboutList = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "Image",
-      dataIndex: "image",
-      key: "image",
-      render: (text) => (
-        <img
-          src={text}
-          alt="Image"
-          className="image-column"
-          style={{ width: "100px", height: "100px", objectFit: "cover" }}
-        />
-      ),
-    },
-    {
       title: "Title",
       dataIndex: "title",
       key: "title",
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (text) => (
-        <div className={text && text.length > 20 ? "multiline-text" : ""}>
-          {text}
-        </div>
-      ),
     },
     {
       title: "",
@@ -96,7 +82,7 @@ const AboutList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/aboutlist/editaboutitem/${record.id}`}
+                to={`/serviceheader/editserviceheader/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit
@@ -108,9 +94,7 @@ const AboutList = () => {
     },
   ];
 
-  const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
-  };
+ 
 
   return (
     <>
@@ -118,13 +102,32 @@ const AboutList = () => {
       <Sidebar
         id="menu-item4"
         id1="menu-items4"
-        activeClassName="about"
+        activeClassName="serviceheader"
       />
       <>
         <div className="page-wrapper">
           <div className="content">
             {/* Page Navbar */}
-            
+            <div className="settings-menu-links">
+              <ul className="nav nav-tabs menu-tabs">
+                <li className="nav-item active">
+                  <Link
+                    className="nav-link"
+                    to="/serviceheader"
+                  >
+                    Service Header
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className="nav-link"
+                    to="/serviceslist"
+                  >
+                    Services Body
+                  </Link>
+                </li>
+              </ul>
+            </div>
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">
@@ -138,7 +141,7 @@ const AboutList = () => {
                       </i>
                     </li>
                     <li className="breadcrumb-item active">
-                      About
+                      Service Header
                     </li>
                   </ul>
                 </div>
@@ -152,8 +155,7 @@ const AboutList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>About Us</h3>
-                            
+                            <h3>Service Headers</h3>
                           </div>
                         </div>
                       </div>
@@ -185,4 +187,4 @@ const AboutList = () => {
   );
 };
 
-export default AboutList;
+export default ServiceHeaderList;

@@ -14,5 +14,21 @@ export const collections = [
   {
     id:"668a509e001ebe52706a",
     name:"about"
+  },
+  {
+    id:"668a96d90028fe9e76bd",
+    name:"services"
+  },
+  {
+    id:"668a9cce001da7a41bff",
+    name:"serviceHeader"
+  },
+  {
+    id:"668aabcb0005653c8e9f",
+    name:"teamHeader"
+  },
+  {
+    id:"668ab9430014f5528789",
+    name:"teamBody"
   }
 ];

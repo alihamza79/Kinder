@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Table, Modal } from "antd";
-import Header from "../../Components/Header";
-import Sidebar from "../../Components/Sidebar";
+import { Table } from "antd";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../appwrite/Services/dbServices";
-import { plusicon, refreshicon } from "../../Components/imagepath";
-import { onShowSizeChange, itemRender } from "../../Components/Pagination";
+import db from "../../../appwrite/Services/dbServices";
+import { plusicon, refreshicon } from "../../../Components/imagepath";
+import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -36,10 +36,25 @@ const InformationCardList = () => {
     try {
       setLoading(true);
       const querySnapshot = await db.informationCard.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
+      let data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
       }));
+
+      if (data.length === 0) {
+        // Add three dummy documents if the collection is empty
+        const dummyData = [
+          { Title: "Dummy Title 1", Description: "Dummy Description 1" },
+          { Title: "Dummy Title 2", Description: "Dummy Description 2" },
+          { Title: "Dummy Title 3", Description: "Dummy Description 3" },
+        ];
+
+        for (const dummy of dummyData) {
+          const newDocument = await db.informationCard.create(dummy);
+          data.push({ id: newDocument.$id, ...newDocument });
+        }
+      }
+
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -143,18 +158,7 @@ const InformationCardList = () => {
         <div className="page-wrapper">
           <div className="content">
             {/* Page Navbar*/}
-            <div className="settings-menu-links">
-              <ul className="nav nav-tabs menu-tabs">
-                <li className="nav-item active">
-                  <Link
-                    className="nav-link"
-                    to="/landingpage/informationcard"
-                  >
-                    Information Card
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">

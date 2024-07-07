@@ -6,5 +6,9 @@ export const buckets = [
   {
     id:"668a52e4002749a3be15",
     name:"about"
+  },
+  {
+    id:"6689ea220025d956ffef",
+    name:"kinder"
   }
 ];

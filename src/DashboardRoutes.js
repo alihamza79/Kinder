@@ -32,11 +32,22 @@ import Admin_Dashboard from "./Components/Dashboard/Admin_Dashboard/Admin_Dashbo
 import AddCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/AddCarouselItem";
 import CarouselList from "./Pages/AdminDashboard/HeroSection/Carousels/CarouselList";
 import EditCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/EditCarouselItem";
-import InformationCardList from "./Pages/InformationCard/InformationCardList";
-import EditInformationCard from "./Pages/InformationCard/EditInformationCard";
-import AddInformationCard from "./Pages/InformationCard/AddInformationCard";
-import AboutList from "./Pages/about/AboutList";
-import EditAboutItem from "./Pages/about/EditAboutItem";
+import InformationCardList from "./Pages/AdminDashboard/InformationCard/InformationCardList";
+import EditInformationCard from "./Pages/AdminDashboard/InformationCard/EditInformationCard";
+import AddInformationCard from "./Pages/AdminDashboard/InformationCard/AddInformationCard";
+import AboutList from "./Pages/AdminDashboard/about/AboutList";
+import EditAboutItem from "./Pages/AdminDashboard/about/EditAboutItem";
+import ServicesList from "./Pages/AdminDashboard/services/ServicesList";
+import EditService from "./Pages/AdminDashboard/services/EditService";
+import AddService from "./Pages/AdminDashboard/services/AddService";
+import ServiceHeaderList from "./Pages/AdminDashboard/services/ServiceHeaderList";
+import EditServiceHeader from "./Pages/AdminDashboard/services/EditServiceHeader";
+import AddServiceHeader from "./Pages/AdminDashboard/services/AddServiceHeader";
+import TeamHeaderList from "./Pages/AdminDashboard/team/TeamHeaderList";
+import EditTeamHeader from "./Pages/AdminDashboard/team/EditTeamHeader";
+import TeamBodyList from "./Pages/AdminDashboard/team/TeamBodyList";
+import AddTeamMember from "./Pages/AdminDashboard/team/AddTeamMember";
+import EditTeamMember from "./Pages/AdminDashboard/team/EditTeamMember";
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -81,6 +92,28 @@ const DashboardRoutes = () => (
         <Route path="/aboutlist" element={<AboutList />} />
         <Route path="/aboutlist/editaboutitem/:id" element={<EditAboutItem />} />
 
+          {/* Services */}
+
+        <Route path="/serviceslist" element={<ServicesList />} />
+        <Route path="/serviceslist/editservice/:id" element={<EditService />} />
+        <Route path="/serviceslist/addservice" element={<AddService />} />
+
+        {/* Service Header */}
+
+        <Route path="/serviceheader" element={<ServiceHeaderList />} />
+        <Route path="/serviceheader/editserviceheader/:id" element={<EditServiceHeader />} />
+        <Route path="/serviceheader/addserviceheader" element={<AddServiceHeader />} />
+
+        {/* Team Header */}
+
+        <Route path="/teamheader" element={<TeamHeaderList />} />
+        <Route path="/teamheader/editteamheader/:id" element={<EditTeamHeader />} />
+
+        {/* Team Body */}
+
+        <Route path="/teamlist" element={<TeamBodyList />} />
+        <Route path="/teamlist/editteammember/:id" element={< EditTeamMember />} />
+        <Route path="/teamlist/addteammember" element={<AddTeamMember />} />
 
       </Routes>
     </Suspense>
