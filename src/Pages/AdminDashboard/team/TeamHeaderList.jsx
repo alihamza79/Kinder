@@ -122,7 +122,7 @@ const TeamHeaderList = () => {
                     className="nav-link"
                     to="/teamlist"
                   >
-                    Team
+                    Team Body
                   </Link>
                 </li>
               </ul>

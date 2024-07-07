@@ -3,156 +3,44 @@ const TeamData04 = [
     img: "/assets/img/team/bille-1.jpg",
     name: "Dr. med. Sybille Walker",
     designation: "Fachärztin Kinder- und Jugendheilkunde",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     img: "/assets/img/team/Andreas.jpg",
     name: "Dr. med. Andreas Diekhöfer ",
     designation: "Facharzt Kinder- und Jugendheilkunde",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     img: "/assets/img/team/lucia.png",
     name: "Dr. med. Lucia Lupetto",
     designation: "Kinder,- und Jugendärztin in Weiterbildung",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     
     img: "/assets/img/team/Heike.jpg",
     name: "Heike Winkler",
     designation: "Medizinische Fachangestellte",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     img: "/assets/img/team/markio.png",
     name: "Mariko Lutz",
     designation: "Medizinische Fachangestellte",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     img: "/assets/img/team/frau.png",
     name: "Frau Celina Kraus",
     designation: "medizinische Fachangestellte",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   {
     img: "/assets/img/team/Alina.png",
     name: "Frau Alina Alizoti",
     designation: "Auszubildende zur medizinischen Fachangestellten",
-    social_links: [
-      {
-        title: "facebook",
-        link: "https://www.facebook.com",
-        icon: "fab fa-facebook-f",
-      },
-      {
-        title: "instagram",
-        link: "https://www.instagram.com",
-        icon: "fa-brands fa-instagram",
-      },
-      {
-        title: "twitter",
-        link: "https://www.twitter.com",
-        icon: "fa-brands fa-twitter",
-      },
-    ],
+    
   },
   
 ];

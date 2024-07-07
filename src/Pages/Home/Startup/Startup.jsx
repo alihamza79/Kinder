@@ -1,10 +1,9 @@
-import React, { lazy } from "react";
+import React, { lazy, useState, useEffect } from "react";
 
 // Libraries
 import { Form, Formik } from "formik";
 import { AnimatePresence, m } from "framer-motion";
-import { Col, Container, Navbar, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
 
 // Functions
@@ -18,81 +17,33 @@ import { Input } from "../../../Components/Form/Form";
 import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
 import InViewPort from "../../../Components/InViewPort";
 import Team from "../../../Components/Team/Team";
-import { TeamData04 } from "../../../Components/Team/TeamData";
 import TextBox from "../../../Components/TextBox/TextBox";
 import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
+
 // Icons
+import db from "../../../appwrite/Services/dbServices";
 
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
-import FooterData from "../../../Components/Footers/FooterData";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
+import { TeamData04 } from "../../../Components/Team/TeamData";
+
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
 );
-const HamburgerMenu = React.lazy(() =>
-  import("../../../Components/Header/Header").then((module) => ({
-    default: module.HamburgerMenu,
-  }))
-);
-const Header = React.lazy(() =>
-  import("../../../Components/Header/Header").then((module) => ({
-    default: module.Header,
-  }))
-);
-const HeaderNav = React.lazy(() =>
-  import("../../../Components/Header/Header").then((module) => ({
-    default: module.HeaderNav,
-  }))
-);
-const Menu = React.lazy(() =>
-  import("../../../Components/Header/Header").then((module) => ({
-    default: module.Menu,
-  }))
-);
-const SearchBar = React.lazy(() =>
-  import("../../../Components/Header/Header").then((module) => ({
-    default: module.SearchBar,
-  }))
-);
-
 const Buttons = lazy(() => import("../../../Components/Button/Buttons"));
-const InteractiveBanners02 = lazy(() =>
-  import("../../../Components/InteractiveBanners/InteractiveBanners02")
-);
-const ProcessStep = lazy(() =>
-  import("../../../Components/ProcessStep/ProcessStep")
-);
 const Overlap = lazy(() => import("../../../Components/Overlap/Overlap"));
-const PricingTable03 = lazy(() =>
-  import("../../../Components/PricingTable/PricingTable03")
-);
-const ReactCustomScrollbar = lazy(() =>
-  import("../../../Components/ReactCustomScrollbar")
-);
 const BlogMasonry = lazy(() => import("../../../Components/Blogs/BlogMasonry"));
 const MessageBox = lazy(() =>
   import("../../../Components/MessageBox/MessageBox")
 );
-const SocialIcons = lazy(() =>
-  import("../../../Components/SocialIcon/SocialIcons")
-);
-const SideButtons = lazy(() => import("../../../Components/SideButtons"));
-const StaticInstagram = lazy(() =>
-  import("../../../Components/Instagram/StaticInstagram")
-);
-const TiltBox = lazy(() =>
-  import("../../../Components/FancyText/FancyText").then((module) => ({
-    default: module.TiltBox,
-  }))
-);
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
 
 // Services Data
-const serviceData5 = [
+const initialServiceData = [
   { title: "Vorsorge- Untersuchungen" },
   { title: "Jugendgesundheits- Untersuchungen" },
   { title: "Jugendarbeitsschutz- Untersuchungen" },
@@ -112,51 +63,7 @@ const blogMasonryData = blogData
   .filter((item) => item.blogType === "masonry")
   .filter((item) => item.category.includes("startup"));
 
-const iconWithTextData = [
-  {
-    icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-    title: "NOTFALL",
-    content:
-      "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-  },
-  {
-    icon: "line-icon-Bakelite text-[#27ae60]",
-    title: "NOTDIENST",
-    content:
-      "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
-  },
-  {
-    icon: "line-icon-Boy text-[#27ae60]",
-    title: "OPENING HOURS",
-    content:
-      "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
-  },
-];
-
-const iconWithTextDataAfterHero = [
-  {
-    icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-    title: " Terminvergabe und Anforderung von Rezepten/Heilmitteln",
-    // content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-  },
-  {
-    icon: "line-icon-Bakelite text-[#27ae60]",
-    title: "Contact Info",
-    content: "Email an: praxis@kjk-wn.de. \n\n Telefonnummer: 07151 - 21080.",
-  },
-  {
-    icon: "line-icon-Boy text-[#27ae60]",
-    title: "OPENING HOURS",
-    content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
-  },
-];
-
 const iconWithTextDataAfterHero1 = [
-  // {
-    // icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-  //   title: " Terminvergabe und Anforderung von Rezepten/Heilmitteln",
-  //   // content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-  // },
   {
     icon: "line-icon-Bakelite text-[#27ae60]",
     title: "Contact Info",
@@ -165,46 +72,127 @@ const iconWithTextDataAfterHero1 = [
   {
     icon: "line-icon-Boy text-[#27ae60]",
     title: "OPENING HOURS",
-    content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
+    content:
+      "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
   },
-];
-
-const SocialIconsData = [
-  {
-    color: "#3b5998",
-    link: "https://www.facebook.com/",
-    icon: "fab fa-facebook-f",
-  },
-  {
-    color: "#ea4c89",
-    link: "https://dribbble.com/",
-    icon: "fab fa-dribbble",
-  },
-  {
-    color: "#00aced",
-    link: "https://twitter.com/",
-    icon: "fab fa-twitter",
-  },
-  {
-    color: "#fe1f49",
-    link: "https://www.instagram.com/",
-    icon: "fab fa-instagram",
-  },
-  {
-    color: "#0077b5",
-    link: "https://www.linkedin.com/",
-    icon: "fab fa-linkedin-in",
-  },
-];
-
-const Footer_Data = [
-  FooterData[0],
-  FooterData[1],
-  FooterData[4],
-  FooterData[3],
 ];
 
 const HomeStartupPage = (props) => {
+  const [informationCards, setInformationCards] = useState([
+    {
+      icon: "line-icon-Cursor-Click2 text-[#27ae60]",
+      title: "NOTFALL",
+      content:
+        "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
+    },
+    {
+      icon: "line-icon-Bakelite text-[#27ae60]",
+      title: "NOTDIENST",
+      content:
+        "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
+    },
+    {
+      icon: "line-icon-Boy text-[#27ae60]",
+      title: "OPENING HOURS",
+      content:
+        "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
+    },
+  ]);
+
+  const [aboutUs, setAboutUs] = useState({
+    title: "Liebe Eltern, Kinder und Jugendliche!",
+    description:
+      "Wir freuen uns, Sie auf der Internetseite der Kinderarztpraxis kunterbunt Waiblingen zu begrüßen. Für uns als Fachärzte für Kinder- und Jugendmedizin steht die körperliche und geistige Entwicklung Ihres Kindes vom Säugling bis zum Jugendlichen im Mittelpunkt unserer Arbeit. Dabei ist uns der einfühlsame und verantwortungsbewusste Umgang mit unseren kleinen und großen Patienten besonders wichtig. Schwerpunkt unserer Praxis ist die hausärztliche Versorgung und ganzheitliche Begleitung von Kindern. Wir versorgen alle akuten und chronischen Erkrankungen, wie z.B. Asthma, Allergien oder ADHS und haben dabei auch psychosomatische Beschwerden im Blick. Wir sind eng vernetzt mit den Kliniken und Spezialisten in der Region und stimmen mit Ihnen die Behandlung und Versorgung im Sinne Ihres Kindes ab. Wir freuen uns, Sie und Ihre Familie kennen zu lernen!",
+    image: "https://via.placeholder.com/700x1027",
+  });
+
+  const [serviceHeader, setServiceHeader] = useState("Leistungen");
+  const [serviceData, setServiceData] = useState(initialServiceData);
+  const [teamHeader, setTeamHeader] = useState("Team");
+  const [teamData, setTeamData] = useState(TeamData04);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const querySnapshot = await db.informationCard.list(); // Fetch documents from Appwrite collection
+        const fetchedData = querySnapshot.documents;
+
+        if (fetchedData.length > 0) {
+          const updatedCards = informationCards.map((card, index) => ({
+            ...card,
+            title: fetchedData[index]?.Title || card.title,
+            content: fetchedData[index]?.Description || card.content,
+          }));
+          setInformationCards(updatedCards);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    const fetchAboutUsData = async () => {
+      try {
+        const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
+        if (querySnapshot.documents.length > 0) {
+          const aboutData = querySnapshot.documents[0];
+          setAboutUs({
+            title: aboutData.title || aboutUs.title,
+            description: aboutData.description || aboutUs.description,
+            image: aboutData.image || aboutUs.image,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching About Us data:", error);
+      }
+    };
+
+    const fetchServiceData = async () => {
+      try {
+        const headerSnapshot = await db.serviceHeader.list();
+        const bodySnapshot = await db.services.list();
+
+        if (headerSnapshot.documents.length > 0) {
+          setServiceHeader(headerSnapshot.documents[0].title);
+        }
+
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = bodySnapshot.documents.map((doc) => ({
+            title: doc.name,
+          }));
+          setServiceData(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching Services data:", error);
+      }
+    };
+
+    const fetchTeamData = async () => {
+      try {
+        const headerSnapshot = await db.teamHeader.list();
+        const bodySnapshot = await db.teamBody.list();
+
+        if (headerSnapshot.documents.length > 0) {
+          setTeamHeader(headerSnapshot.documents[0].title);
+        }
+
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = bodySnapshot.documents.map((doc) => ({
+            img: doc.image,
+            name: doc.name,
+            designation: doc.designation,
+          }));
+          setTeamData(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching Team data:", error);
+      }
+    };
+
+    fetchData();
+    fetchAboutUsData();
+    fetchServiceData();
+    fetchTeamData();
+  }, []);
   return (
     <div style={props.style}>
       {/* Header Start */}
@@ -216,8 +204,10 @@ const HomeStartupPage = (props) => {
       <StartupPageBannerSlider />
 
       {/* Three Cards on Hero Section Start */}
+      
       {/* <section className="bg-cover bg-center pb-[100px] lg:pb-[10px] md:py-[110px] sm:py-[50px] startup-iconwithtext" > */}
       {/* <Container> */}
+      {/* Three Cards on Hero Section Start */}
       <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
         <Overlap className="md:mt-0">
           <Row className="justify-center">
@@ -226,12 +216,13 @@ const HomeStartupPage = (props) => {
                 grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
                 className="rounded-[4px] flex "
                 theme="icon-with-text-11"
-                data={iconWithTextData}
+                data={informationCards}
               />
             </Col>
           </Row>
         </Overlap>
       </div>
+      {/* Three Cards on Hero Section End */}
       {/* </Container> */}
       {/* </section> */}
       {/* Section End */}
@@ -260,155 +251,106 @@ const HomeStartupPage = (props) => {
       {/* Lazy Load HTML */}
       <InViewPort>
         {/* About us */}
-        <section
-          className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]"
-          style={{
-            backgroundImage: "url(/assets/img/webp/home-decor-bg-img-02.webp)",
-          }}
-        >
-          <Container>
-            <Row className="justify-center items-center">
-              <Col
-                lg={6}
-                md={10}
-                className="relative mb-[20px] md:mb-32 sm:mb-40 xs:mb-0"
-              >
-                <div className="relative">
-                  <Parallax className="lg-no-parallax w-[70%] mb-16" speed={0}>
-                    {" "}
-                    <img
-                      alt=""
-                      src="https://via.placeholder.com/700x1027"
-                      className="w-full"
-                      width="385.34"
-                      height="565.34"
-                    />{" "}
-                  </Parallax>
-                  <Parallax
-                    className="lg-no-parallax flex justify-center items-center w-[55%] bg-no-repeat absolute bottom-0 right-[15px] lg:!ml-auto lg:!top-[145px]"
-                    speed={20}
-                  >
-                    <img
-                      alt=""
-                      src="https://via.placeholder.com/317x477"
-                      width="317"
-                      height="477"
-                    />
-                  </Parallax>
+        {/* About Us Section Start */}
+      <section
+        className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]"
+        style={{
+          backgroundImage: "url(/assets/img/webp/home-decor-bg-img-02.webp)",
+        }}
+      >
+        <Container>
+          <Row className="justify-center items-center">
+            <Col
+              lg={6}
+              md={10}
+              className="relative mb-[20px] md:mb-32 sm:mb-40 xs:mb-0"
+            >
+              <div className="relative">
+                <Parallax className="lg-no-parallax w-[70%] mb-16" speed={0}>
+                  <img
+                    alt=""
+                    src={aboutUs.image}
+                    className="w-full"
+                    width="385.34"
+                    height="565.34"
+                  />
+                </Parallax>
+              </div>
+            </Col>
+            <Col lg={{ span: 5, offset: 1 }} md={10}>
+              <div className="font-serif text-md font-medium mb-[30px] flex">
+                <span className="w-[40px] h-[1px] bg-basecolor opacity-70 self-center mr-[20px] shrink-0"></span>
+                <div className="grow-[1]">
+                  <span className="text-basecolor uppercase">About Us</span>
                 </div>
-              </Col>
-              <Col lg={{ span: 5, offset: 1 }} md={10}>
-                <div className="font-serif text-md font-medium mb-[30px] flex">
-                  <span className="w-[40px] h-[1px] bg-basecolor opacity-70 self-center mr-[20px] shrink-0"></span>
-                  <div className="grow-[1]">
-                    {" "}
-                    <span className="text-basecolor uppercase">
-                      About Us
-                    </span>{" "}
-                  </div>
-                </div>
-                <h1 className="heading-4 font-serif text-darkgray font-semibold w-[85%] mb-[35px] lg:w-full sm:mb-[25px]">
-                  Liebe Eltern, Kinder und Jugendliche!
-                </h1>
-                <p className="mb-[25px] w-[80%] lg:w-full">
-                  Wir freuen uns, Sie auf der Internetseite der Kinderarztpraxis
-                  kunterbunt Waiblingen zu begrüßen. Für uns als Fachärzte für
-                  Kinder- und Jugendmedizin steht die körperliche und geistige
-                  Entwicklung Ihres Kindes vom Säugling bis zum Jugendlichen im
-                  Mittelpunkt unserer Arbeit. Dabei ist uns der einfühlsame und
-                  verantwortungsbewusste Umgang mit unseren kleinen und großen
-                  Patienten besonders wichtig. Schwerpunkt unserer Praxis ist
-                  die hausärztliche Versorgung und ganzheitliche Begleitung von
-                  Kindern. Wir versorgen alle akuten und chronischen
-                  Erkrankungen, wie z.B. Asthma, Allergien oder ADHS und haben
-                  dabei auch psychosomatische Beschwerden im Blick. Wir sind eng
-                  vernetzt mit den Kliniken und Spezialisten in der Region und
-                  stimmen mit Ihnen die Behandlung und Versorgung im Sinne Ihres
-                  Kindes ab. Wir freuen uns, Sie und Ihre Familie kennen zu
-                  lernen!
-                </p>
-                <ScrollTo
-                  href="#"
-                  to="specialization"
-                  offset={0}
-                  delay={0}
-                  spy={true}
-                  smooth={true}
-                  duration={800}
-                ></ScrollTo>
-              </Col>
-            </Row>
-          </Container>
-        </section>
+              </div>
+              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[85%] mb-[35px] lg:w-full sm:mb-[25px]">
+                {aboutUs.title}
+              </h1>
+              <p className="mb-[25px] w-[80%] lg:w-full">
+                {aboutUs.description}
+              </p>
+              <ScrollTo
+                href="#"
+                to="specialization"
+                offset={0}
+                delay={0}
+                spy={true}
+                smooth={true}
+                duration={800}
+              ></ScrollTo>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      {/* About Us Section End */}
+
 
         {/* Services */}
 
-        {/* Section Start */}
-        <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-          <Container>
-            <Row>
-              <Col className="mb-[9%]">
-                <h6 className="font-serif text-[#000000] text-center font-medium mb-[25px] lg:mb-[15px]">
-                  Leistungen
-                </h6>
+        {/* Services Section Start */}
+      <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[9%]">
+              <h6 className="font-serif text-[#000000] text-center font-medium mb-[25px] lg:mb-[15px]">
+                {serviceHeader}
+              </h6>
+            </Col>
+          </Row>
+          <div className="row row-cols-lg-4 row-cols-sm-2 row-cols-1 items-center md:mt-0 gap-y-[40px]">
+            {serviceData.map((service, index) => (
+              <Col key={index}>
+                <m.div
+                  className="flex items-center"
+                  {...{ ...fadeIn, transition: { delay: index * 0.2 } }}
+                >
+                  <h6 className="mr-[25px] font-serif text-basecolor mb-0">
+                    {index + 1}
+                  </h6>
+                  <div className="flex-1 font-serif font-medium text-md text-spanishgray uppercase inline-block">
+                    <span className="w-[90%] block xs:w-[70%]">
+                      {service.title}
+                    </span>
+                  </div>
+                </m.div>
               </Col>
-            </Row>
-            <div className="row row-cols-lg-4 row-cols-sm-2 row-cols-1 items-center md:mt-0 gap-y-[40px]">
-              {serviceData5.map((service, index) => (
-                <Col key={index}>
-                  <m.div
-                    className="flex items-center"
-                    {...{ ...fadeIn, transition: { delay: index * 0.2 } }}
-                  >
-                    <h6 className="mr-[25px] font-serif text-basecolor mb-0">
-                      {index + 1}
-                    </h6>
-                    <div className="flex-1 font-serif font-medium text-md text-spanishgray uppercase inline-block">
-                      <span className="w-[90%] block xs:w-[70%]">
-                        {service.title}
-                      </span>
-                    </div>
-                  </m.div>
-                </Col>
-              ))}
-            </div>
-          </Container>
-        </section>
+            ))}
+          </div>
+        </Container>
+      </section>
+      {/* Services Section End */}
 
-        {/* Section End */}
-        {/* <m.section
-          className=" border-t py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]"
-          {...fadeIn}
-        >
-          <Container>
-            <Row className="justify-center">
-              <Col md={12} className="text-center mb-[7%]">
-                <h6 className="font-serif text-darkgray font-medium">
-                  LEISTUNGEN
-                </h6>
-              </Col>
-            </Row>
-            <Row className="justify-center">
-              <Col lg={12} md={11} xs={12} className="md:px-0">
-                <Services
-                  grid="row-cols-lg-3 row-cols-1 md:my-0 md:mx-auto gap-y-10 justify-center"
-                  theme="service-style-05"
-                  className="col-md-10"
-                  data={serviceData5}
-                  animation={fadeIn}
-                />
-              </Col>
-            </Row>
-          </Container>
-        </m.section> */}
+       
 
-        {/* Team Section */}
-
+        {/* Team Section Start */}
         <section className="py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
           <Container>
             <Row>
               <Col md={12} className="text-center mb-[7%]">
-                <h5 className="font-serif text-darkgray font-medium">Team</h5>
+                <h5 className="font-serif text-darkgray font-medium">
+                  {teamHeader}
+                </h5>
               </Col>
             </Row>
             <Team
@@ -421,7 +363,7 @@ const HomeStartupPage = (props) => {
                 "#f767a6cc",
                 "#ff798ecc",
               ]}
-              data={TeamData04}
+              data={teamData}
               animation={fadeIn}
               carousel={true}
               carouselOption={{
@@ -455,6 +397,9 @@ const HomeStartupPage = (props) => {
             </Row>
           </Container>
         </section>
+
+      {/* Team Section End */}
+
 
         {/* Form Section                     */}
         {/* Section Start */}
