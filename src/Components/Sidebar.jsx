@@ -66,6 +66,62 @@ const Sidebar = (props) => {
                   </ul>
                 </li>
                 
+                {/* Hero Section */}
+                <li className="submenu">
+                  <Link
+                    to="#"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Hero Section</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="menu-items4">
+                    <li>
+                      <Link
+                        className={
+                          props?.activeClassName === "heroSection"
+                            ? "active"
+                            : ""
+                        }
+                        to="/landingpage/herosection"
+                      >
+                        Navbar
+                      </Link>
+                    </li>
+
+                    {/* Carousels */}
+                    <li>
+                      <Link
+                        className={
+                          props?.activeClassName === "childEmergency"
+                            ? "active"
+                            : ""
+                        }
+                        to="/herocarousel"
+                      >
+                        Carousels
+                      </Link>
+                    </li>
+
+                    {/* Information Cards */}
+                    <li>
+                      <Link
+                        className={
+                          props?.activeClassName === "courseContent"
+                            ? "active"
+                            : ""
+                        }
+                        to="/landingpage/coursecontentheading"
+                      >
+                      Information Cards
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
                 
 
                 
