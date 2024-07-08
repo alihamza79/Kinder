@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import db from "../../../appwrite/Services/dbServices";
+import storageServices from "../../../appwrite/Services/storageServices";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -32,10 +33,18 @@ const AboutList = () => {
     try {
       setLoading(true);
       const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
-      }));
+      const data = await Promise.all(
+        querySnapshot.documents.map(async (doc) => {
+          const imageUrl = await storageServices.about.getFileView(doc.image);
+          return {
+            id: doc.$id,
+            title: doc.title,
+            description: doc.description,
+            imageId: doc.image,
+            imageUrl: imageUrl.href,
+          };
+        })
+      );
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -53,8 +62,8 @@ const AboutList = () => {
     },
     {
       title: "Image",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
       render: (text) => (
         <img
           src={text}
@@ -108,8 +117,6 @@ const AboutList = () => {
     },
   ];
 
-  
-
   return (
     <>
       <Header />
@@ -122,7 +129,6 @@ const AboutList = () => {
         <div className="page-wrapper">
           <div className="content">
             {/* Page Navbar */}
-            
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">
@@ -151,7 +157,6 @@ const AboutList = () => {
                         <div className="col">
                           <div className="doctor-table-blk">
                             <h3>About Us</h3>
-                            
                           </div>
                         </div>
                       </div>

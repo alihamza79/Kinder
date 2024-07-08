@@ -16,8 +16,10 @@ const EditAboutItem = () => {
     const [formData, setFormData] = useState({
         title: "",
         description: "",
-        image: "",
-        newImage: "", // State to handle new image URL
+        imageId: "",
+        newImageFile: null, // State to handle new image file
+        newImageId: "", // State to handle new image ID
+        newImageURL: "", // State to handle new image URL
     });
 
     useEffect(() => {
@@ -25,9 +27,12 @@ const EditAboutItem = () => {
             try {
                 const documentSnapshot = await db.about.get(id);
                 if (documentSnapshot) {
+                    const imageUrl = await storageServices.about.getFileView(documentSnapshot.image);
                     setFormData({
                         ...documentSnapshot,
-                        newImage: documentSnapshot.image,
+                        imageId: documentSnapshot.image,
+                        newImageId: documentSnapshot.image,
+                        newImageURL: imageUrl.href,
                     });
                 } else {
                     console.error('Document does not exist');
@@ -48,21 +53,15 @@ const EditAboutItem = () => {
         }));
     };
 
-    const handleImageLoad = async (event) => {
+    const handleImageLoad = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const toastId = toast.loading("Uploading image...");
-            try {
-                const uploadedImage = await storageServices.about.createFile(file);
-                const uploadedImageURL = storageServices.about.getFileView(uploadedImage.$id);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    newImage: uploadedImageURL,
-                }));
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-            } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-            }
+            const newImageURL = URL.createObjectURL(file);
+            setFormData((prevData) => ({
+                ...prevData,
+                newImageFile: file,
+                newImageURL,
+            }));
         }
     };
 
@@ -70,19 +69,46 @@ const EditAboutItem = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Delete old image if a new one is uploaded
-            if (formData.newImage && formData.image !== formData.newImage) {
-                await storageServices.about.deleteFile(formData.image);
+            let newImageId = formData.imageId;
+
+            // Upload the new image if a new file is selected
+            if (formData.newImageFile) {
+                const toastId = toast.loading("Uploading image...");
+                try {
+                    const uploadedImage = await storageServices.about.createFile(formData.newImageFile);
+                    newImageId = uploadedImage.$id;
+                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                } catch (error) {
+                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    throw error;
+                }
             }
+
+            // Delete the old image if a new one was uploaded
+            if (formData.newImageFile && formData.imageId !== newImageId) {
+                try {
+                    console.log("Image id to be deleted: ",formData.imageId)
+                    await storageServices.about.deleteFile(formData.imageId);
+                } catch (error) {
+                    // if (error.response && error.response.status === 404) {
+                        toast.warn("Old image not found in storage.", { autoClose: 2000 });
+                    // } else {
+                    //     throw error;
+                    // }
+                }
+            }
+
             await db.about.update(id, {
                 title: formData.title,
                 description: formData.description,
-                image: formData.newImage || formData.image,
+                image: newImageId,
             });
+
             sessionStorage.setItem('updateAboutItemSuccess', 'true'); // Set update flag
             navigate("/aboutlist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -161,7 +187,7 @@ const EditAboutItem = () => {
                                                 </div>
                                             </div>
                                             {/* Image Upload Component */}
-                                            <ImageUpload id="image" src={formData.newImage} loadFile={handleImageLoad} imageName="Image" />
+                                            <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
