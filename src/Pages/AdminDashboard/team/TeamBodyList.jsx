@@ -37,10 +37,30 @@ const TeamBodyList = () => {
     try {
       setLoading(true);
       const querySnapshot = await db.teamBody.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
-      }));
+      const data = await Promise.all(
+        querySnapshot.documents.map(async (doc) => {
+          let imageUrl = '';
+          try {
+            const imageView = await storageServices.kinder.getFileView(doc.image);
+            const response = await fetch(imageView.href);
+            if (response.status === 200) {
+              imageUrl = imageView.href;
+            } else {
+              console.warn("Image not found in storage.");
+            }
+          } catch (error) {
+            console.error("Error fetching image URL:", error);
+          }
+
+          return {
+            id: doc.$id,
+            name: doc.name,
+            designation: doc.designation,
+            imageId: doc.image,
+            imageUrl: imageUrl,
+          };
+        })
+      );
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -52,9 +72,17 @@ const TeamBodyList = () => {
   const handleDelete = async () => {
     try {
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
-      if (selectedRecord && selectedRecord.image) {
+      if (selectedRecord && selectedRecord.imageId) {
         // Delete image from Appwrite storage if it exists
-        await storageServices.kinder.deleteFile(selectedRecord.image);
+        try {
+          await storageServices.kinder.deleteFile(selectedRecord.imageId);
+        } catch (error) {
+          if (error.message.includes("not be found")) {
+            console.warn("Image not found in storage.");
+          } else {
+            throw error;
+          }
+        }
       }
       await db.teamBody.delete(selectedRecordId); // Delete the document from Appwrite
       toast.success("Team member deleted successfully!", { autoClose: 2000 });
@@ -84,8 +112,8 @@ const TeamBodyList = () => {
     },
     {
       title: "Image",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
       render: (text) => (
         <img
           src={text}

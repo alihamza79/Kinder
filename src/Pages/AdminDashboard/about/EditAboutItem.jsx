@@ -27,7 +27,24 @@ const EditAboutItem = () => {
             try {
                 const documentSnapshot = await db.about.get(id);
                 if (documentSnapshot) {
-                    const imageUrl = await storageServices.about.getFileView(documentSnapshot.image);
+                    const imageUrl = "";
+                    try {
+                        const imageView = await storageServices.about.getFileView(documentSnapshot.image);
+                        const response = await fetch(imageView.href);
+                        if (response.status === 200) {
+                            imageUrl = imageView.href;
+                        } else if (response.status === 404) {
+                            console.warn("Image not found in storage.");
+                        } else {
+                            throw new Error("Error fetching image");
+                        }
+                    } catch (error) {
+                        if (error.message.includes("not be found")) {
+                            console.warn("Image not found in storage.");
+                        } else {
+                            throw error;
+                        }
+                    }
                     setFormData({
                         ...documentSnapshot,
                         imageId: documentSnapshot.image,
@@ -188,7 +205,7 @@ const EditAboutItem = () => {
                                             </div>
                                             {/* Image Upload Component */}
                                             <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
-                                            {/* Submit/Cancel Button */}
+                                           {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button

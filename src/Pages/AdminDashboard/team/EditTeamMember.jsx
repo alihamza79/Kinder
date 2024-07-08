@@ -16,8 +16,10 @@ const EditTeamMember = () => {
     const [formData, setFormData] = useState({
         name: "",
         designation: "",
-        image: "",
-        newImage: "", // State to handle new image URL
+        imageId: "",
+        newImageFile: null, // State to handle new image file
+        newImageId: "", // State to handle new image ID
+        newImageURL: "", // State to handle new image URL
     });
 
     useEffect(() => {
@@ -25,9 +27,29 @@ const EditTeamMember = () => {
             try {
                 const documentSnapshot = await db.teamBody.get(id);
                 if (documentSnapshot) {
+                    let imageUrl = "";
+                    try {
+                        const imageView = await storageServices.kinder.getFileView(documentSnapshot.image);
+                        const response = await fetch(imageView.href);
+                        if (response.status === 200) {
+                            imageUrl = imageView.href;
+                        } else if (response.status === 404) {
+                            console.warn("Image not found in storage.");
+                        } else {
+                            throw new Error("Error fetching image");
+                        }
+                    } catch (error) {
+                        if (error.message.includes("not be found")) {
+                            console.warn("Image not found in storage.");
+                        } else {
+                            throw error;
+                        }
+                    }
                     setFormData({
                         ...documentSnapshot,
-                        newImage: documentSnapshot.image,
+                        imageId: documentSnapshot.image,
+                        newImageId: documentSnapshot.image,
+                        newImageURL: imageUrl,
                     });
                 } else {
                     console.error('Document does not exist');
@@ -48,21 +70,15 @@ const EditTeamMember = () => {
         }));
     };
 
-    const handleImageLoad = async (event) => {
+    const handleImageLoad = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const toastId = toast.loading("Uploading image...");
-            try {
-                const uploadedImage = await storageServices.kinder.createFile(file);
-                const uploadedImageURL = storageServices.kinder.getFileView(uploadedImage.$id);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    newImage: uploadedImageURL,
-                }));
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-            } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-            }
+            const newImageURL = URL.createObjectURL(file);
+            setFormData((prevData) => ({
+                ...prevData,
+                newImageFile: file,
+                newImageURL,
+            }));
         }
     };
 
@@ -70,19 +86,42 @@ const EditTeamMember = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Delete old image if a new one is uploaded
-            if (formData.newImage && formData.image !== formData.newImage) {
-                await storageServices.kinder.deleteFile(formData.image);
+            let newImageId = formData.imageId;
+
+            // Upload the new image if a new file is selected
+            if (formData.newImageFile) {
+                const toastId = toast.loading("Uploading image...");
+                try {
+                    const uploadedImage = await storageServices.kinder.createFile(formData.newImageFile);
+                    newImageId = uploadedImage.$id;
+                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                } catch (error) {
+                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    throw error;
+                }
             }
+
+            // Delete the old image if a new one was uploaded
+            if (formData.newImageFile && formData.imageId !== newImageId) {
+                try {
+                    console.log("Image id to be deleted: ", formData.imageId);
+                    await storageServices.kinder.deleteFile(formData.imageId);
+                } catch (error) {
+                    console.warn("Old image not found in storage.");
+                }
+            }
+
             await db.teamBody.update(id, {
                 name: formData.name,
                 designation: formData.designation,
-                image: formData.newImage || formData.image,
+                image: newImageId,
             });
+
             sessionStorage.setItem('updateTeamBodySuccess', 'true'); // Set update flag
             navigate("/teamlist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            console.log(error);
         } finally {
             setLoading(false);
         }
@@ -161,7 +200,7 @@ const EditTeamMember = () => {
                                                 </div>
                                             </div>
                                             {/* Image Upload Component */}
-                                            <ImageUpload id="image" src={formData.newImage} loadFile={handleImageLoad} imageName="Image" />
+                                            <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">

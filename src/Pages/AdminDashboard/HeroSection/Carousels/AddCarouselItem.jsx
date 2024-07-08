@@ -7,31 +7,21 @@ import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite da
 import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
+import ImageUpload from "../../../../Components/ImageUpload"; // Import the ImageUpload component
 
 const AddCarouselItem = () => {
     const navigate = useNavigate();
     const [text, setText] = useState('');
-    const [image, setImage] = useState(null);
-    const [imageId, setImageId] = useState("");
+    const [imageFile, setImageFile] = useState(null);
+    const [imageURL, setImageURL] = useState("");
     const [loading, setLoading] = useState(false);
 
-    const loadFile = async (event) => {
+    const handleImageLoad = (event) => {
         const file = event.target.files[0];
-
         if (file) {
-            const toastId = toast.loading("Uploading image...");
-            try {
-                setLoading(true);
-                const uploadedImage = await storageServices.heroCarousel.createFile(file);
-                setImageId(uploadedImage.$id);
-                setImage(file);
-                // console.log(uploadedImage.$id);
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-            } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-            } finally {
-                setLoading(false);
-            }
+            const newImageURL = URL.createObjectURL(file);
+            setImageFile(file);
+            setImageURL(newImageURL);
         }
     };
 
@@ -40,10 +30,24 @@ const AddCarouselItem = () => {
         setLoading(true);
 
         try {
+            let uploadedImageId = "";
+
+            if (imageFile) {
+                const toastId = toast.loading("Uploading image...");
+                try {
+                    const uploadedImage = await storageServices.heroCarousel.createFile(imageFile);
+                    uploadedImageId = uploadedImage.$id;
+                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                } catch (error) {
+                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    throw error;
+                }
+            }
+
             // Store data in Appwrite database
             await db.heroCarousel.create({
                 text: text,
-                image: imageId,
+                image: uploadedImageId,
             });
 
             sessionStorage.setItem('addCarouselItemSuccess', 'true'); // Set update flag
@@ -122,63 +126,8 @@ const AddCarouselItem = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Image Input */}
-                                            <div className="col-10 col-md-2 col-xl-4">
-                                                <div className="form-group">
-                                                    <label className={image ? "" : "local-top"}>
-                                                        Image <span className="login-danger">*</span>
-                                                    </label>
-                                                    <div className={image ? "upload-files-avator" : "upload-files-avator settings-btn"} style={{ position: 'relative' }}>
-                                                        {/* Display the uploaded image */}
-                                                        {image && (
-                                                            <div className="uploaded-image">
-                                                                <img
-                                                                    src={URL.createObjectURL(image)}
-                                                                    alt="Uploaded Image"
-                                                                    style={{
-                                                                        width: '180px',
-                                                                        height: '180px',
-                                                                        objectFit: 'cover',
-                                                                    }}
-                                                                />
-                                                                <div className="edit-icon" style={{ position: 'absolute', backgroundColor: 'white', left: 170, top: 160 }}>
-                                                                    {/* Input for choosing a new image */}
-                                                                    <input
-                                                                        type="file"
-                                                                        accept="image/*"
-                                                                        name="carouselImage"
-                                                                        id="file"
-                                                                        onChange={loadFile}
-                                                                        className="hide-input"
-                                                                        style={{ display: 'none' }}
-                                                                        disabled={loading}
-                                                                    />
-                                                                    <label htmlFor="file" className="upload" style={{ cursor: 'pointer' }}>
-                                                                        <FeatherIcon icon="edit" />
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                        {/* Input for choosing a new image */}
-                                                        {!image && (
-                                                            <div>
-                                                                <input
-                                                                    type="file"
-                                                                    accept="image/*"
-                                                                    name="carouselImage"
-                                                                    id="file"
-                                                                    onChange={loadFile}
-                                                                    className="hide-input"
-                                                                    disabled={loading}
-                                                                />
-                                                                <label htmlFor="file" className="upload" style={{ cursor: 'pointer' }}>
-                                                                    Choose File
-                                                                </label>
-                                                            </div>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            {/* Image Upload Component */}
+                                            <ImageUpload id="image" src={imageURL} loadFile={handleImageLoad} imageName="Image" />
 
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
