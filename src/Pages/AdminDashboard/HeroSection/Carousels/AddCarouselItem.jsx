@@ -111,7 +111,7 @@ const AddCarouselItem = () => {
                                             </div>
 
                                             {/* Text */}
-                                            <div className="col-12 col-md-6 col-xl-6">
+                                            <div className="col-12 col-md-12 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>
                                                         Text <span className="login-danger">*</span>

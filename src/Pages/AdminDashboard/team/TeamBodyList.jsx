@@ -16,6 +16,7 @@ const TeamBodyList = () => {
   const [loading, setLoading] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -70,6 +71,7 @@ const TeamBodyList = () => {
 
   const handleDelete = async () => {
     try {
+      setDeleting(true);
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.imageId) {
         // Delete image from Appwrite storage if it exists
@@ -90,6 +92,8 @@ const TeamBodyList = () => {
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document and image:", error);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -308,6 +312,7 @@ const TeamBodyList = () => {
                     type="button"
                     className="btn btn-danger pt-1"
                     onClick={handleDelete}
+                    disabled={deleting}
                   >
                     Delete
                   </Button>

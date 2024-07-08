@@ -49,7 +49,7 @@ const Sidebar = (props) => {
               onMouseOver={expandMenuOpen}
             >
               <ul>
-                <li className="submenu" >
+                {/* <li className="submenu" >
                   <Link to="#" id="menu-item" onClick={(e) => {
 
                     handleClick(e, "menu-item", "menu-items")
@@ -64,7 +64,7 @@ const Sidebar = (props) => {
                       <Link className={props?.activeClassName === 'admin-dashboard' ? 'active' : ''} to="/admin-dashboard">Admin Dashboard</Link>
                     </li>
                   </ul>
-                </li>
+                </li> */}
                 
                 {/* Hero Section */}
                 <li className="submenu">
