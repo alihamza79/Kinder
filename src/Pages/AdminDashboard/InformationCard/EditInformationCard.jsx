@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -6,15 +6,17 @@ import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import db from "../../../appwrite/Services/dbServices";
+import TextEditor from "./TextEditor";
 
 const EditInformationCard = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams(); 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         Title: "",
         Description: "",
     });
+    const editorRef = useRef(null);
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -25,6 +27,7 @@ const EditInformationCard = () => {
                         Title: documentSnapshot.Title,
                         Description: documentSnapshot.Description,
                     });
+                    editorRef.current.setEditorContent(documentSnapshot.Description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -52,7 +55,7 @@ const EditInformationCard = () => {
                 Title: formData.Title,
                 Description: formData.Description,
             });
-            sessionStorage.setItem('updateInformationCardSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('updateInformationCardSuccess', 'true'); 
             navigate("/informationcard");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
@@ -107,7 +110,6 @@ const EditInformationCard = () => {
                                                     <h4>Edit Information Card</h4>
                                                 </div>
                                             </div>
-                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>Title <span className="login-danger">*</span></label>
@@ -120,20 +122,15 @@ const EditInformationCard = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
+                                            <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>Description <span className="login-danger">*</span></label>
-                                                    <textarea
-                                                        className="form-control"
-                                                        rows="4"
-                                                        name="Description"
-                                                        value={formData.Description}
-                                                        onChange={handleChange}
+                                                    <TextEditor 
+                                                        ref={editorRef} 
+                                                        onChange={(data) => setFormData(prevData => ({ ...prevData, Description: data }))} 
                                                     />
                                                 </div>
                                             </div>
-                                            {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button

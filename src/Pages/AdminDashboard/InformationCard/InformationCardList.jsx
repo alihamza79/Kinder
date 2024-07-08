@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
-import Header from "../../../Components/Header";
-import Sidebar from "../../../Components/Sidebar";
+import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "antd";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import FeatherIcon from "feather-icons-react";
 import db from "../../../appwrite/Services/dbServices";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 
 const InformationCardList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -23,11 +22,11 @@ const InformationCardList = () => {
     const addSuccess = sessionStorage.getItem("addInformationCardSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateInformationCardSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateInformationCardSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addInformationCardSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addInformationCardSuccess");
     }
     fetchData();
   }, [location]);
@@ -35,18 +34,17 @@ const InformationCardList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.informationCard.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await db.informationCard.list();
       let data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
       }));
 
       if (data.length === 0) {
-        // Add three dummy documents if the collection is empty
         const dummyData = [
-          { Title: "Dummy Title 1", Description: "Dummy Description 1" },
-          { Title: "Dummy Title 2", Description: "Dummy Description 2" },
-          { Title: "Dummy Title 3", Description: "Dummy Description 3" },
+          { Title: "Dummy Title 1", Description: "<p>Dummy Description 1</p>" },
+          { Title: "Dummy Title 2", Description: "<p>Dummy Description 2</p>" },
+          { Title: "Dummy Title 3", Description: "<p>Dummy Description 3</p>" },
         ];
 
         for (const dummy of dummyData) {
@@ -65,9 +63,9 @@ const InformationCardList = () => {
 
   const handleDelete = async () => {
     try {
-      await db.informationCard.delete(selectedRecordId); // Delete the document from Appwrite
+      await db.informationCard.delete(selectedRecordId);
       toast.success("Information card deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
@@ -101,9 +99,10 @@ const InformationCardList = () => {
       dataIndex: "Description",
       key: "Description",
       render: (text) => (
-        <div className={text && text.length > 20 ? "multiline-text" : ""}>
-          {text}
-        </div>
+        <div
+          className="multiline-text"
+          dangerouslySetInnerHTML={{ __html: text.substring(0, 20) + (text.length > 20 ? "..." : "") }}
+        />
       ),
     },
     {
@@ -143,7 +142,7 @@ const InformationCardList = () => {
   ];
 
   const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
+    fetchData();
   };
 
   return (
@@ -154,82 +153,78 @@ const InformationCardList = () => {
         id1="menu-items4"
         activeClassName="informationcard"
       />
-      <>
-        <div className="page-wrapper">
-          <div className="content">
-            {/* Page Navbar*/}
-            
-            <div className="page-header">
-              <div className="row">
-                <div className="col-sm-12">
-                  <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="#">Landing Page</Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <i className="feather-chevron-right">
-                        <FeatherIcon icon="chevron-right" />
-                      </i>
-                    </li>
-                    <li className="breadcrumb-item active">
-                      Information Card
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card card-table show-entire">
-                  <div className="card-body">
-                    <div className="page-table-header mb-2">
-                      <div className="row align-items-center">
-                        <div className="col">
-                          <div className="doctor-table-blk">
-                            <h3>Information Cards</h3>
-                            <div className="doctor-search-blk">
-                              <div className="add-group">
-                                <Link
-                                  to="/informationcard/addinformationcard"
-                                  className="btn btn-primary add-pluss ms-2"
-                                >
-                                  <img src={plusicon} alt="#" />
-                                </Link>
-                                <Link
-                                  to="#"
-                                  className="btn btn-primary doctor-refresh ms-2"
-                                  onClick={handleRefresh}
-                                >
-                                  <img src={refreshicon} alt="#" />
-                                </Link>
-                              </div>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="#">Landing Page</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <i className="feather-chevron-right">
+                      <FeatherIcon icon="chevron-right" />
+                    </i>
+                  </li>
+                  <li className="breadcrumb-item active">
+                    Information Card
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="card card-table show-entire">
+                <div className="card-body">
+                  <div className="page-table-header mb-2">
+                    <div className="row align-items-center">
+                      <div className="col">
+                        <div className="doctor-table-blk">
+                          <h3>Information Cards</h3>
+                          <div className="doctor-search-blk">
+                            <div className="add-group">
+                              <Link
+                                to="/informationcard/addinformationcard"
+                                className="btn btn-primary add-pluss ms-2"
+                              >
+                                <img src={plusicon} alt="#" />
+                              </Link>
+                              <Link
+                                to="#"
+                                className="btn btn-primary doctor-refresh ms-2"
+                                onClick={handleRefresh}
+                              >
+                                <img src={refreshicon} alt="#" />
+                              </Link>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="table-responsive doctor-list">
-                      <Table
-                        loading={loading}
-                        pagination={{
-                          total: dataSource.length,
-                          showTotal: (total, range) =>
-                            `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                          onShowSizeChange: onShowSizeChange,
-                          itemRender: itemRender,
-                        }}
-                        columns={columns}
-                        dataSource={dataSource}
-                        rowKey={(record) => record.id}
-                      />
-                    </div>
+                  </div>
+                  <div className="table-responsive doctor-list">
+                    <Table
+                      loading={loading}
+                      pagination={{
+                        total: dataSource.length,
+                        showTotal: (total, range) =>
+                          `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                        onShowSizeChange: onShowSizeChange,
+                        itemRender: itemRender,
+                      }}
+                      columns={columns}
+                      dataSource={dataSource}
+                      rowKey={(record) => record.id}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
+      </div>
       {deleteModalVisible && (
         <div
           className={

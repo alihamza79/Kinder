@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
 import db from "../../../appwrite/Services/dbServices";
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { toast, ToastContainer } from "react-toastify"; 
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
+import TextEditor from "./TextEditor";
 
 const AddInformationCard = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [loading, setLoading] = useState(false);
+    const editorRef = useRef(null);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
 
         try {
-            // Store data in Appwrite database
             await db.informationCard.create({
                 Title: title,
                 Description: description,
             });
 
-            sessionStorage.setItem('addInformationCardSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('addInformationCardSuccess', 'true'); 
             navigate("/informationcard");
 
         } catch (error) {
@@ -45,7 +46,6 @@ const AddInformationCard = () => {
             />
             <div className="page-wrapper">
                 <div className="content">
-                    {/* Page Header */}
                     <div className="page-header">
                         <div className="row">
                             <div className="col-sm-12">
@@ -63,7 +63,6 @@ const AddInformationCard = () => {
                             </div>
                         </div>
                     </div>
-                    {/* /Page Header */}
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
@@ -75,8 +74,6 @@ const AddInformationCard = () => {
                                                     <h4>Add Information Card</h4>
                                                 </div>
                                             </div>
-
-                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>
@@ -91,24 +88,17 @@ const AddInformationCard = () => {
                                                     />
                                                 </div>
                                             </div>
-
-                                            {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
+                                            <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>
                                                         Description <span className="login-danger">*</span>
                                                     </label>
-                                                    <textarea
-                                                        className="form-control"
-                                                        rows="4"
-                                                        value={description}
-                                                        onChange={(e) => setDescription(e.target.value)}
-                                                        disabled={loading}
+                                                    <TextEditor 
+                                                        ref={editorRef} 
+                                                        onChange={(data) => setDescription(data)} 
                                                     />
                                                 </div>
                                             </div>
-
-                                            {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button
