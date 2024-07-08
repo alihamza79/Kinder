@@ -40,7 +40,12 @@ const LoadStyles = () => {
         "/teamheader/editteamheader/:id",
         "/teamlist",
         "/teamlist/editteammember/:id",
-        "/teamlist/addteammember"
+        "/teamlist/addteammember",
+        "/linkslist",
+        "/linkslist/editlink/:id" ,
+        "/linkslist/addlink",
+        "/linkheader",
+        "/linkheader/editlinkheader/:id"
       ];
 
       try {

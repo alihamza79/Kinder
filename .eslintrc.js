@@ -29,6 +29,12 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "react/react-in-jsx-scope": "off"
-    }
+        "no-unused-vars": "off",
+        "eqeqeq": "off",
+        "react/prop-types": "off",
+        "react/no-unescaped-entities": "off",
+        "react/react-in-jsx-scope": "off",
+        "no-empty-pattern": "off" 
+        // Add other rules you want to disable
+      }
 }

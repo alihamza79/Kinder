@@ -110,6 +110,8 @@ const HomeStartupPage = (props) => {
   const [serviceData, setServiceData] = useState(initialServiceData);
   const [teamHeader, setTeamHeader] = useState("Team");
   const [teamData, setTeamData] = useState(TeamData04);
+  const [linksHeader, setLinksHeader] = useState("Links");
+  const [linksData, setLinksData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -188,11 +190,34 @@ const HomeStartupPage = (props) => {
       }
     };
 
+    const fetchLinksData = async () => {
+      try {
+        const headerSnapshot = await db.linkHeader.list();
+        const bodySnapshot = await db.links.list();
+
+        if (headerSnapshot.documents.length > 0) {
+          setLinksHeader(headerSnapshot.documents[0].title);
+        }
+
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = bodySnapshot.documents.map((doc) => ({
+            title: doc.title,
+            content: doc.description,
+          }));
+          setLinksData(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching Links data:", error);
+      }
+    };
+
     fetchData();
     fetchAboutUsData();
     fetchServiceData();
     fetchTeamData();
+    fetchLinksData();
   }, []);
+
   return (
     <div style={props.style}>
       {/* Header Start */}
@@ -451,19 +476,13 @@ const HomeStartupPage = (props) => {
         {/* Links */}
         <section className="pt-20 switch-tabs">
           <Col className="text-center">
-            <h6 className="font-serif text-darkgray text-center font-medium mb-[5%]">
-              Links
-            </h6>
+            <h6 className="font-serif text-darkgray text-center font-medium mb-[5%]">{linksHeader}</h6>
           </Col>
           <m.section className="py-20">
             <Container>
               <Row className="justify-center">
                 <Col lg={16} md={20}>
-                  <Accordions
-                    theme="accordion-style-03"
-                    className=""
-                    animation={fadeIn}
-                  />
+                  <Accordions theme="accordion-style-03" data={linksData} animation={fadeIn} />
                 </Col>
               </Row>
             </Container>
