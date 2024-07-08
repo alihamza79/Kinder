@@ -38,7 +38,7 @@ const CarouselList = () => {
       const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
       const data = await Promise.all(
         querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await storageServices.heroCarousel.getFileView(doc.image);
+          const imageUrl = await storageServices.images.getFileView(doc.image);
           return {
             id: doc.$id,
             text: doc.text,
@@ -60,7 +60,7 @@ const CarouselList = () => {
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.imageId) {
         // Delete image from Appwrite storage if it exists
-        await storageServices.heroCarousel.deleteFile(selectedRecord.imageId);
+        await storageServices.images.deleteFile(selectedRecord.imageId);
       }
       await db.heroCarousel.delete(selectedRecordId); // Delete the document from Appwrite
       toast.success("Carousel item deleted successfully!", { autoClose: 2000 });

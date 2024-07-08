@@ -35,7 +35,7 @@ const AddCarouselItem = () => {
             if (imageFile) {
                 const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.heroCarousel.createFile(imageFile);
+                    const uploadedImage = await storageServices.images.createFile(imageFile);
                     uploadedImageId = uploadedImage.$id;
                     toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {

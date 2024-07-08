@@ -29,7 +29,7 @@ const EditTeamMember = () => {
                 if (documentSnapshot) {
                     let imageUrl = "";
                     try {
-                        const imageView = await storageServices.kinder.getFileView(documentSnapshot.image);
+                        const imageView = await storageServices.images.getFileView(documentSnapshot.image);
                         const response = await fetch(imageView.href);
                         if (response.status === 200) {
                             imageUrl = imageView.href;
@@ -92,7 +92,7 @@ const EditTeamMember = () => {
             if (formData.newImageFile) {
                 const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.kinder.createFile(formData.newImageFile);
+                    const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
                     newImageId = uploadedImage.$id;
                     toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
@@ -105,7 +105,7 @@ const EditTeamMember = () => {
             if (formData.newImageFile && formData.imageId !== newImageId) {
                 try {
                     console.log("Image id to be deleted: ", formData.imageId);
-                    await storageServices.kinder.deleteFile(formData.imageId);
+                    await storageServices.images.deleteFile(formData.imageId);
                 } catch (error) {
                     console.warn("Old image not found in storage.");
                 }

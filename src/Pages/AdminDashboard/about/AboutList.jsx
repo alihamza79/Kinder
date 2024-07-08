@@ -35,7 +35,7 @@ const AboutList = () => {
       const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
       const data = await Promise.all(
         querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await storageServices.about.getFileView(doc.image);
+          const imageUrl = await storageServices.images.getFileView(doc.image);
           return {
             id: doc.$id,
             title: doc.title,

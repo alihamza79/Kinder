@@ -28,7 +28,7 @@ const EditCarouselItem = () => {
             try {
                 const documentSnapshot = await db.heroCarousel.get(id);
                 if (documentSnapshot) {
-                    const imageUrl = await storageServices.heroCarousel.getFileView(documentSnapshot.image);
+                    const imageUrl = await storageServices.images.getFileView(documentSnapshot.image);
                     setFormData({
                         ...documentSnapshot,
                         imageId: documentSnapshot.image,
@@ -76,7 +76,7 @@ const EditCarouselItem = () => {
             if (formData.newImageFile) {
                 // const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.heroCarousel.createFile(formData.newImageFile);
+                    const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
                     newImageId = uploadedImage.$id;
                     // toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
@@ -87,7 +87,7 @@ const EditCarouselItem = () => {
 
             // Delete the old image if a new one was uploaded
             if (formData.newImageFile && formData.imageId !== newImageId) {
-                await storageServices.heroCarousel.deleteFile(formData.imageId);
+                await storageServices.images.deleteFile(formData.imageId);
             }
 
             await db.heroCarousel.update(id, {

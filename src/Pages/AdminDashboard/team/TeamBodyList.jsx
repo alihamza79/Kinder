@@ -1,16 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Table } from "antd";
-import Header from "../../../Components/Header";
-import Sidebar from "../../../Components/Sidebar";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "antd";
+import { Button, Table } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import { plusicon, refreshicon } from "../../../Components/imagepath";
-import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import Header from "../../../Components/Header";
+import { plusicon, refreshicon } from "../../../Components/imagepath";
+import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
+import Sidebar from "../../../Components/Sidebar";
 
 const TeamBodyList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -41,7 +40,7 @@ const TeamBodyList = () => {
         querySnapshot.documents.map(async (doc) => {
           let imageUrl = '';
           try {
-            const imageView = await storageServices.kinder.getFileView(doc.image);
+            const imageView = await storageServices.images.getFileView(doc.image);
             const response = await fetch(imageView.href);
             if (response.status === 200) {
               imageUrl = imageView.href;
@@ -75,7 +74,7 @@ const TeamBodyList = () => {
       if (selectedRecord && selectedRecord.imageId) {
         // Delete image from Appwrite storage if it exists
         try {
-          await storageServices.kinder.deleteFile(selectedRecord.imageId);
+          await storageServices.images.deleteFile(selectedRecord.imageId);
         } catch (error) {
           if (error.message.includes("not be found")) {
             console.warn("Image not found in storage.");
