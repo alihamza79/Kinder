@@ -12,7 +12,7 @@ const AddCarouselItem = () => {
     const navigate = useNavigate();
     const [text, setText] = useState('');
     const [image, setImage] = useState(null);
-    const [imageUrl, setImageUrl] = useState("");
+    const [imageId, setImageId] = useState("");
     const [loading, setLoading] = useState(false);
 
     const loadFile = async (event) => {
@@ -23,10 +23,9 @@ const AddCarouselItem = () => {
             try {
                 setLoading(true);
                 const uploadedImage = await storageServices.heroCarousel.createFile(file);
-                const uploadedImageURL = await storageServices.heroCarousel.getFileView(uploadedImage.$id);
-                setImageUrl(uploadedImageURL);
+                setImageId(uploadedImage.$id);
                 setImage(file);
-                console.log(uploadedImageURL);
+                // console.log(uploadedImage.$id);
                 toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
             } catch (error) {
                 toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
@@ -44,7 +43,7 @@ const AddCarouselItem = () => {
             // Store data in Appwrite database
             await db.heroCarousel.create({
                 text: text,
-                image: imageUrl,
+                image: imageId,
             });
 
             sessionStorage.setItem('addCarouselItemSuccess', 'true'); // Set update flag

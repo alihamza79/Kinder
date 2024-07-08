@@ -17,8 +17,10 @@ const EditCarouselItem = () => {
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         text: "",
-        image: "",
-        newImage: "", // State to handle new image URL
+        imageId: "",
+        newImageFile: null, // State to handle new image file
+        newImageId: "", // State to handle new image ID
+        newImageURL: "", // State to handle new image URL
     });
 
     useEffect(() => {
@@ -26,9 +28,12 @@ const EditCarouselItem = () => {
             try {
                 const documentSnapshot = await db.heroCarousel.get(id);
                 if (documentSnapshot) {
+                    const imageUrl = await storageServices.heroCarousel.getFileView(documentSnapshot.image);
                     setFormData({
                         ...documentSnapshot,
-                        newImage: documentSnapshot.image,
+                        imageId: documentSnapshot.image,
+                        newImageId: documentSnapshot.image,
+                        newImageURL: imageUrl.href,
                     });
                 } else {
                     console.error('Document does not exist');
@@ -49,21 +54,15 @@ const EditCarouselItem = () => {
         }));
     };
 
-    const handleImageLoad = async (event) => {
+    const handleImageLoad = (event) => {
         const file = event.target.files[0];
         if (file) {
-            const toastId = toast.loading("Uploading image...");
-            try {
-                const uploadedImage = await storageServices.heroCarousel.createFile(file);
-                const uploadedImageURL = storageServices.heroCarousel.getFileView(uploadedImage.$id);
-                setFormData((prevData) => ({
-                    ...prevData,
-                    newImage: uploadedImageURL,
-                }));
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-            } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-            }
+            const newImageURL = URL.createObjectURL(file);
+            setFormData((prevData) => ({
+                ...prevData,
+                newImageFile: file,
+                newImageURL,
+            }));
         }
     };
 
@@ -71,14 +70,31 @@ const EditCarouselItem = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            // Delete old image if a new one is uploaded
-            if (formData.newImage && formData.image !== formData.newImage) {
-                await storageServices.heroCarousel.deleteFile(formData.image);
+            let newImageId = formData.imageId;
+
+            // Upload the new image if a new file is selected
+            if (formData.newImageFile) {
+                // const toastId = toast.loading("Uploading image...");
+                try {
+                    const uploadedImage = await storageServices.heroCarousel.createFile(formData.newImageFile);
+                    newImageId = uploadedImage.$id;
+                    // toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                } catch (error) {
+                    // toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    throw error;
+                }
             }
+
+            // Delete the old image if a new one was uploaded
+            if (formData.newImageFile && formData.imageId !== newImageId) {
+                await storageServices.heroCarousel.deleteFile(formData.imageId);
+            }
+
             await db.heroCarousel.update(id, {
                 text: formData.text,
-                image: formData.newImage || formData.image,
+                image: newImageId,
             });
+
             sessionStorage.setItem('updateCarouselItemSuccess', 'true'); // Set update flag
             navigate("/herocarousel");
         } catch (error) {
@@ -148,7 +164,7 @@ const EditCarouselItem = () => {
                                                 </div>
                                             </div>
                                             {/* Image Upload Component */}
-                                            <ImageUpload id="image" src={formData.newImage} loadFile={handleImageLoad} imageName="Image" />
+                                            <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">

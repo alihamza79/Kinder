@@ -26,7 +26,7 @@ const CarouselList = () => {
       sessionStorage.removeItem("updateCarouselItemSuccess"); // Clear the flag after showing the toast
     }
     if (addSuccess) {
-      toast.success("Document Added successfully!", { autoClose: 2000 });
+      toast.success("Document added successfully!", { autoClose: 2000 });
       sessionStorage.removeItem("addCarouselItemSuccess"); // Clear the flag after showing the toast
     }
     fetchData();
@@ -36,10 +36,17 @@ const CarouselList = () => {
     try {
       setLoading(true);
       const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
-      }));
+      const data = await Promise.all(
+        querySnapshot.documents.map(async (doc) => {
+          const imageUrl = await storageServices.heroCarousel.getFileView(doc.image);
+          return {
+            id: doc.$id,
+            text: doc.text,
+            imageId: doc.image,
+            imageUrl: imageUrl.href,
+          };
+        })
+      );
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -51,9 +58,9 @@ const CarouselList = () => {
   const handleDelete = async () => {
     try {
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
-      if (selectedRecord && selectedRecord.image) {
+      if (selectedRecord && selectedRecord.imageId) {
         // Delete image from Appwrite storage if it exists
-        await storageServices.heroCarousel.deleteFile(selectedRecord.image);
+        await storageServices.heroCarousel.deleteFile(selectedRecord.imageId);
       }
       await db.heroCarousel.delete(selectedRecordId); // Delete the document from Appwrite
       toast.success("Carousel item deleted successfully!", { autoClose: 2000 });
@@ -83,8 +90,8 @@ const CarouselList = () => {
     },
     {
       title: "Image",
-      dataIndex: "image",
-      key: "image",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
       render: (text) => (
         <img
           src={text}
@@ -155,8 +162,7 @@ const CarouselList = () => {
       <>
         <div className="page-wrapper">
           <div className="content">
-            {/* Page Navbar*/}
-            
+            {/* Page Navbar */}
             <div className="page-header">
               <div className="row">
                 <div className="col-sm-12">
