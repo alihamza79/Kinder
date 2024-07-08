@@ -31,7 +31,7 @@ const Accordions = (props) => {
                         {item.author && <span className="panel-speaker">{item.author}</span>}
                       </Accordion.Header>
                     }
-                    {item.content && <Accordion.Body> {item.content} </Accordion.Body>}
+                    {item.content && <Accordion.Body> {item.content && <div dangerouslySetInnerHTML={{ __html: item.content }} />}</Accordion.Body>}
                   </Accordion.Item>
                 </m.div>
               </div>

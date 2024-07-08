@@ -1,6 +1,7 @@
 import { collections } from "../collections";
 import { databaseId, databases } from "../config";
 import { ID } from "appwrite";
+import storageServices from "./storageServices";
 
 const db = {};
 
@@ -21,6 +22,10 @@ collections.forEach((col) => {
       await databases.deleteDocument(databaseId, col.id, id),
   };
 });
+
+
+
+
 
 export default db;
 

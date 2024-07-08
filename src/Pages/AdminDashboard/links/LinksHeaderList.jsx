@@ -113,7 +113,7 @@ const LinksHeaderList = () => {
                     className="nav-link"
                     to="/linkheader"
                   >
-                    Link Header
+                    Links Header
                   </Link>
                 </li>
                 <li className="nav-item">

@@ -137,16 +137,19 @@ const HomeStartupPage = (props) => {
         const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
         if (querySnapshot.documents.length > 0) {
           const aboutData = querySnapshot.documents[0];
+          const image = await getImageUrl(aboutData.image); // Fetch the image URL
+
           setAboutUs({
             title: aboutData.title || aboutUs.title,
             description: aboutData.description || aboutUs.description,
-            image: aboutData.image || aboutUs.image,
+            image: image || aboutUs.image,
           });
         }
       } catch (error) {
         console.error("Error fetching About Us data:", error);
-      }
+      } 
     };
+
 
     const fetchServiceData = async () => {
       try {
@@ -178,16 +181,23 @@ const HomeStartupPage = (props) => {
         }
 
         if (bodySnapshot.documents.length > 0) {
-          const bodyData = bodySnapshot.documents.map((doc) => ({
-            img: doc.image,
-            name: doc.name,
-            designation: doc.designation,
-          }));
+          const bodyData = await Promise.all(
+            bodySnapshot.documents.map(async (doc) => {
+              const img = await getImageUrl(doc.image);
+              console.log("Team Image URL:", img);
+
+              return {
+                img,
+                name: doc.name,
+                designation: doc.designation,
+              };
+            })
+          );
           setTeamData(bodyData);
         }
       } catch (error) {
         console.error("Error fetching Team data:", error);
-      }
+      } 
     };
 
     const fetchLinksData = async () => {
@@ -217,7 +227,15 @@ const HomeStartupPage = (props) => {
     fetchTeamData();
     fetchLinksData();
   }, []);
-
+  const getImageUrl = async (imageId) => {
+    try {
+      const url = `https://cloud.appwrite.io/v1/storage/buckets/668c2b8e002e42c874ec/files/${imageId}/view?project=66887083002da69658f9`;
+      return url;
+    } catch (error) {
+      console.error("Error fetching image URL:", error);
+      return "/assets/img/webp/default.jpg"; // Fallback image
+    }
+  };
   return (
     <div style={props.style}>
       {/* Header Start */}

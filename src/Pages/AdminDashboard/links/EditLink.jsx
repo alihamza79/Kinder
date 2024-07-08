@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+// EditLink.js
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import db from "../../../appwrite/Services/dbServices"; 
+import TextEditor from "../InformationCard/TextEditor";
 
 const EditLink = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams(); 
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const editorRef = useRef(null);
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -21,6 +24,7 @@ const EditLink = () => {
                 if (documentSnapshot) {
                     setTitle(documentSnapshot.title);
                     setDescription(documentSnapshot.description);
+                    editorRef.current.setEditorContent(documentSnapshot.description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -37,7 +41,7 @@ const EditLink = () => {
         setLoading(true);
         try {
             await db.links.update(id, { title, description });
-            sessionStorage.setItem('updateLinkSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('updateLinkSuccess', 'true'); 
             navigate("/linkslist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
@@ -92,7 +96,6 @@ const EditLink = () => {
                                                     <h4>Edit Link</h4>
                                                 </div>
                                             </div>
-                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>Title <span className="login-danger">*</span></label>
@@ -105,19 +108,16 @@ const EditLink = () => {
                                                     />
                                                 </div>
                                             </div>
-                                            {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
+                                            <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>Description <span className="login-danger">*</span></label>
-                                                    <textarea
-                                                        className="form-control"
+                                                    <TextEditor 
+                                                        ref={editorRef} 
+                                                        onChange={(data) => setDescription(data)} 
                                                         value={description}
-                                                        onChange={(e) => setDescription(e.target.value)}
-                                                        disabled={loading}
                                                     />
                                                 </div>
                                             </div>
-                                            {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button
