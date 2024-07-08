@@ -30,5 +30,13 @@ export const collections = [
   {
     id:"668ab9430014f5528789",
     name:"teamBody"
+  },
+  {
+    id:"668c115c00271782a507",
+    name:"linkHeader"
+  },
+  {
+    id:"668c11af002302e488d3",
+    name:"links"
   }
 ];

@@ -167,7 +167,20 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
-
+               {/* Links */}
+              
+               <li className="submenu">
+                  <Link
+                    to="/linkheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Links</span> 
+                  </Link>
+                </li>
 
 
 

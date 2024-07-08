@@ -48,6 +48,11 @@ import EditTeamHeader from "./Pages/AdminDashboard/team/EditTeamHeader";
 import TeamBodyList from "./Pages/AdminDashboard/team/TeamBodyList";
 import AddTeamMember from "./Pages/AdminDashboard/team/AddTeamMember";
 import EditTeamMember from "./Pages/AdminDashboard/team/EditTeamMember";
+import LinksList from "./Pages/AdminDashboard/links/LinksList";
+import EditLink from "./Pages/AdminDashboard/links/EditLink";
+import AddLink from "./Pages/AdminDashboard/links/AddLink";
+import EditLinkHeader from "./Pages/AdminDashboard/links/EditLinkHeader";
+import LinksHeaderList from "./Pages/AdminDashboard/links/LinksHeaderList";
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -114,6 +119,20 @@ const DashboardRoutes = () => (
         <Route path="/teamlist" element={<TeamBodyList />} />
         <Route path="/teamlist/editteammember/:id" element={< EditTeamMember />} />
         <Route path="/teamlist/addteammember" element={<AddTeamMember />} />
+
+        {/* Links */}
+
+        <Route path="/linkslist" element={<LinksList />} />
+        <Route path="/linkslist/editlink/:id" element={< EditLink />} />
+        <Route path="/linkslist/addlink" element={<AddLink />} />
+
+       {/* Links Header */}
+
+        <Route path="/linkheader" element={<LinksHeaderList />} />
+        <Route path="/linkheader/editlinkheader/:id" element={< EditLinkHeader />} />
+
+
+        
 
       </Routes>
     </Suspense>
