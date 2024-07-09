@@ -53,6 +53,10 @@ import EditLink from "./Pages/AdminDashboard/links/EditLink";
 import AddLink from "./Pages/AdminDashboard/links/AddLink";
 import EditLinkHeader from "./Pages/AdminDashboard/links/EditLinkHeader";
 import LinksHeaderList from "./Pages/AdminDashboard/links/LinksHeaderList";
+import Addblog from "./Pages/AdminDashboard/blogs/Addblog";
+import Editblog from "./Pages/AdminDashboard/blogs/Editblog";
+import BlogView from "./Pages/AdminDashboard/blogs/BlogView";
+
 import AddMonthlyRepresentation from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddMonthlyRepresentation";
 import LocationAutocomplete from "./Components/LocationAutocomplete";
 import RepresentationDates from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentationDates";
@@ -160,41 +164,6 @@ const DashboardRoutes = () => (
         <Route
           path="/linkheader/editlinkheader/:id"
           element={<EditLinkHeader />}
-        />
-
-        {/* Representation */}
-        {/* Monthly Repserentation */}
-        <Route
-          path="/monthlyrepresentation/addmonthlyrepresentation"
-          element={<AddMonthlyRepresentation />}
-        />
-
-        <Route path="/representationdates" element={<RepresentationDates />} />
-
-        <Route
-          path="/representationdates/addrepresentationdate"
-          element={<AddRepresentationDate />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives"
-          element={<RepresentativeList />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives/addrepresentative"
-          element={<AddRepresentative />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives/editrepresentative/:id1"
-          element={<EditRepresentative />}
-        />
-
-        {/* Location Autocomplete Component */}
-        <Route
-          path="/locationautocomplete"
-          element={<LocationAutocomplete />}
         />
       </Routes>
     </Suspense>

@@ -40,6 +40,10 @@ export const collections = [
     name: "links",
   },
   {
+    id: "668d508b00355b3987c2",
+    name: "blogs",
+  },
+  {
     id: "668d9353002a991db17a",
     name: "representationDates",
   },

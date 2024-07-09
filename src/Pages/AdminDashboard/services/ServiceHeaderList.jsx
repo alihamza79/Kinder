@@ -115,7 +115,7 @@ const ServiceHeaderList = () => {
                     className="nav-link"
                     to="/serviceheader"
                   >
-                    Service Header
+                    Services Header
                   </Link>
                 </li>
                 <li className="nav-item">

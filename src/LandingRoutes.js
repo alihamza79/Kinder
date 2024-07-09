@@ -214,64 +214,14 @@ import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
 // const RightSidebar = lazy(() => import("./Pages/Shop/RightSidebar"));
 // const LeftSidebar = lazy(() => import("./Pages/Shop/LeftSideBar"));
 const Privacy = lazy(() => import("./Pages/Privacy"));
-const BlogPage = lazy(() => import("./Pages/Blogs"));
-const BlogGridPage = lazy(() => import("./Pages/Blogs/BlogGrid"));
-const BlogMasonryPage = lazy(() => import("./Pages/Blogs/BlogMasonry"));
-const BlogClassicPage = lazy(() => import("./Pages/Blogs/BlogClassic"));
+
 const BlogSimplePage = lazy(() => import("./Pages/Blogs/BlogSimple"));
-const BlogSideImPage = lazy(() => import("./Pages/Blogs/BlogSideImg"));
-const BlogMetroPage = lazy(() => import("./Pages/Blogs/BlogMetro"));
-const BlogModernPage = lazy(() => import("./Pages/Blogs/BlogModern"));
-const BlogCleanPage = lazy(() => import("./Pages/Blogs/BlogClean"));
-const BlogWidgetPage = lazy(() => import("./Pages/Blogs/BlogWidget"));
-const BlogOverlayImgPage = lazy(() => import("./Pages/Blogs/BlogOverlayImg"));
-const BlogStandardPage = lazy(() => import("./Pages/Blogs/BlogStandard"));
-const CategoryPage = lazy(() => import("./Pages/Blogs/CategoryPage"));
-const AuthorPage = lazy(() => import("./Pages/Blogs/AuthorPage"));
 
-const BlogPostLayout01 = lazy(() =>
-  import("./Pages/Blogs/LayoutPage/BlogPostLayout01")
-);
-const BlogPostLayout02 = lazy(() =>
-  import("./Pages/Blogs/LayoutPage/BlogPostLayout02")
-);
-const BlogPostLayout03 = lazy(() =>
-  import("./Pages/Blogs/LayoutPage/BlogPostLayout03")
-);
-const BlogPostLayout04 = lazy(() =>
-  import("./Pages/Blogs/LayoutPage/BlogPostLayout04")
-);
-const BlogPostLayout05 = lazy(() =>
-  import("./Pages/Blogs/LayoutPage/BlogPostLayout05")
-);
 
-const BlogGalleryPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogGalleryPostPage")
-  );
   const BlogStandardPostPage = lazy(() =>
     import("./Pages/Blogs/PostTypes/BlogStandardPostPage")
   );
-  const BlogSliderPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogSliderPostPage")
-  );
-  const BlogHtml5VideoPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogHtml5VideoPostPage")
-  );
-  const BlogYoutubeVideoPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogYoutubeVideoPostPage")
-  );
-  const BlogVimeoVideoPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogVimeoVideoPostPage")
-  );
-  const BlogAudioPostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogAudioPostPage")
-  );
-  const BlogBlockquotePostPage = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogBlockquotePostPage")
-  );
-  const BlogFullWidthPost = lazy(() =>
-    import("./Pages/Blogs/PostTypes/BlogFullWidthPost")
-  );
+  
 const LandingRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -402,30 +352,30 @@ const LandingRoutes = () => (
         <Route path="/portfolio/single-project-page-03" element={<SingleProjectPage03 style={{ "--base-color": "#0038e3" }} />} />
         <Route path="/portfolio/single-project-page-04" element={<SingleProjectPage04 style={{ "--base-color": "#fd961e" }} />} />
         <Route path="/portfolio/single-project-page-05" element={<SingleProjectPage05 style={{ "--base-color": "#0038e3" }} />} /> */}
-        <Route path="blogs" element={<BlogPage style={{ "--base-color": "#0038e3" }} />}>
-          <Route path="blog-grid" element={<BlogGridPage style={{ "--base-color": "#0038e3" }} />} />
+        {/* <Route path="blogs" element={<BlogPage style={{ "--base-color": "#0038e3" }} />}> */}
+          {/* <Route path="blog-grid" element={<BlogGridPage style={{ "--base-color": "#0038e3" }} />} />
           <Route path="blog-masonry" element={<BlogMasonryPage style={{ "--base-color": "#0038e3" }} />} />
-          <Route path="blog-classic" element={<BlogClassicPage />} />
-          <Route path="blog-simple" element={<BlogSimplePage />} />
-          <Route path="blog-side-image" element={<BlogSideImPage />} />
+          <Route path="blog-classic" element={<BlogClassicPage />} /> */}
+          <Route path="allnews" element={<BlogSimplePage />} />
+          {/* <Route path="blog-side-image" element={<BlogSideImPage />} />
           <Route path="blog-metro" element={<BlogMetroPage />} />
           <Route path="blog-overlay-image" element={<BlogOverlayImgPage />} />
           <Route path="blog-modern" element={<BlogModernPage style={{ "--base-color": "#0038e3" }} />} />
           <Route path="blog-clean" element={<BlogCleanPage />} />
           <Route path="blog-widget" element={<BlogWidgetPage />} />
-          <Route path="blog-standard" element={<BlogStandardPage />} />
-          <Route path="category">
+          <Route path="blog-standard" element={<BlogStandardPage />} /> */}
+          {/* <Route path="category">
             <Route path=":category" element={<CategoryPage />} />
           </Route>
           <Route path="author">
             <Route path=":author" element={<AuthorPage />} />
-          </Route>
-        </Route>
-        <Route path="blog-types">
-          <Route path="blog-standard-post">
+          </Route> */}
+        {/* </Route> */}
+        {/* <Route path="blog-types"> */}
+          <Route path="blogdetail">
             <Route path=":id" element={<BlogStandardPostPage style={{ "--base-color": "#0038e3" }} />} />
-          </Route>
-          <Route path="blog-gallery-post">
+          {/* </Route> */}
+          {/* <Route path="blog-gallery-post">
             <Route path=":id" element={<BlogGalleryPostPage style={{ "--base-color": "#0038e3" }} />} />
           </Route>
           <Route path="blog-slider-post">
@@ -448,7 +398,7 @@ const LandingRoutes = () => (
           </Route>
           <Route path="blog-full-width-post">
             <Route path=":id" element={<BlogFullWidthPost style={{ "--base-color": "#0038e3" }} />} />
-          </Route>
+          </Route> */}
         </Route>
         {/* <Route path="model-popup" element={<ModalPopupPage />}>
           <Route path="simple-modal" element={<SimpleModel />} />
@@ -478,11 +428,11 @@ const LandingRoutes = () => (
           <Route path="background-video" element={<BackgroundVideoPage />} />
           <Route path="mini-version" element={<MiniVersionPage />} />
         </Route> */}
-        <Route path="/blogs/blog-post-layout-01" element={<BlogPostLayout01 style={{ "--base-color": "#ca7741" }} />} />
+        {/* <Route path="/blogs/blog-post-layout-01" element={<BlogPostLayout01 style={{ "--base-color": "#ca7741" }} />} />
         <Route path="/blogs/blog-post-layout-02" element={<BlogPostLayout02 style={{ "--base-color": "#c3964e" }} />} />
         <Route path="/blogs/blog-post-layout-03" element={<BlogPostLayout03 />} />
         <Route path="/blogs/blog-post-layout-04" element={<BlogPostLayout04 />} />
-        <Route path="/blogs/blog-post-layout-05" element={<BlogPostLayout05 />} />
+        <Route path="/blogs/blog-post-layout-05" element={<BlogPostLayout05 />} /> */}
         {/* <Route path="/page/about-me" element={<AboutMePage style={{ "--base-color": "#0038e3" }} />} />
         <Route path="/page/about-us" element={<AboutUsPage style={{ "--base-color": "#0038e3" }} />} />
         <Route path="/page/our-story" element={<OurStoryPage style={{ "--base-color": "#0038e3" }} />} />

@@ -4,20 +4,30 @@ import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 import { LazyMotion, domMax, m } from 'framer-motion';
 import { Container, Row, Col } from 'react-bootstrap';
 import db from '../../../appwrite/Services/dbServices';
-
+import { storage } from '../../../appwrite/config';
+import { buckets } from '../../../appwrite/buckets';
 const StartupPageBannerSlider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [swiperData, setSwiperData] = useState([]);
   const [loading, setLoading] = useState(true);
 
+
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
-        const data = querySnapshot.documents.map((doc) => ({
-          img: doc.image,
-          title: doc.text,
-        }));
+        const querySnapshot = await db.heroCarousel.list();
+        const data = await Promise.all(
+          querySnapshot.documents.map(async (doc) => {
+            const img = await getImageUrl(doc.image); // Fetch the image URL
+            console.log("Image URL:", img);
+
+            return {
+              img,
+              title: doc.text,
+            };
+          })
+        );
         setSwiperData(data.length > 0 ? data : getDefaultData());
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -41,6 +51,15 @@ const StartupPageBannerSlider = () => {
         title: "Kinder- und Jugendarztpraxis",
       },
     ];
+  };
+
+  const getImageUrl = async (imageId) => {
+    try {
+      const result = storage.getFileView(buckets[0].id, imageId);
+      return result.href;
+    } catch (error) {
+      console.error("Error fetching image URL:", error);
+    }
   };
 
   if (loading) {
@@ -75,9 +94,6 @@ const StartupPageBannerSlider = () => {
                   <Row className="full-screen items-center justify-center md:landscape:h-[500px]">
                     <Col xs={12} lg={7} md={10} className="justify-center items-center my-0 mx-auto relative flex flex-col">
                       <m.h1 initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }} className="font-serif font-semibold  pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]">{item.title}</m.h1>
-                      <m.span initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.8, ease: "easeIn" }} className="font-serif block text-[19px] leading-[28px] mb-[35px] font-light text-white xs:text-base xs:mb-[20px]">{item.subTitle}</m.span>
-                      <m.div initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.9, ease: "easeIn" }}>
-                      </m.div>
                     </Col>
                   </Row>
                 </Container>

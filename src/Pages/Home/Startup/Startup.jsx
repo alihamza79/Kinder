@@ -23,7 +23,9 @@ import { resetForm, sendEmail } from "../../../Functions/Utilities";
 
 // Icons
 import db from "../../../appwrite/Services/dbServices";
-
+import { storage } from "../../../appwrite/config";
+import { buckets } from "../../../appwrite/buckets";
+import storageServices from "../../../appwrite/Services/storageServices";
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
@@ -113,6 +115,9 @@ const HomeStartupPage = (props) => {
   const [linksHeader, setLinksHeader] = useState("Links");
   const [linksData, setLinksData] = useState([]);
 
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -137,16 +142,19 @@ const HomeStartupPage = (props) => {
         const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
         if (querySnapshot.documents.length > 0) {
           const aboutData = querySnapshot.documents[0];
+          const image = await getImageUrl(aboutData.image); // Fetch the image URL
+
           setAboutUs({
             title: aboutData.title || aboutUs.title,
             description: aboutData.description || aboutUs.description,
-            image: aboutData.image || aboutUs.image,
+            image: image || aboutUs.image,
           });
         }
       } catch (error) {
         console.error("Error fetching About Us data:", error);
-      }
+      } 
     };
+
 
     const fetchServiceData = async () => {
       try {
@@ -178,16 +186,23 @@ const HomeStartupPage = (props) => {
         }
 
         if (bodySnapshot.documents.length > 0) {
-          const bodyData = bodySnapshot.documents.map((doc) => ({
-            img: doc.image,
-            name: doc.name,
-            designation: doc.designation,
-          }));
+          const bodyData = await Promise.all(
+            bodySnapshot.documents.map(async (doc) => {
+              const img = await getImageUrl(doc.image);
+              console.log("Team Image URL:", img);
+
+              return {
+                img,
+                name: doc.name,
+                designation: doc.designation,
+              };
+            })
+          );
           setTeamData(bodyData);
         }
       } catch (error) {
         console.error("Error fetching Team data:", error);
-      }
+      } 
     };
 
     const fetchLinksData = async () => {
@@ -211,13 +226,48 @@ const HomeStartupPage = (props) => {
       }
     };
 
+    const fetchBlogData = async () => {
+      try {
+        const querySnapshot = await db.blogs.list(); // Fetch documents from Appwrite collection
+        const data = await Promise.all(
+          querySnapshot.documents.map(async (doc) => {
+            const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+            return {
+              id: doc.$id,
+              title: doc.title,
+              date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
+              content: doc.content,
+              img: imageUrl.href,
+              category: doc.tags,
+              publicationDate: new Date(doc.publicationDate) // Add a Date object for sorting
+            };
+          })
+        );
+        // Sort the blogs by publication date in descending order and take the latest three
+        const latestBlogs = data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
+        setBlogs(latestBlogs);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchBlogData();
     fetchData();
     fetchAboutUsData();
     fetchServiceData();
     fetchTeamData();
     fetchLinksData();
   }, []);
-
+  const getImageUrl = async (imageId) => {
+    try {
+      const result = storage.getFileView(buckets[0].id, imageId);
+      return result.href;
+    } catch (error) {
+      console.error("Error fetching image URL:", error);
+    }
+  };
   return (
     <div style={props.style}>
       {/* Header Start */}
@@ -490,40 +540,44 @@ const HomeStartupPage = (props) => {
         </section>
 
         {/* News Section Start */}
-        <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">
-          <Container>
-            <Row className="justify-center">
-              <Col lg={4} sm={6} className="text-center mb-12 md:mb-8">
-                {/* <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px]">
-                  News
-                </span> */}
-                <h2 className="heading-5 font-serif font-semibold text-darkgray inline-block tracking-[-1px]">
-                  Latest News
-                </h2>
-              </Col>
-            </Row>
-          </Container>
-          <Container fluid="xs" className="mx-auto">
+      <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">
+        <Container>
+          <Row className="justify-center">
+            <Col lg={4} sm={6} className="text-center mb-12 md:mb-8">
+              <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px]">
+                News
+              </span>
+              <h2 className="heading-5 font-serif font-semibold text-darkgray inline-block tracking-[-1px]">
+                Latest News
+              </h2>
+            </Col>
+          </Row>
+        </Container>
+        <Container fluid="xs" className="mx-auto">
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
             <BlogMasonry
               pagination={false}
               filter={false}
               grid="grid grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-double-extra-large"
-              data={blogMasonryData}
+              data={blogs}
             />
-           {/* <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
-                <Buttons
-                  ariaLabel="button"
-                  href="/Blogs/blog-Simple"
-                  className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
-                  size="lg"
-                  color="#ffffff"
-                  themeColor="#05867E"
-                  title="All News"
-                />
-              </Col> */}
-          </Container>
-        </section>
-        {/* Section End */}
+          )}
+          <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
+            <Buttons
+              ariaLabel="button"
+              href="/allnews"
+              className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
+              size="lg"
+              color="#ffffff"
+              themeColor="#05867E"
+              title="All News"
+            />
+          </Col>
+        </Container>
+      </section>
+      {/* News Section End */}
 
         {/* Section Start */}
         <m.section

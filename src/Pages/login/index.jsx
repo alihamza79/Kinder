@@ -83,7 +83,7 @@ const Login = () => {
                           <Link to="/forgotpassword">Forgot Password?</Link>
                         </div>
                         <div className="form-group login-btn">
-                          <Link to="/admin-dashboard" className="btn btn-primary btn-block">
+                          <Link to="/herocarousel" className="btn btn-primary btn-block">
                             Login
                           </Link>
                         </div>

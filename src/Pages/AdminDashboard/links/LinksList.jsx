@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Table } from "antd";
-import Header from "../../../Components/Header";
-import Sidebar from "../../../Components/Sidebar";
+import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
-import { Button } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import db from "../../../appwrite/Services/dbServices";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 
 const LinksList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -23,11 +22,11 @@ const LinksList = () => {
     const addSuccess = sessionStorage.getItem("addLinkSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateLinkSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateLinkSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addLinkSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addLinkSuccess");
     }
     fetchData();
   }, [location]);
@@ -35,7 +34,7 @@ const LinksList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.links.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await db.links.list();
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
@@ -50,9 +49,9 @@ const LinksList = () => {
 
   const handleDelete = async () => {
     try {
-      await db.links.delete(selectedRecordId); // Delete the document from Appwrite
+      await db.links.delete(selectedRecordId);
       toast.success("Link deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
@@ -69,8 +68,11 @@ const LinksList = () => {
     setDeleteModalVisible(false);
   };
 
-  const truncate = (text, length) => {
-    return text.length > length ? text.slice(0, length) + "..." : text;
+  const truncateHtml = (text, length) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = text;
+    const plainText = tempDiv.textContent || tempDiv.innerText || "";
+    return plainText.length > length ? plainText.slice(0, length) + "..." : plainText;
   };
 
   const columns = [
@@ -84,13 +86,18 @@ const LinksList = () => {
       title: "Title",
       dataIndex: "title",
       key: "title",
-      render: (text) => truncate(text, 30),
+      render: (text) => truncateHtml(text, 30),
     },
     {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (text) => truncate(text, 30),
+      render: (text) => (
+        <div
+          className="multiline-text"
+          dangerouslySetInnerHTML={{ __html: truncateHtml(text, 30) }}
+        />
+      ),
     },
     {
       title: "",
@@ -129,7 +136,7 @@ const LinksList = () => {
   ];
 
   const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
+    fetchData();
   };
 
   return (
@@ -140,101 +147,78 @@ const LinksList = () => {
         id1="menu-items4"
         activeClassName="links"
       />
-      <>
-        <div className="page-wrapper">
-          <div className="content">
-            {/* Page Navbar */}
-            <div className="settings-menu-links">
-              <ul className="nav nav-tabs menu-tabs">
-                <li className="nav-item">
-                  <Link
-                    className="nav-link"
-                    to="/linkheader"
-                  >
-                    Links Header
-                  </Link>
-                </li>
-                <li className="nav-item active">
-                  <Link
-                    className="nav-link"
-                    to="/linkslist"
-                  >
-                    Links Body
-                  </Link>
-                </li>
-              </ul>
-            </div>
-            <div className="page-header">
-              <div className="row">
-                <div className="col-sm-12">
-                  <ul className="breadcrumb">
-                    <li className="breadcrumb-item">
-                      <Link to="#">Landing Page</Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <i className="feather-chevron-right">
-                        <FeatherIcon icon="chevron-right" />
-                      </i>
-                    </li>
-                    <li className="breadcrumb-item active">
-                      Links
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+      <div className="page-wrapper">
+        <div className="content">
+          <div className="page-header">
             <div className="row">
               <div className="col-sm-12">
-                <div className="card card-table show-entire">
-                  <div className="card-body">
-                    <div className="page-table-header mb-2">
-                      <div className="row align-items-center">
-                        <div className="col">
-                          <div className="doctor-table-blk">
-                            <h3>Links</h3>
-                            <div className="doctor-search-blk">
-                              <div className="add-group">
-                                <Link
-                                  to="/linkslist/addlink"
-                                  className="btn btn-primary add-pluss ms-2"
-                                >
-                                  <img src={plusicon} alt="#" />
-                                </Link>
-                                <Link
-                                  to="#"
-                                  className="btn btn-primary doctor-refresh ms-2"
-                                  onClick={handleRefresh}
-                                >
-                                  <img src={refreshicon} alt="#" />
-                                </Link>
-                              </div>
+                <ul className="breadcrumb">
+                  <li className="breadcrumb-item">
+                    <Link to="#">Landing Page</Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <i className="feather-chevron-right">
+                      <FeatherIcon icon="chevron-right" />
+                    </i>
+                  </li>
+                  <li className="breadcrumb-item active">
+                    Links
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="card card-table show-entire">
+                <div className="card-body">
+                  <div className="page-table-header mb-2">
+                    <div className="row align-items-center">
+                      <div className="col">
+                        <div className="doctor-table-blk">
+                          <h3>Links</h3>
+                          <div className="doctor-search-blk">
+                            <div className="add-group">
+                              <Link
+                                to="/linkslist/addlink"
+                                className="btn btn-primary add-pluss ms-2"
+                              >
+                                <img src={plusicon} alt="#" />
+                              </Link>
+                              <Link
+                                to="#"
+                                className="btn btn-primary doctor-refresh ms-2"
+                                onClick={handleRefresh}
+                              >
+                                <img src={refreshicon} alt="#" />
+                              </Link>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="table-responsive doctor-list">
-                      <Table
-                        loading={loading}
-                        pagination={{
-                          total: dataSource.length,
-                          showTotal: (total, range) =>
-                            `Showing ${range[0]} to ${range[1]} of ${total} entries`,
-                          onShowSizeChange: onShowSizeChange,
-                          itemRender: itemRender,
-                        }}
-                        columns={columns}
-                        dataSource={dataSource}
-                        rowKey={(record) => record.id}
-                      />
-                    </div>
+                  </div>
+                  <div className="table-responsive doctor-list">
+                    <Table
+                      loading={loading}
+                      pagination={{
+                        total: dataSource.length,
+                        showTotal: (total, range) =>
+                          `Showing ${range[0]} to ${range[1]} of ${total} entries`,
+                        onShowSizeChange: onShowSizeChange,
+                        itemRender: itemRender,
+                      }}
+                      columns={columns}
+                      dataSource={dataSource}
+                      rowKey={(record) => record.id}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </>
+      </div>
       {deleteModalVisible && (
         <div
           className={
