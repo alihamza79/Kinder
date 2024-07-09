@@ -13,7 +13,7 @@ const LoadStyles = () => {
       const dashboardPaths = [
         "/login",
         "/forgotpassword",
-        "/signup",  
+        "/signup",
         "/register",
         "/lockscreen",
         "/changepassword",
@@ -42,10 +42,15 @@ const LoadStyles = () => {
         "/teamlist/editteammember/:id",
         "/teamlist/addteammember",
         "/linkslist",
-        "/linkslist/editlink/:id" ,
+        "/linkslist/editlink/:id",
         "/linkslist/addlink",
         "/linkheader",
-        "/linkheader/editlinkheader/:id"
+        "/linkheader/editlinkheader/:id",
+        "/monthlyrepresentation/addmonthlyrepresentation",
+        "/representationdates",
+        "/representationdates/addrepresentationdate",
+        "/representationdates/:id/representatives/addrepresentative",
+        "/representationdates/:id/representatives/editrepresentative/:id1",
       ];
 
       try {

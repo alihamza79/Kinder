@@ -122,6 +122,50 @@ const Sidebar = (props) => {
                   </ul>
                 </li>
 
+{/* Representation */}
+                <li className="submenu">
+                  <Link
+                    to="#"
+                    id="representation"
+                    onClick={(e) => handleClick(e, "representation", "representations")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Representation</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="representations">
+                 
+                    {/* Weekly Representation */}
+                    <li>
+                      <Link
+                        className={
+                          props?.activeClassName === "weeklyRepresentation"
+                            ? "active"
+                            : ""
+                        }
+                        to="/herocarousel"
+                      >
+                        Weekly Representation
+                      </Link>
+                    </li>
+
+                    {/* Monthly Representation */}
+                    <li>
+                      <Link
+                        className={
+                          props?.activeClassName === "courseContent"
+                            ? "active"
+                            : ""
+                        }
+                        to="/representationdates"
+                      >
+                      Monthly Representation
+                      </Link>
+                    </li>
+                  </ul>
+                </li>
+
                 {/* About Us */}
 
                 <li className="submenu">

@@ -20,150 +20,151 @@ import HeroIconWithText from '../../Components/IconWithText/HeroIconWithText';
 import IconWithText from '../../Components/IconWithText/IconWithText';
 import FooterSection from '../Footer/FooterSection';
 import HeaderSection from '../Header/HeaderSection';
-
+import MonthlyTab06 from '../../Components/Tab/MonthlyTab06';
 const Vertretung = () => {
-    const TabData06 = [
-        {
-          tabTitle: 'December 2023',
-          month: 'December',
-          tabicons: '',
-          activities: [
+  const TabData06 = [
+    {
+        tabTitle: 'December 2023',
+        month: 'December',
+        tabicons: '',
+        activities: [
             {
-              time: '19.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Alter Postplatz 13',
-              content: '71332 Waiblingen\nTel: 01751/53453',
-              author: 'Dres.med Weimann/Horlacher/Besuch'
+                time: '19.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Alter Postplatz 13',
+                content: '71332 Waiblingen\nTel: 01751/53453',
+                author: 'Dres.med Weimann/Horlacher/Besuch'
             },
             {
-              time: '19.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Ohmstraße 16/1',
-              content: '70736 Fellbach\nTel: 0711/587555',
-              author: 'Dr. med. Ruth Adam'
+                time: '19.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Ohmstraße 16/1',
+                content: '70736 Fellbach\nTel: 0711/587555',
+                author: 'Dr. med. Ruth Adam'
             },
             {
-              time: '19.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Marktpl. 10',
-              content: '73650 Winterbach\nTel: 07181/977880',
-              author: 'Drs.Klopp/Lorenz/Intelmann/Onnen'
+                time: '19.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Marktpl. 10',
+                content: '73650 Winterbach\nTel: 07181/977880',
+                author: 'Drs.Klopp/Lorenz/Intelmann/Onnen'
             },
             {
-              time: '23.12.23 - 26.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Am Jakobsweg 1',
-              content: '71364 Winnenden\nTel: 0180/6073614',
-              author: 'Kinderärztliche Notdienst in Winnenden'
+                time: '23.12.23 - 26.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Am Jakobsweg 1',
+                content: '71364 Winnenden\nTel: 0180/6073614',
+                author: 'Kinderärztliche Notdienst in Winnenden'
             },
             {
-              time: '27.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Alter Postplatz 13',
-              content: '71332 Waiblingen\nTel: 01751/53453',
-              author: 'Dres.med Weimann/Horlacher/Besuch'
+                time: '27.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Alter Postplatz 13',
+                content: '71332 Waiblingen\nTel: 01751/53453',
+                author: 'Dres.med Weimann/Horlacher/Besuch'
             },
             {
-              time: '28.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Strümpfelbacherstr. 29',
-              content: '71384 Weinstadt\nTel: 07151/64949',
-              author: 'Dr.med.Volker Kemmerich'
+                time: '28.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Strümpfelbacherstr. 29',
+                content: '71384 Weinstadt\nTel: 07151/64949',
+                author: 'Dr.med.Volker Kemmerich'
             },
             {
-              time: '29.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Alter Postplatz 13',
-              content: '71332 Waiblingen\nTel: 01751/53453',
-              author: 'Dres.med Weimann/Horlacher/Besuch'
+                time: '29.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Alter Postplatz 13',
+                content: '71332 Waiblingen\nTel: 01751/53453',
+                author: 'Dres.med Weimann/Horlacher/Besuch'
             },
             {
-              time: '30.12.23 - 31.12.23',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Am Jakobsweg 1',
-              content: '71364 Winnenden\nTel: 0180/6073614',
-              author: 'Kinderärztliche Notdienst in Winnenden'
+                time: '30.12.23 - 31.12.23',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Am Jakobsweg 1',
+                content: '71364 Winnenden\nTel: 0180/6073614',
+                author: 'Kinderärztliche Notdienst in Winnenden'
             },
-          ]
-        },
-        {
-          tabTitle: 'January 2024',
-          month: 'January',
-          tabicons: '',
-          activities: [
+        ]
+    },
+    {
+        tabTitle: 'January 2024',
+        month: 'January',
+        tabicons: '',
+        activities: [
             {
-              time: '01.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Am Jakobsweg 1',
-              content: '71364 Winnenden\nTel: 0180/6073614',
-              author: 'Kinderärztliche Notdienst in Winnenden'
-            },
-            {
-              time: '03.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Alter Postplatz 13',
-              content: '71332 Waiblingen\nTel: 01751/53453',
-              author: 'Dres.med Weimann/Horlacher/Besuch'
+                time: '01.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Am Jakobsweg 1',
+                content: '71364 Winnenden\nTel: 0180/6073614',
+                author: 'Kinderärztliche Notdienst in Winnenden'
             },
             {
-              time: '04.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Strümpfelbacherstr. 29',
-              content: '71384 Weinstadt\nTel: 07151/64949',
-              author: 'Dr.med.Volker Kemmerich'
+                time: '03.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Alter Postplatz 13',
+                content: '71332 Waiblingen\nTel: 01751/53453',
+                author: 'Dres.med Weimann/Horlacher/Besuch'
             },
             {
-              time: '04.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Lange Str. 3',
-              content: '71332 Waiblingen\nTel: 07151/18218',
-              author: 'Dr.med.Stefan Klimmeck'
+                time: '04.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Strümpfelbacherstr. 29',
+                content: '71384 Weinstadt\nTel: 07151/64949',
+                author: 'Dr.med.Volker Kemmerich'
             },
             {
-              time: '05.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Lange Str. 3',
-              content: '71332 Waiblingen\nTel: 07151/18218',
-              author: 'Dr.med.Stefan Klimmeck'
+                time: '04.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Lange Str. 3',
+                content: '71332 Waiblingen\nTel: 07151/18218',
+                author: 'Dr.med.Stefan Klimmeck'
             },
             {
-              time: '06.01.24 - 07.01.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Am Jakobsweg 1',
-              content: '71364 Winnenden\nTel: 0180/6073614',
-              author: 'Kinderärztliche Notdienst in Winnenden'
-            },
-          ]
-        },
-        {
-          tabTitle: 'February 2024',
-          month: 'February',
-          tabicons: '',
-          activities: [
-            {
-              time: '15.02.24 - 16.02.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Alter Postplatz 13',
-              content: '71332 Waiblingen\nTel: 01751/53453',
-              author: 'Dres.med Weimann/Horlacher/Besuch'
+                time: '05.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Lange Str. 3',
+                content: '71332 Waiblingen\nTel: 07151/18218',
+                author: 'Dr.med.Stefan Klimmeck'
             },
             {
-              time: '15.02.24 - 16.02.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Marktpl. 10',
-              content: '73650 Winterbach\nTel: 07181/977880',
-              author: 'Drs.Klopp/Lorenz/Intelmann/Onnen'
+                time: '06.01.24 - 07.01.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Am Jakobsweg 1',
+                content: '71364 Winnenden\nTel: 0180/6073614',
+                author: 'Kinderärztliche Notdienst in Winnenden'
+            },
+        ]
+    },
+    {
+        tabTitle: 'February 2024',
+        month: 'February',
+        tabicons: '',
+        activities: [
+            {
+                time: '15.02.24 - 16.02.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Alter Postplatz 13',
+                content: '71332 Waiblingen\nTel: 01751/53453',
+                author: 'Dres.med Weimann/Horlacher/Besuch'
             },
             {
-              time: '15.02.24 - 16.02.24',
-              img: 'https://via.placeholder.com/197x197',
-              title: 'Strümpfelbacherstr. 29',
-              content: '71384 Weinstadt\nTel: 07151/64949',
-              author: 'Dr.med.Volker Kemmerich'
+                time: '15.02.24 - 16.02.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Marktpl. 10',
+                content: '73650 Winterbach\nTel: 07181/977880',
+                author: 'Drs.Klopp/Lorenz/Intelmann/Onnen'
             },
-          ]
-        }
-      ];
+            {
+                time: '15.02.24 - 16.02.24',
+                img: 'https://via.placeholder.com/197x197',
+                title: 'Strümpfelbacherstr. 29',
+                content: '71384 Weinstadt\nTel: 07151/64949',
+                author: 'Dr.med.Volker Kemmerich'
+            },
+        ]
+    }
+];
+
 
       const iconWithTextData = [
         {
@@ -254,7 +255,7 @@ const Vertretung = () => {
                             <h6 className="font-serif text-darkgray font-medium">Monthly Representation</h6>
                         </Col>
                     </Row>
-                    <Tab06 data={TabData06} />
+                    <MonthlyTab06 data={TabData06} />
                 </Container>
             </m.section>
 

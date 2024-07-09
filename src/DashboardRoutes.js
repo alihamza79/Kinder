@@ -53,6 +53,13 @@ import EditLink from "./Pages/AdminDashboard/links/EditLink";
 import AddLink from "./Pages/AdminDashboard/links/AddLink";
 import EditLinkHeader from "./Pages/AdminDashboard/links/EditLinkHeader";
 import LinksHeaderList from "./Pages/AdminDashboard/links/LinksHeaderList";
+import AddMonthlyRepresentation from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddMonthlyRepresentation";
+import LocationAutocomplete from "./Components/LocationAutocomplete";
+import RepresentationDates from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentationDates";
+import AddRepresentationDate from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddRepresentationDate";
+import RepresentativeList from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentativeList";
+import AddRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddRepresentative";
+import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -89,15 +96,24 @@ const DashboardRoutes = () => (
         {/* InformationCard */}
 
         <Route path="/informationcard" element={<InformationCardList />} />
-        <Route path="/informationcard/editinformationcard/:id" element={<EditInformationCard />} />
-        <Route path="/informationcard/addinformationcard" element={<AddInformationCard />} />
-        
+        <Route
+          path="/informationcard/editinformationcard/:id"
+          element={<EditInformationCard />}
+        />
+        <Route
+          path="/informationcard/addinformationcard"
+          element={<AddInformationCard />}
+        />
+
         {/* About list */}
 
         <Route path="/aboutlist" element={<AboutList />} />
-        <Route path="/aboutlist/editaboutitem/:id" element={<EditAboutItem />} />
+        <Route
+          path="/aboutlist/editaboutitem/:id"
+          element={<EditAboutItem />}
+        />
 
-          {/* Services */}
+        {/* Services */}
 
         <Route path="/serviceslist" element={<ServicesList />} />
         <Route path="/serviceslist/editservice/:id" element={<EditService />} />
@@ -106,34 +122,80 @@ const DashboardRoutes = () => (
         {/* Service Header */}
 
         <Route path="/serviceheader" element={<ServiceHeaderList />} />
-        <Route path="/serviceheader/editserviceheader/:id" element={<EditServiceHeader />} />
-        <Route path="/serviceheader/addserviceheader" element={<AddServiceHeader />} />
+        <Route
+          path="/serviceheader/editserviceheader/:id"
+          element={<EditServiceHeader />}
+        />
+        <Route
+          path="/serviceheader/addserviceheader"
+          element={<AddServiceHeader />}
+        />
 
         {/* Team Header */}
 
         <Route path="/teamheader" element={<TeamHeaderList />} />
-        <Route path="/teamheader/editteamheader/:id" element={<EditTeamHeader />} />
+        <Route
+          path="/teamheader/editteamheader/:id"
+          element={<EditTeamHeader />}
+        />
 
         {/* Team Body */}
 
         <Route path="/teamlist" element={<TeamBodyList />} />
-        <Route path="/teamlist/editteammember/:id" element={< EditTeamMember />} />
+        <Route
+          path="/teamlist/editteammember/:id"
+          element={<EditTeamMember />}
+        />
         <Route path="/teamlist/addteammember" element={<AddTeamMember />} />
 
         {/* Links */}
 
         <Route path="/linkslist" element={<LinksList />} />
-        <Route path="/linkslist/editlink/:id" element={< EditLink />} />
+        <Route path="/linkslist/editlink/:id" element={<EditLink />} />
         <Route path="/linkslist/addlink" element={<AddLink />} />
 
-       {/* Links Header */}
+        {/* Links Header */}
 
         <Route path="/linkheader" element={<LinksHeaderList />} />
-        <Route path="/linkheader/editlinkheader/:id" element={< EditLinkHeader />} />
+        <Route
+          path="/linkheader/editlinkheader/:id"
+          element={<EditLinkHeader />}
+        />
 
+        {/* Representation */}
+        {/* Monthly Repserentation */}
+        <Route
+          path="/monthlyrepresentation/addmonthlyrepresentation"
+          element={<AddMonthlyRepresentation />}
+        />
 
-        
+        <Route path="/representationdates" element={<RepresentationDates />} />
 
+        <Route
+          path="/representationdates/addrepresentationdate"
+          element={<AddRepresentationDate />}
+        />
+
+        <Route
+          path="/representationdates/:id/representatives"
+          element={<RepresentativeList />}
+        />
+
+        <Route
+          path="/representationdates/:id/representatives/addrepresentative"
+          element={<AddRepresentative />}
+        />
+
+        <Route
+          path="/representationdates/:id/representatives/editrepresentative/:id1"
+          element={<EditRepresentative />}
+        />
+
+        {/* Location Autocomplete Component */}
+        <Route
+          path="/locationautocomplete"
+          element={<LocationAutocomplete />}
+        />
       </Routes>
     </Suspense>
   </AnimatePresence>
