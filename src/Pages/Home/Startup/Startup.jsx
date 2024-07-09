@@ -23,7 +23,8 @@ import { resetForm, sendEmail } from "../../../Functions/Utilities";
 
 // Icons
 import db from "../../../appwrite/Services/dbServices";
-
+import { storage } from "../../../appwrite/config";
+import { buckets } from "../../../appwrite/buckets";
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
@@ -229,11 +230,10 @@ const HomeStartupPage = (props) => {
   }, []);
   const getImageUrl = async (imageId) => {
     try {
-      const url = `https://cloud.appwrite.io/v1/storage/buckets/668c2b8e002e42c874ec/files/${imageId}/view?project=66887083002da69658f9`;
-      return url;
+      const result = storage.getFileView(buckets[0].id, imageId);
+      return result.href;
     } catch (error) {
       console.error("Error fetching image URL:", error);
-      return "/assets/img/webp/default.jpg"; // Fallback image
     }
   };
   return (

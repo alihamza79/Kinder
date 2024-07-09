@@ -4,12 +4,14 @@ import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 import { LazyMotion, domMax, m } from 'framer-motion';
 import { Container, Row, Col } from 'react-bootstrap';
 import db from '../../../appwrite/Services/dbServices';
-import storageServices from '../../../appwrite/Services/storageServices';
-
+import { storage } from '../../../appwrite/config';
+import { buckets } from '../../../appwrite/buckets';
 const StartupPageBannerSlider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
   const [swiperData, setSwiperData] = useState([]);
   const [loading, setLoading] = useState(true);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +20,7 @@ const StartupPageBannerSlider = () => {
         const data = await Promise.all(
           querySnapshot.documents.map(async (doc) => {
             const img = await getImageUrl(doc.image); // Fetch the image URL
-            console.log("Image URL:", doc.image);
+            console.log("Image URL:", img);
 
             return {
               img,
@@ -53,8 +55,8 @@ const StartupPageBannerSlider = () => {
 
   const getImageUrl = async (imageId) => {
     try {
-      const url = `https://cloud.appwrite.io/v1/storage/buckets/668c2b8e002e42c874ec/files/${imageId}/view?project=66887083002da69658f9`;
-      return url;
+      const result = storage.getFileView(buckets[0].id, imageId);
+      return result.href;
     } catch (error) {
       console.error("Error fetching image URL:", error);
     }

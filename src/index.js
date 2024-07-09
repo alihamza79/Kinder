@@ -45,7 +45,10 @@ const LoadStyles = () => {
         "/linkslist/editlink/:id" ,
         "/linkslist/addlink",
         "/linkheader",
-        "/linkheader/editlinkheader/:id"
+        "/linkheader/editlinkheader/:id",
+        "/blogview",
+        "/blogview/addblog",
+        "/blogview/edit/:id"
       ];
 
       try {

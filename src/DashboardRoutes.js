@@ -53,6 +53,10 @@ import EditLink from "./Pages/AdminDashboard/links/EditLink";
 import AddLink from "./Pages/AdminDashboard/links/AddLink";
 import EditLinkHeader from "./Pages/AdminDashboard/links/EditLinkHeader";
 import LinksHeaderList from "./Pages/AdminDashboard/links/LinksHeaderList";
+import Addblog from "./Pages/AdminDashboard/blogs/Addblog";
+import Editblog from "./Pages/AdminDashboard/blogs/Editblog";
+import BlogView from "./Pages/AdminDashboard/blogs/BlogView";
+
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -131,7 +135,11 @@ const DashboardRoutes = () => (
         <Route path="/linkheader" element={<LinksHeaderList />} />
         <Route path="/linkheader/editlinkheader/:id" element={< EditLinkHeader />} />
 
+       {/* Blogs */}
 
+       <Route path="/blogview" element={<BlogView />} />
+        <Route path="/blogview/addblog" element={<Addblog />} />
+        <Route path="/blogview/edit/:id" element={<Editblog />} />
         
 
       </Routes>

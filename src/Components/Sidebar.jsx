@@ -181,7 +181,29 @@ const Sidebar = (props) => {
                     <span>Links</span> 
                   </Link>
                 </li>
+              
+              {/* Blog */}
 
+              <li className="submenu">
+                  <Link to="#" id="menu-item11" onClick={(e) => handleClick(e, "menu-item11", "menu-items11")}>
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span> Blog</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="menu-items11">
+                    
+                    <li>
+                      <Link className={props?.activeClassName === 'blog-details' ? 'active' : ''} to="/blogview">
+                        Blog View
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className={props?.activeClassName === 'add-blog' ? 'active' : ''} to="/blogview/addblog">Add Blog</Link>
+                    </li>
+                    
+                  </ul>
+                </li>
 
 
               </ul>

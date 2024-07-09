@@ -38,5 +38,9 @@ export const collections = [
   {
     id:"668c11af002302e488d3",
     name:"links"
+  },
+  {
+    id:"668d508b00355b3987c2",
+    name:"blogs"
   }
 ];
