@@ -43,7 +43,7 @@ const BlogSimple = (props) => {
         <li className="grid-sizer"></li>
         {props.data.map((item, i) => {
           return (
-            <li key={i} className={`grid-item${item.double_col ? " grid-item-double" : ""} ${item.category.map(item => item.split(" ").join("")).toString().split(",").join(" ").toLowerCase()}`} >
+            <li key={i} className={`grid-item${item.double_col ? " grid-item-double" : ""} `} >
               <m.div className="blog-Simple xs:block" style={style}
                 initial={{ opacity: 0 }}
                 whileInView={!loading && { opacity: 1 }}
@@ -53,15 +53,16 @@ const BlogSimple = (props) => {
                   <Link aria-label="link" to={`${props.link}${[item.id]}`}></Link>
                 </div>
                 <div className="post-details">
-                  <Link aria-label="link" to={`/blogs/category/${[item.category[0].toString().split(" ").join("").toLowerCase()]}`} className="blog-category">
+                  <Link aria-label="link" to={`#`} className="blog-category">
                     {item.category[0]}
                   </Link>
                   <Link aria-label="link" to={`${props.link}${[item.id]}`} className="blog-title">
                     {item.title}
                   </Link>
-                  <p className="mb-[25px] xl:mb-[25px] md:mb-[20px] xs:mb-[15px]">{item.content}</p>
-                  <Link aria-label="link" to={`/blogs/author/${item.author}`} className="blog-author">
-                    {authorData.filter(author => author.id === item.author)[0].name}
+             
+                  <p className="mb-[25px] xl:mb-[25px] md:mb-[20px] xs:mb-[15px]"> {item.content && <div dangerouslySetInnerHTML={{ __html: item.content }} />}</p>
+                  <Link aria-label="link" to={`#`} className="blog-author">
+                    {item.author}
                   </Link>
                 </div>
               </m.div>

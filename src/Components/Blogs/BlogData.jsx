@@ -1716,11 +1716,11 @@ export const blogData = [
     content:
       "Lorem ipsum is simply dummy text of printing and typesetting industry lorem ipsum been dummy...",
     author: 1,
-    category: ["FASHION", "startup"],
-    blogType: "masonry",
+    // category: ["FASHION", "startup"],
+    // blogType: "masonry",
     tags: ["Development", "Events", "Media", "Mountains"],
-    likes: 28,
-    comments: 52,
+    // likes: 28,
+    // comments: 52,
     date: "24 February 2020",
   },
   {
