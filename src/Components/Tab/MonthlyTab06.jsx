@@ -35,17 +35,22 @@ const MonthlyTab06 = (props) => {
                                                             {activity.time && <span className='panel-time '><i className="feather-clock mr-[10px]"></i>{activity.time}</span>}
                                                         </div>
                                                         <div className='feature-box-icon py-[7px] md:items-center flex sm:pt-[10px] sm:px-0 sm:pb-[7px]'>
-                                                            {activity.img && <img src={activity.img} alt="" className="md:h-[70px] md:w-[70px]" />}
+                                                            {/* {activity.img && <img src={activity.img} alt="" className="md:h-[70px] md:w-[70px]" />} */}
                                                             <div className='feature-box-content'>
-                                                                {activity.title && <span className="font-medium mb-[5px] text-darkgray inline-block pl-[40px] md:p-0">{activity.title}</span>}
-                                                                {activity.content && <p className="mb-0 w-[65%]">{activity.content}</p>}
+                                                                {activity.representatives.length > 0 && (
+                                                                    <>
+                                                                        <span className="font-medium mb-[5px] text-darkgray inline-block pl-[40px] md:p-0">{activity.representatives[0].hospital}</span>
+                                                                        <p className="mb-0 w-[65%]">{activity.representatives[0].address}</p>
+                                                                        <p className="mb-0 w-[65%]">{activity.representatives[0].telephoneNumber}</p>
+                                                                    </>
+                                                                )}
                                                             </div>
                                                         </div>
                                                         {
-                                                            activity.author && (
+                                                            activity.representatives.length > 0 && (
                                                                 <span className='panel-speaker'>
                                                                     <i className="feather-user"></i>
-                                                                    {activity.author}
+                                                                    {activity.representatives[0].doctors}
                                                                 </span>
                                                             )
                                                         }
@@ -80,6 +85,14 @@ MonthlyTab06.propTypes = {
                     title: PropTypes.string.isRequired,
                     content: PropTypes.string.isRequired,
                     author: PropTypes.string.isRequired,
+                    representatives: PropTypes.arrayOf(
+                        PropTypes.shape({
+                            hospital: PropTypes.string.isRequired,
+                            address: PropTypes.string.isRequired,
+                            telephoneNumber: PropTypes.string.isRequired,
+                            doctors: PropTypes.string.isRequired,
+                        })
+                    ).isRequired,
                 })
             ).isRequired,
         })

@@ -63,6 +63,7 @@ import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRep
 import Addblog from "./Pages/AdminDashboard/blogs/Addblog";
 import Editblog from "./Pages/AdminDashboard/blogs/Editblog";
 import BlogView from "./Pages/AdminDashboard/blogs/BlogView";
+import RepresentationData from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentationData";
 
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
@@ -194,6 +195,8 @@ const DashboardRoutes = () => (
           path="/representationdates/:id/representatives/editrepresentative/:id1"
           element={<EditRepresentative />}
         />
+
+        <Route path="representationdata" element={<RepresentationData />} />
 
         {/* Location Autocomplete Component */}
         <Route
