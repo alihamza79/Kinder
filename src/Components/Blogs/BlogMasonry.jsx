@@ -22,6 +22,11 @@ const BlogMasonry = (props) => {
       .forEach((item) => item.childNodes[0]?.classList.add("appear"));
   };
 
+  const getSnippet = (content, wordCount) => {
+    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
+    return plainTextContent.split(" ").slice(0, wordCount).join(" ") + "...";
+  };
+
   return (
     <div className="grid-wrapper">
       {/* Filter Start */}
@@ -87,7 +92,7 @@ const BlogMasonry = (props) => {
                 )}
                 {item.content && (
                   <p className="mb-[5px]">
-                    <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                    {getSnippet(item.content, 10)}
                   </p>
                 )}
               </div>
