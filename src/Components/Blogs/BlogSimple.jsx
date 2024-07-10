@@ -75,7 +75,12 @@ const BlogSimple = (props) => {
       {/* Pagination Start */}
       {props.pagination === true && (
         <div className="flex justify-center mt-[7.5rem] md:mt-20">
-          <Pagination />
+          <Pagination 
+            paginate={props.paginate} 
+            currentPage={props.currentPage} 
+            totalBlogs={props.totalBlogs} 
+            blogsPerPage={props.blogsPerPage}
+          />
         </div>
       )}
       {/* Pagination End */}
@@ -86,7 +91,7 @@ const BlogSimple = (props) => {
 BlogSimple.defaultProps = {
   filter: false,
   data: blogGridData,
-  link: "/blog-types/blog-standard-post/"
+  link: "/blogdetail/"
 };
 
 BlogSimple.propTypes = {
@@ -110,6 +115,10 @@ BlogSimple.propTypes = {
       double_col: PropTypes.bool
     })
   ),
+  paginate: PropTypes.func,
+  currentPage: PropTypes.number,
+  totalBlogs: PropTypes.number,
+  blogsPerPage: PropTypes.number,
 };
 
 export default memo(BlogSimple);

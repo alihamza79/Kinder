@@ -5,7 +5,8 @@ import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import { storage } from "../../../appwrite/config";
+import { buckets } from "../../../appwrite/buckets";
 import Header from "../../../Components/Header";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
@@ -33,17 +34,27 @@ const BlogView = () => {
     fetchData();
   }, [location]);
 
+  const getImageUrl = async (imageId) => {
+    try {
+      const result = await storage.getFileView(buckets[0].id, imageId);
+      return result.href;
+    } catch (error) {
+      console.error("Error fetching image URL:", error);
+    }
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
       const querySnapshot = await db.blogs.list(); // Fetch documents from Appwrite collection
       const data = await Promise.all(
         querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+          const imageUrl = await getImageUrl(doc.imageUrl);
           return {
             id: doc.$id,
             ...doc,
-            imageUrl: imageUrl.href,
+            imageUrl: imageUrl,
+            imageId: doc.imageUrl // Store the original image ID
           };
         })
       );
@@ -59,9 +70,9 @@ const BlogView = () => {
     try {
       setDeleting(true);
       const selectedBlog = blogs.find((blog) => blog.id === selectedBlogId);
-      if (selectedBlog && selectedBlog.imageUrl) {
-        const imageId = selectedBlog.imageUrl.split("/").pop(); // Extract the image ID from the URL
-        await storageServices.images.deleteFile(imageId);
+      if (selectedBlog && selectedBlog.imageId) {
+        // Delete image from Appwrite storage if it exists
+        await storage.deleteFile(buckets[0].id, selectedBlog.imageId);
       }
       await db.blogs.delete(selectedBlogId); // Delete the document from Appwrite
       toast.success("Blog deleted successfully!", { autoClose: 2000 });
@@ -69,7 +80,7 @@ const BlogView = () => {
       setSelectedBlogId(null);
       hideDeleteModal();
     } catch (error) {
-      console.error("Error deleting document and image:", error);
+      console.error("Error deleting blog:", error);
     } finally {
       setDeleting(false);
     }

@@ -58,8 +58,8 @@ const FooterSection = () => {
                   {/* <img
                     src="/assets/img/webp/logo-green-dark.webp"
                     alt="logo"
-                    width="111"
-                    height="36"
+                    width="111" 
+                    height="36" 
                   /> */}
                 </Link>
                 <p className="col-sm-8 col-12 flex justify-end items-center sm:mb-[20px] xs:text-center xs:justify-center mb-0">
@@ -67,7 +67,7 @@ const FooterSection = () => {
                   <a
                     aria-label="ThemeZaa link"
                     className="text-darkgray font-sans underline underline-offset-4 font-medium text-base inline-block hover:text-basecolor"
-                    href="https://www.syntax-ai.tech/"
+                    href="https://www.syntax-ai.tech"
                     target="_blank"
                     rel="noreferrer"
                   >

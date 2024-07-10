@@ -17,6 +17,8 @@ import FooterSection from '../Footer/FooterSection';
 const BlogSimplePage = () => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 6;
 
   useEffect(() => {
     const fetchBlogData = async () => {
@@ -47,6 +49,14 @@ const BlogSimplePage = () => {
     fetchBlogData();
   }, []);
 
+  // Get current blogs
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   return (
     <>
     <HeaderSection theme="light"/>
@@ -72,7 +82,17 @@ const BlogSimplePage = () => {
               {loading ? (
                 <div>Loading...</div>
               ) : (
-                <BlogSimple link="/blogdetail/" overlay="#374162" pagination={true} grid="grid grid-3col xl-grid-2col lg-grid-2col md-grid-1col sm-grid-1col xs-grid-1col gutter-double-extra-large" data={blogs} />
+                <BlogSimple 
+                  link="/blogdetail/" 
+                  overlay="#374162" 
+                  pagination={true} 
+                  grid="grid grid-3col xl-grid-2col lg-grid-2col md-grid-1col sm-grid-1col xs-grid-1col gutter-double-extra-large" 
+                  data={currentBlogs} 
+                  paginate={paginate}
+                  currentPage={currentPage}
+                  totalBlogs={blogs.length}
+                  blogsPerPage={blogsPerPage}
+                />
               )}
             </Col>
           </Row>
