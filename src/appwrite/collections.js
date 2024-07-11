@@ -51,4 +51,20 @@ export const collections = [
     id: "668d94c8000ec5a71ece",
     name: "representatives",
   },
+  {
+    id: "668fe681000cd7cff7d6",
+    name: "hospitalKontakteHeader",
+  },
+  {
+    id: "668fe6dc001b489ec619",
+    name: "hospitalKontakte",
+  },
+  {
+    id: "668fef8c0009f0d60af7",
+    name: "formBody",
+  },
+  {
+    id: "668ff363001fb9bcf614",
+    name: "formHeader",
+  },
 ];

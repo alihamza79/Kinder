@@ -64,6 +64,16 @@ import Addblog from "./Pages/AdminDashboard/blogs/Addblog";
 import Editblog from "./Pages/AdminDashboard/blogs/Editblog";
 import BlogView from "./Pages/AdminDashboard/blogs/BlogView";
 import RepresentationData from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentationData";
+import HospitalKontakteHeaderList from "./Pages/AdminDashboard/Hospital_Kontakte/HospitalKontakteHeaderList";
+import EditHospitalKontakteHeader from "./Pages/AdminDashboard/Hospital_Kontakte/EditHospitalKontakteHeader";
+import HospitalKontakteList from "./Pages/AdminDashboard/Hospital_Kontakte/HospitalKontakteList";
+import EditHospitalKontakte from "./Pages/AdminDashboard/Hospital_Kontakte/EditHospitalKontakte";
+import AddHospitalKontakte from "./Pages/AdminDashboard/Hospital_Kontakte/AddHospitalKontakte";
+import FormBodyList from "./Pages/AdminDashboard/form/FormBodyList";
+import EditFormBody from "./Pages/AdminDashboard/form/EditFormBody";
+import AddFormBody from "./Pages/AdminDashboard/form/AddFormBody";
+import FormHeaderList from "./Pages/AdminDashboard/form/FormHeaderList";
+import EditFormHeader from "./Pages/AdminDashboard/form/EditFormHeader";
 
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
@@ -209,6 +219,29 @@ const DashboardRoutes = () => (
         <Route path="/blogview" element={<BlogView />} />
         <Route path="/blogview/addblog" element={<Addblog />} />
         <Route path="/blogview/edit/:id" element={<Editblog />} />
+
+        {/* Hospital Kontakte Header */}
+
+        <Route path="/hospitalkontakteheader" element={<HospitalKontakteHeaderList />} />
+        <Route path="/hospitalkontakteheader/edithospitalkontakteheader/:id" element={<EditHospitalKontakteHeader />} />
+
+        {/* Hospital Kontakte Body */}
+
+        <Route path="/hospitalkontakteliste" element={<HospitalKontakteList />} />
+        <Route path="/hospitalkontakteliste/addhospitalkontakte" element={<AddHospitalKontakte />} />
+        <Route path="/hospitalkontakteliste/edithospitalkontakte/:id" element={<EditHospitalKontakte />} />
+
+        {/* Form Header */}
+
+        <Route path="/formheader" element={<FormHeaderList />} />
+        <Route path="/formheader/editformheader/:id" element={<EditFormHeader />} />
+
+        {/* Form  */}
+
+        <Route path="/formbody" element={<FormBodyList />} />
+        <Route path="/formbody/addformbody" element={<AddFormBody />} />
+        <Route path="/formbody/editformbody/:id" element={<EditFormBody />} />
+
       </Routes>
     </Suspense>
   </AnimatePresence>

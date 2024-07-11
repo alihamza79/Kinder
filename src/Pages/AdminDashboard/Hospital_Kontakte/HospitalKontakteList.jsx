@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 
-const LinksList = () => {
+const HospitalKontakteList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState(null);
@@ -18,15 +18,15 @@ const LinksList = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const updateSuccess = sessionStorage.getItem("updateLinkSuccess");
-    const addSuccess = sessionStorage.getItem("addLinkSuccess");
+    const updateSuccess = sessionStorage.getItem("updateHospitalKontakteSuccess");
+    const addSuccess = sessionStorage.getItem("addHospitalKontakteSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateLinkSuccess");
+      sessionStorage.removeItem("updateHospitalKontakteSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addLinkSuccess");
+      sessionStorage.removeItem("addHospitalKontakteSuccess");
     }
     fetchData();
   }, [location]);
@@ -34,7 +34,7 @@ const LinksList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.links.list();
+      const querySnapshot = await db.hospitalKontakte.list();
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
@@ -49,8 +49,8 @@ const LinksList = () => {
 
   const handleDelete = async () => {
     try {
-      await db.links.delete(selectedRecordId);
-      toast.success("Link deleted successfully!", { autoClose: 2000 });
+      await db.hospitalKontakte.delete(selectedRecordId);
+      toast.success("Hospital Kontakte deleted successfully!", { autoClose: 2000 });
       fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
@@ -116,7 +116,7 @@ const LinksList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/linkslist/editlink/${record.id}`}
+                to={`/hospitalkontakteliste/edithospitalkontakte/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit
@@ -145,7 +145,7 @@ const LinksList = () => {
       <Sidebar
         id="menu-item4"
         id1="menu-items4"
-        activeClassName="links"
+        activeClassName="hospitalkontakteliste"
       />
       <div className="page-wrapper">
         <div className="content">
@@ -154,17 +154,17 @@ const LinksList = () => {
                 <li className="nav-item ">
                   <Link
                     className="nav-link"
-                    to="/linkheader"
+                    to="/hospitalkontakteheader"
                   >
-                    Links Header
+                    Hospital Kontakte Header
                   </Link>
                 </li>
                 <li className="nav-item active">
                   <Link
                     className="nav-link"
-                    to="/linkslist"
+                    to="/hospitalkontakteliste"
                   >
-                    Links Body
+                    Hospital Kontakte Body
                   </Link>
                 </li>
               </ul>
@@ -182,7 +182,7 @@ const LinksList = () => {
                     </i>
                   </li>
                   <li className="breadcrumb-item active">
-                    Links
+                    Hospital Kontakte
                   </li>
                 </ul>
               </div>
@@ -196,11 +196,11 @@ const LinksList = () => {
                     <div className="row align-items-center">
                       <div className="col">
                         <div className="doctor-table-blk">
-                          <h3>Links</h3>
+                          <h3>Hospital Kontakte</h3>
                           <div className="doctor-search-blk">
                             <div className="add-group">
                               <Link
-                                to="/linkslist/addlink"
+                                to="/hospitalkontakteliste/addhospitalkontakte"
                                 className="btn btn-primary add-pluss ms-2"
                               >
                                 <img src={plusicon} alt="#" />
@@ -255,7 +255,7 @@ const LinksList = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this link?</h3>
+                <h3>Are you sure you want to delete this hospital kontakte?</h3>
                 <div className="m-t-20">
                   <Button
                     onClick={hideDeleteModal}
@@ -281,4 +281,4 @@ const LinksList = () => {
   );
 };
 
-export default LinksList;
+export default HospitalKontakteList;

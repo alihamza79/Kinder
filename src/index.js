@@ -55,6 +55,16 @@ const LoadStyles = () => {
         "/representationdates/:id/representatives/addrepresentative",
         "/representationdates/:id/representatives/editrepresentative/:id1",
         "/representationdata",
+        "/hospitalkontakteheader",
+        "/hospitalkontakteheader/edithospitalkontakteheader/:id",
+        "/hospitalkontakteliste",
+        "/hospitalkontakteliste/addhospitalkontakte",
+        "/hospitalkontakteliste/edithospitalkontakte/:id" ,
+        "/formbody",
+        "/formbody/addformbody",
+        "/formbody/editformbody/:id",
+        "/formheader",
+        "/formheader/editformheader/:id"
       ];
 
       try {
