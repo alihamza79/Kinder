@@ -21,25 +21,25 @@ const LandingRoutes = () => (
       <Routes>
         <Route
           path="/"
-          element={<HomeStartupPage style={{ "--base-color": "#27ae60" }} />}
+          element={<HomeStartupPage style={{ "--base-color": "#02877E" }} />}
         />
         <Route path="/vertretung" element={<Vertretung />} />
         <Route path="/wichtigeinfo" element={<WichtigeInfo />} />
 
-        <Route path="allnews" element={<BlogSimplePage />} />
+        <Route path="/allnews" element={<BlogSimplePage />} />
 
         <Route path="blogdetail">
           <Route
             path=":id"
             element={
-              <BlogStandardPostPage style={{ "--base-color": "#0038e3" }} />
+              <BlogStandardPostPage style={{ "--base-color": "#02877E" }} />
             }
           />
         </Route>
 
         <Route
           path="/privacy"
-          element={<Privacy style={{ "--base-color": "#0038e3" }} />}
+          element={<Privacy style={{ "--base-color": "#02877E" }} />}
         />
       </Routes>
     </Suspense>
