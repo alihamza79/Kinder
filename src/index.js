@@ -54,6 +54,7 @@ const LoadStyles = () => {
         "/representationdates/addrepresentationdate",
         "/representationdates/:id/representatives/addrepresentative",
         "/representationdates/:id/representatives/editrepresentative/:id1",
+        "/representationdata",
       ];
 
       try {

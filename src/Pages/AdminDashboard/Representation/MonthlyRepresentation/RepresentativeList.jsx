@@ -17,6 +17,7 @@ const RepresentativeList = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const location = useLocation();
+  const [representationDate,setRepresentationDate]=useState();
   const navigate = useNavigate();
   const { id } = useParams(); // Get the representation date ID from the URL
 
@@ -41,7 +42,12 @@ const RepresentativeList = () => {
       const representationDateDoc = await db.representationDates.get(id);
       const representativeIds = representationDateDoc.representativesCollection;
 
-      // Fetch the representative documents
+      setRepresentationDate(
+        representationDateDoc.fromDate === representationDateDoc.toDate
+          ? new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')
+          : `${new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')} - ${new Date(representationDateDoc.toDate).toLocaleDateString().replace(/\//g, '.')}`
+      );
+            // Fetch the representative documents
       const representativePromises = representativeIds.map((repId) => db.representatives.get(repId));
       const representatives = await Promise.all(representativePromises);
 
@@ -186,7 +192,7 @@ const RepresentativeList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>Representatives</h3>
+                            <h3>{`${representationDate} Representatives`}</h3>
                             <div className="doctor-search-blk">
                               <div className="add-group">
                                 <Link
