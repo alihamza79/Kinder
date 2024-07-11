@@ -83,59 +83,67 @@ const RepresentationDatesList = () => {
       render: (text, record, index) => index + 1,
     },
     {
-      title: "From",
-      dataIndex: "fromDate",
-      key: "fromDate",
-      render: (text) => new Date(text).toLocaleDateString(),
+        title: "Date",
+        dataIndex: "date",
+        key: "date",
+        render: (text, record) => {
+            const { fromDate, toDate } = record;
+            if (fromDate === toDate) {
+                return new Date(fromDate).toLocaleDateString();
+            } else {
+                return `${new Date(fromDate).toLocaleDateString()} - ${new Date(toDate).toLocaleDateString()}`;
+            }
+        },
     },
     {
-      title: "To",
-      dataIndex: "toDate",
-      key: "toDate",
-      render: (text) => new Date(text).toLocaleDateString(),
-    },
-    {
-      title: "",
-      dataIndex: "actions",
+      title: 'Representatives View',
+      dataIndex: 'view',
       render: (text, record) => (
-        <div className="text-end">
-          <div className="dropdown dropdown-action">
-            <Link
-              to="#"
-              className="action-icon dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i className="fas fa-ellipsis-v" />
-            </Link>
-            <div className="dropdown-menu dropdown-menu-end">
-              <Link
-                className="dropdown-item"
-                to={`/representationdates/${record.id}/representatives`}
-              >
-                <i className="far fa-eye me-2" />
-                View Representatives
-              </Link>
-              <Link
-                className="dropdown-item"
-                to={`/representationdates/editrepresentationdate/${record.id}`}
-              >
-                <i className="far fa-edit me-2" />
-                Edit
-              </Link>
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={() => showDeleteModal(record.id)}
-              >
-                <i className="fa fa-trash-alt m-r-5"></i> Delete
-              </Link>
-            </div>
-          </div>
-        </div>
+        <Link          to={`/representationdates/${record.id}/representatives`}
+        >
+          <span className="custom-badge status-green">
+            View Representatives
+          </span>
+        </Link>
       ),
     },
+    {
+        title: "",
+        dataIndex: "actions",
+        render: (text, record) => (
+            <div className="text-end">
+                <div className="dropdown dropdown-action">
+                    <Link
+                        to="#"
+                        className="action-icon dropdown-toggle"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                    >
+                        <i className="fas fa-ellipsis-v" />
+                    </Link>
+                    <div className="dropdown-menu dropdown-menu-end">
+                        
+                        <Link
+                            className="dropdown-item"
+                            to={`/representationdates/editrepresentationdate/${record.id}`}
+                        >
+                            <i className="far fa-edit me-2" />
+                            Edit
+                        </Link>
+                        <Link
+                            className="dropdown-item"
+                            to="#"
+                            onClick={() => showDeleteModal(record.id)}
+                        >
+                            <i className="fa fa-trash-alt m-r-5"></i> Delete
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        ),
+    },
   ];
+
 
   const handleRefresh = () => {
     fetchData(); // Refresh data from Appwrite
