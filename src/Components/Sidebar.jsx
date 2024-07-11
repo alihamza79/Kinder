@@ -250,6 +250,36 @@ const Sidebar = (props) => {
                 </li>
 
 
+              {/* Hospital Kontakte */}
+
+              <li className="submenu">
+                  <Link
+                    to="/hospitalkontakteheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Hospital Kontakte</span> 
+                  </Link>
+                </li>
+
+                {/* Form  */}
+                <li className="submenu">
+                  <Link
+                    to="/formheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Form</span> 
+                  </Link>
+                </li>
+
+
               </ul>
               <div className="logout-btn">
                 <Link to="/login">
