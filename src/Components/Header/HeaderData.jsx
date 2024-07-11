@@ -5,11 +5,7 @@ const HeaderData = [
     },
 
   
-    {
-
-        title: 'All News',
-        link: "/allnews"
-    },
+    
     
     {
         title: "Wichtige Information",
@@ -20,6 +16,16 @@ const HeaderData = [
         title: "Vertretung",
         link: "/vertretung"
         
+    },
+    {
+
+        title: 'All News',
+        link: "/allnews"
+    },
+    {
+
+        title: 'Contact Us',
+        link: "/contactus"
     },
     {
         title: "Login",

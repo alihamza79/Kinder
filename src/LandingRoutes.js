@@ -6,6 +6,7 @@ import { AnimatePresence } from "framer-motion";
 import HomeStartupPage from "./Pages/Home/Startup/Startup";
 import Vertretung from "./Pages/Vertretung/Vertretung";
 import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
+import ContactUsClassicPage from "./Pages/Contact/ContactUsClassicPage";
 
 const Privacy = lazy(() => import("./Pages/Privacy"));
 
@@ -36,7 +37,10 @@ const LandingRoutes = () => (
             }
           />
         </Route>
-
+        <Route
+          path="/contactus"
+          element={<ContactUsClassicPage style={{ "--base-color": "#02877E" }} />}
+        />
         <Route
           path="/privacy"
           element={<Privacy style={{ "--base-color": "#02877E" }} />}
