@@ -10,7 +10,7 @@ import db from '../../appwrite/Services/dbServices';
 
 const Vertretung = () => {
   const [tabData, setTabData] = useState();
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
   useEffect(() => {
     const fetchRepresentationDates = async () => {
@@ -42,10 +42,15 @@ const Vertretung = () => {
           })
         );
   
+        const formatDate = (dateString) => {
+          const date = new Date(dateString);
+          return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+        };
+  
         const data = months.map((month, index) => {
           const monthData = fetchedData.filter((doc) => new Date(doc.fromDate).getMonth() === index);
           const activities = monthData.map((doc) => ({
-            time: doc.fromDate === doc.toDate ? doc.fromDate : `${doc.fromDate} - ${doc.toDate}`,
+            time: doc.fromDate === doc.toDate ? formatDate(doc.fromDate) : `${formatDate(doc.fromDate)} - ${formatDate(doc.toDate)}`,
             representatives: doc.representatives,
           }));
           return {
@@ -64,6 +69,7 @@ const Vertretung = () => {
   
     fetchRepresentationDates();
   }, []);
+  
   
   // Ensure that `tabData` is being logged and not `tabData` from the state
   console.log("Tab data outside useEffect: ", tabData);
