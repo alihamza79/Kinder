@@ -53,42 +53,18 @@ const HeaderSection = (props) => {
       >
         <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
           <Link aria-label="header logo" className="flex items-center" to="/">
-            <Navbar.Brand>
-              <img
-                className="default-logo"
-                width="150"
-                height="50"
-                src="/assets/img/webp/logo-cropped.png"
-                data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                alt="logo"
-              />
-              <img
-                className="alt-logo"
-                width="150"
-                height="50"
-                src="/assets/img/webp/logo-cropped.png"
-                data-rjs="/assets/img/webp/logo-cropped.png"
-                alt="logo"
-              />
-              <img
-                className="mobile-logo"
-                width="150"
-                height="50"
-                src="/assets/img/webp/logo-cropped.png"
-                data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                alt="logo"
-              />
-              <span
-                style={{
-                  marginLeft: '10px',
-                  color: theme === 'dark' ? '#fff' : '#028780',
-                  fontSize: '15px',
-                  fontWeight: 'bold',
-                }}
-              >
-                Kinder- und Jugendarztpraxis
-              </span>
-            </Navbar.Brand>
+            <img
+              className="default-logo w-[100px] h-[100px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+              src="/assets/img/webp/logo1.png"
+              data-rjs="/assets/img/webp/logo-cropped@2x.png"
+              alt="logo"
+            />
+            <img
+              className="default-logo w-[250px] h-[160px] md:w-[190px] md:h-[120px] sm:w-[140px] sm:h-[100px]"
+              src="/assets/img/webp/logo2.png"
+              data-rjs="/assets/img/webp/logo-cropped@2x.png"
+              alt="logo"
+            />
           </Link>
         </Col>
         <Navbar.Toggle className="order-last md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
