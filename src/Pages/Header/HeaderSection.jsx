@@ -54,17 +54,28 @@ const HeaderSection = (props) => {
         <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
           <Link aria-label="header logo" className="flex items-center" to="/">
             <img
-              className="default-logo w-[100px] h-[100px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+              className="default-logo w-[80px] h-[60px] md:w-[60px] md:h-[60px] sm:w-[50px] sm:h-[50px]"
               src="/assets/img/webp/logo1.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
               alt="logo"
             />
             <img
-              className="default-logo w-[250px] h-[160px] md:w-[190px] md:h-[120px] sm:w-[140px] sm:h-[100px]"
+              className="default-logo w-[170px] h-[120px] md:w-[160px] md:h-[110px] sm:w-[130px] sm:h-[100px]"
               src="/assets/img/webp/logo2.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
               alt="logo"
             />
+
+
+            <Navbar.Brand>
+              <img
+                className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+
+                src="/assets/img/webp/logo1.png"
+                data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                alt="logo"
+              />
+            </Navbar.Brand>
           </Link>
         </Col>
         <Navbar.Toggle className="order-last md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
@@ -152,3 +163,4 @@ const HeaderSection = (props) => {
 };
 
 export default HeaderSection;
+
