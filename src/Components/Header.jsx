@@ -1,9 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { baricon, baricon1, logo } from "./imagepath";
+import { signOutUser, getCurrentUser } from "../appwrite/Services/authServices";
 
 const Header = () => {
+  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const user = await getCurrentUser();
+        setUserName(user.name);
+      } catch (error) {
+        console.error("Failed to fetch user details", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to logout", error);
+    }
+  };
+  const handleLogoutHome = async () => {
+    try {
+      await signOutUser();
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to logout", error);
+    }
+  };
 
   const handlesidebar = () => {
     document.body.classList.toggle("mini-sidebar");
@@ -17,12 +48,11 @@ const Header = () => {
       .classList.toggle("opened");
   };
 
-
   return (
     <div className="main-wrapper">
       <div className="header">
         <div className="header-left">
-          <Link className="logo" to={"/"}>
+          <Link className="logo" to={"/"} onClick={handleLogoutHome}>
             <img src={logo} width={35} height={35} alt="" /> <span>Eskino</span>
           </Link>
         </div>
@@ -46,7 +76,7 @@ const Header = () => {
               data-bs-toggle="dropdown"
             >
               <div className="user-names">
-                <h5>Ali Hamza </h5>
+                <h5>{userName}</h5>
                 <span>Admin</span>
               </div>
             </Link>
@@ -54,12 +84,13 @@ const Header = () => {
               <Link
                 className="dropdown-item"
                 to="#"
+                onClick={handleLogout}
               >
                 Logout
               </Link>
             </div>
           </li>
-          <button  className="inline-flex items-center me-5 cursor-pointer mx-[-2px] my-4 bg-transparent border-0">
+          <button   className="inline-flex items-center me-5 cursor-pointer mx-[-2px] my-4 bg-transparent border-0">
             <div className="relative w-11 h-6 bg-blue-800 rounded-full peer dark:bg-blue-900 peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"></div>
           </button>
         </ul>
@@ -74,7 +105,7 @@ const Header = () => {
             <i className="fa-solid fa-ellipsis-vertical" />
           </Link>
           <div className="dropdown-menu dropdown-menu-end">
-            <Link className="dropdown-item" to="#" >
+            <Link className="dropdown-item" to="#" onClick={handleLogout}>
               Logout
             </Link>
           </div>

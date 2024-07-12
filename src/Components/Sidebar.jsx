@@ -4,9 +4,11 @@ import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom";
 import { blog, dashboard, doctor, doctorschedule, logout, menuicon04, menuicon06, menuicon08, menuicon09, menuicon10, menuicon11, menuicon12, menuicon14, menuicon15, menuicon16, patients, sidemenu } from './imagepath';
 import Scrollbars from "react-custom-scrollbars-2";
-
-
+import { signOutUser } from '../appwrite/Services/authServices';
+import { useNavigate } from 'react-router-dom';
 const Sidebar = (props) => {
+  const navigate = useNavigate();
+
   const [sidebar, setSidebar] = useState("");
   const handleClick = (e, item, item1, item3) => {
     const div = document.querySelector(`#${item}`);
@@ -22,6 +24,14 @@ const Sidebar = (props) => {
     }
   }, [])
 
+  const handleLogout = async () => {
+    try {
+      await signOutUser();
+      navigate("/login");
+    } catch (error) {
+      console.error("Failed to logout", error);
+    }
+  };
 
   const expandMenu = () => {
     document.body.classList.remove("expand-menu");
@@ -282,7 +292,7 @@ const Sidebar = (props) => {
 
               </ul>
               <div className="logout-btn">
-                <Link to="/login">
+                <Link to="/login" onClick={handleLogout}>
                   <span className="menu-side">
                     <img src={logout} alt="" />
                   </span>{" "}

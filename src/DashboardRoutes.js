@@ -1,20 +1,8 @@
-import React, { Suspense } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { Suspense, useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-// Import Dashboard CSS and Bootstrap
-
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "./Assets/css/bootstrap.min.css";
-
-// import "./Assets/css/style.css";
-
-// import "./Assets/css/select2.min.css";
-
-// import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-// import "../node_modules/bootstrap/dist/js/bootstrap.bundle.js";
-
-// Dashboard Components
+import { checkAuth } from "./appwrite/Services/authServices";
 import Login from "./Pages/login";
 import ForgotPassword from "./Pages/login/ForgotPassword";
 import Signup from "./Pages/login/Signup";
@@ -75,6 +63,26 @@ import AddFormBody from "./Pages/AdminDashboard/form/AddFormBody";
 import FormHeaderList from "./Pages/AdminDashboard/form/FormHeaderList";
 import EditFormHeader from "./Pages/AdminDashboard/form/EditFormHeader";
 
+const ProtectedRoute = ({ element }) => {
+  const [isAuth, setIsAuth] = useState(null);
+
+  useEffect(() => {
+    const authenticate = async () => {
+      const authStatus = await checkAuth();
+      setIsAuth(authStatus);
+    };
+
+    authenticate();
+  }, []);
+
+  if (isAuth === null) {
+    // You can show a loader here while checking authentication
+    return <div>Loading...</div>;
+  }
+
+  return isAuth ? element : <Navigate to="/login" />;
+};
+
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
@@ -82,166 +90,96 @@ const DashboardRoutes = () => (
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+        <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/lockscreen" element={<LockScreen />} />
-        <Route path="/changepassword" element={<ChangePassword />} />
+        <Route path="/lockscreen" element={<ProtectedRoute element={<LockScreen />} />} />
+        <Route path="/changepassword" element={<ProtectedRoute element={<ChangePassword />} />} />
         <Route path="/error" element={<Error />} />
         <Route path="/server-error" element={<ServerError />} />
-        <Route path="/blankpage" element={<BlankPage />} />
-        <Route path="/gallery" element={<GalleryImage />} />
+        <Route path="/blankpage" element={<ProtectedRoute element={<BlankPage />} />} />
+        <Route path="/gallery" element={<ProtectedRoute element={<GalleryImage />} />} />
 
-        <Route path="/admin-dashboard" element={<Admin_Dashboard />} />
+        <Route path="/admin-dashboard" element={<ProtectedRoute element={<Admin_Dashboard />} />} />
 
         {/* Hero Section */}
         {/* Hero Carousel */}
-        <Route path="/herocarousel" element={<CarouselList />} />
-
-        <Route
-          path="/herocarousel/addherocarousel"
-          element={<AddCarouselItem />}
-        />
-
-        <Route
-          path="/herocarousel/editherocarousel/:id"
-          element={<EditCarouselItem />}
-        />
+        <Route path="/herocarousel" element={<ProtectedRoute element={<CarouselList />} />} />
+        <Route path="/herocarousel/addherocarousel" element={<ProtectedRoute element={<AddCarouselItem />} />} />
+        <Route path="/herocarousel/editherocarousel/:id" element={<ProtectedRoute element={<EditCarouselItem />} />} />
 
         {/* InformationCard */}
-
-        <Route path="/informationcard" element={<InformationCardList />} />
-        <Route
-          path="/informationcard/editinformationcard/:id"
-          element={<EditInformationCard />}
-        />
-        <Route
-          path="/informationcard/addinformationcard"
-          element={<AddInformationCard />}
-        />
+        <Route path="/informationcard" element={<ProtectedRoute element={<InformationCardList />} />} />
+        <Route path="/informationcard/editinformationcard/:id" element={<ProtectedRoute element={<EditInformationCard />} />} />
+        <Route path="/informationcard/addinformationcard" element={<ProtectedRoute element={<AddInformationCard />} />} />
 
         {/* About list */}
-
-        <Route path="/aboutlist" element={<AboutList />} />
-        <Route
-          path="/aboutlist/editaboutitem/:id"
-          element={<EditAboutItem />}
-        />
+        <Route path="/aboutlist" element={<ProtectedRoute element={<AboutList />} />} />
+        <Route path="/aboutlist/editaboutitem/:id" element={<ProtectedRoute element={<EditAboutItem />} />} />
 
         {/* Services */}
-
-        <Route path="/serviceslist" element={<ServicesList />} />
-        <Route path="/serviceslist/editservice/:id" element={<EditService />} />
-        <Route path="/serviceslist/addservice" element={<AddService />} />
+        <Route path="/serviceslist" element={<ProtectedRoute element={<ServicesList />} />} />
+        <Route path="/serviceslist/editservice/:id" element={<ProtectedRoute element={<EditService />} />} />
+        <Route path="/serviceslist/addservice" element={<ProtectedRoute element={<AddService />} />} />
 
         {/* Service Header */}
-
-        <Route path="/serviceheader" element={<ServiceHeaderList />} />
-        <Route
-          path="/serviceheader/editserviceheader/:id"
-          element={<EditServiceHeader />}
-        />
-        <Route
-          path="/serviceheader/addserviceheader"
-          element={<AddServiceHeader />}
-        />
+        <Route path="/serviceheader" element={<ProtectedRoute element={<ServiceHeaderList />} />} />
+        <Route path="/serviceheader/editserviceheader/:id" element={<ProtectedRoute element={<EditServiceHeader />} />} />
+        <Route path="/serviceheader/addserviceheader" element={<ProtectedRoute element={<AddServiceHeader />} />} />
 
         {/* Team Header */}
-
-        <Route path="/teamheader" element={<TeamHeaderList />} />
-        <Route
-          path="/teamheader/editteamheader/:id"
-          element={<EditTeamHeader />}
-        />
+        <Route path="/teamheader" element={<ProtectedRoute element={<TeamHeaderList />} />} />
+        <Route path="/teamheader/editteamheader/:id" element={<ProtectedRoute element={<EditTeamHeader />} />} />
 
         {/* Team Body */}
-
-        <Route path="/teamlist" element={<TeamBodyList />} />
-        <Route
-          path="/teamlist/editteammember/:id"
-          element={<EditTeamMember />}
-        />
-        <Route path="/teamlist/addteammember" element={<AddTeamMember />} />
+        <Route path="/teamlist" element={<ProtectedRoute element={<TeamBodyList />} />} />
+        <Route path="/teamlist/editteammember/:id" element={<ProtectedRoute element={<EditTeamMember />} />} />
+        <Route path="/teamlist/addteammember" element={<ProtectedRoute element={<AddTeamMember />} />} />
 
         {/* Links */}
-
-        <Route path="/linkslist" element={<LinksList />} />
-        <Route path="/linkslist/editlink/:id" element={<EditLink />} />
-        <Route path="/linkslist/addlink" element={<AddLink />} />
+        <Route path="/linkslist" element={<ProtectedRoute element={<LinksList />} />} />
+        <Route path="/linkslist/editlink/:id" element={<ProtectedRoute element={<EditLink />} />} />
+        <Route path="/linkslist/addlink" element={<ProtectedRoute element={<AddLink />} />} />
 
         {/* Links Header */}
-
-        <Route path="/linkheader" element={<LinksHeaderList />} />
-        <Route
-          path="/linkheader/editlinkheader/:id"
-          element={<EditLinkHeader />}
-        />
+        <Route path="/linkheader" element={<ProtectedRoute element={<LinksHeaderList />} />} />
+        <Route path="/linkheader/editlinkheader/:id" element={<ProtectedRoute element={<EditLinkHeader />} />} />
 
         {/* Representation */}
-        {/* Monthly Repserentation */}
-        <Route
-          path="/monthlyrepresentation/addmonthlyrepresentation"
-          element={<AddMonthlyRepresentation />}
-        />
-
-        <Route path="/representationdates" element={<RepresentationDates />} />
-
-        <Route
-          path="/representationdates/addrepresentationdate"
-          element={<AddRepresentationDate />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives"
-          element={<RepresentativeList />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives/addrepresentative"
-          element={<AddRepresentative />}
-        />
-
-        <Route
-          path="/representationdates/:id/representatives/editrepresentative/:id1"
-          element={<EditRepresentative />}
-        />
-
-        <Route path="representationdata" element={<RepresentationData />} />
+        {/* Monthly Representation */}
+        <Route path="/monthlyrepresentation/addmonthlyrepresentation" element={<ProtectedRoute element={<AddMonthlyRepresentation />} />} />
+        <Route path="/representationdates" element={<ProtectedRoute element={<RepresentationDates />} />} />
+        <Route path="/representationdates/addrepresentationdate" element={<ProtectedRoute element={<AddRepresentationDate />} />} />
+        <Route path="/representationdates/:id/representatives" element={<ProtectedRoute element={<RepresentativeList />} />} />
+        <Route path="/representationdates/:id/representatives/addrepresentative" element={<ProtectedRoute element={<AddRepresentative />} />} />
+        <Route path="/representationdates/:id/representatives/editrepresentative/:id1" element={<ProtectedRoute element={<EditRepresentative />} />} />
+        <Route path="representationdata" element={<ProtectedRoute element={<RepresentationData />} />} />
 
         {/* Location Autocomplete Component */}
-        <Route
-          path="/locationautocomplete"
-          element={<LocationAutocomplete />}
-        />
+        <Route path="/locationautocomplete" element={<ProtectedRoute element={<LocationAutocomplete />} />} />
 
         {/* Blogs */}
-
-        <Route path="/blogview" element={<BlogView />} />
-        <Route path="/blogview/addblog" element={<Addblog />} />
-        <Route path="/blogview/edit/:id" element={<Editblog />} />
+        <Route path="/blogview" element={<ProtectedRoute element={<BlogView />} />} />
+        <Route path="/blogview/addblog" element={<ProtectedRoute element={<Addblog />} />} />
+        <Route path="/blogview/edit/:id" element={<ProtectedRoute element={<Editblog />} />} />
 
         {/* Hospital Kontakte Header */}
-
-        <Route path="/hospitalkontakteheader" element={<HospitalKontakteHeaderList />} />
-        <Route path="/hospitalkontakteheader/edithospitalkontakteheader/:id" element={<EditHospitalKontakteHeader />} />
+        <Route path="/hospitalkontakteheader" element={<ProtectedRoute element={<HospitalKontakteHeaderList />} />} />
+        <Route path="/hospitalkontakteheader/edithospitalkontakteheader/:id" element={<ProtectedRoute element={<EditHospitalKontakteHeader />} />} />
 
         {/* Hospital Kontakte Body */}
-
-        <Route path="/hospitalkontakteliste" element={<HospitalKontakteList />} />
-        <Route path="/hospitalkontakteliste/addhospitalkontakte" element={<AddHospitalKontakte />} />
-        <Route path="/hospitalkontakteliste/edithospitalkontakte/:id" element={<EditHospitalKontakte />} />
+        <Route path="/hospitalkontakteliste" element={<ProtectedRoute element={<HospitalKontakteList />} />} />
+        <Route path="/hospitalkontakteliste/addhospitalkontakte" element={<ProtectedRoute element={<AddHospitalKontakte />} />} />
+        <Route path="/hospitalkontakteliste/edithospitalkontakte/:id" element={<ProtectedRoute element={<EditHospitalKontakte />} />} />
 
         {/* Form Header */}
+        <Route path="/formheader" element={<ProtectedRoute element={<FormHeaderList />} />} />
+        <Route path="/formheader/editformheader/:id" element={<ProtectedRoute element={<EditFormHeader />} />} />
 
-        <Route path="/formheader" element={<FormHeaderList />} />
-        <Route path="/formheader/editformheader/:id" element={<EditFormHeader />} />
-
-        {/* Form  */}
-
-        <Route path="/formbody" element={<FormBodyList />} />
-        <Route path="/formbody/addformbody" element={<AddFormBody />} />
-        <Route path="/formbody/editformbody/:id" element={<EditFormBody />} />
-
+        {/* Form Body */}
+        <Route path="/formbody" element={<ProtectedRoute element={<FormBodyList />} />} />
+        <Route path="/formbody/addformbody" element={<ProtectedRoute element={<AddFormBody />} />} />
+        <Route path="/formbody/editformbody/:id" element={<ProtectedRoute element={<EditFormBody />} />} />
       </Routes>
     </Suspense>
   </AnimatePresence>
