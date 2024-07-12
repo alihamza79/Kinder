@@ -7,22 +7,38 @@ export async function registerUser(username, email, password) {
 }
 
 export const signIn = async (email, password) => {
-  const session = await account.createEmailSession(email, password);
-  localStorage.setItem("authToken", session.userId);
-  return session;
+  try {
+    const session = await account.createEmailPasswordSession(email, password);
+    localStorage.setItem("authToken", session.$id); // Store the session ID
+    return session;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const signOutUser = () => {
-  localStorage.removeItem("authToken");
-  return account.deleteSession("current");
+export const signOutUser = async () => {
+  try {
+    await account.deleteSession('current');
+    localStorage.removeItem("authToken");
+  } catch (error) {
+    throw error;
+  }
 };
 
-export const onAuthChange = (callback) => {
-  // Appwrite doesn't have onAuthStateChanged. Use localStorage and manual checks
-  const authToken = localStorage.getItem("authToken");
-  callback(authToken ? true : false);
+export const getCurrentUser = async () => {
+  try {
+    const user = await account.get();
+    return user;
+  } catch (error) {
+    throw error;
+  }
 };
 
-export function getCurrentUser() {
-  return account.get();
-}
+export const checkAuth = async () => {
+  try {
+    await account.get(); // If this doesn't throw an error, the user is authenticated
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
