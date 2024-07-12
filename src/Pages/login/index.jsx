@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login02, loginicon01, loginicon02, loginicon03, loginlogo } from "../../Components/imagepath";
 import { Eye, EyeOff } from "feather-icons-react/build/IconComponents";
-import { signIn } from "../../appwrite/Services/authServices";
+import { signIn, checkAuth } from "../../appwrite/Services/authServices";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -10,6 +10,27 @@ const Login = () => {
   const [password, setPassword] = useState("P@ssw0rd288");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!localStorage.getItem("reloaded")) {
+      localStorage.setItem("reloaded", "true");
+      window.location.reload();
+    } else {
+      localStorage.removeItem("reloaded");
+      const checkLoggedIn = async () => {
+        try {
+          const isLoggedIn = await checkAuth();
+          if (isLoggedIn) {
+            navigate("/herocarousel");
+          }
+        } catch (error) {
+          console.error("Error checking authentication:", error);
+        }
+      };
+
+      checkLoggedIn();
+    }
+  }, [navigate]);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -22,8 +43,11 @@ const Login = () => {
       await signIn(email, password);
       navigate("/teamheader");
     } catch (error) {
+      console.error("Login failed:", error); // Log the error for more details
       if (error.message.includes("Invalid credentials")) {
         setError("Invalid email or password. Please try again.");
+      } else if (error.message.includes("Rate limit")) {
+        setError("Too many login attempts. Please wait a few minutes and try again.");
       } else {
         setError("Failed to login. Please try again later.");
       }

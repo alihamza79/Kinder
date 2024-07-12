@@ -64,7 +64,8 @@ const LoadStyles = () => {
         "/formbody/addformbody",
         "/formbody/editformbody/:id",
         "/formheader",
-        "/formheader/editformheader/:id"
+        "/formheader/editformheader/:id",
+        "/reset-password"
       ];
 
       try {

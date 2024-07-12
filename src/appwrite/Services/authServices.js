@@ -12,6 +12,7 @@ export const signIn = async (email, password) => {
     localStorage.setItem("authToken", session.$id); // Store the session ID
     return session;
   } catch (error) {
+    console.error("Login error:", error); // Log the error details
     throw error;
   }
 };
@@ -40,5 +41,14 @@ export const checkAuth = async () => {
     return true;
   } catch (error) {
     return false;
+  }
+};
+
+export const sendPasswordRecoveryEmail = async (email) => {
+  const resetPasswordUrl = `${window.location.origin}/reset-password`; // Automatically construct URL
+  try {
+    await account.createRecovery(email, resetPasswordUrl);
+  } catch (error) {
+    throw error;
   }
 };

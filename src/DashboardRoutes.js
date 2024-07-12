@@ -62,6 +62,7 @@ import EditFormBody from "./Pages/AdminDashboard/form/EditFormBody";
 import AddFormBody from "./Pages/AdminDashboard/form/AddFormBody";
 import FormHeaderList from "./Pages/AdminDashboard/form/FormHeaderList";
 import EditFormHeader from "./Pages/AdminDashboard/form/EditFormHeader";
+import ResetPassword from "./Pages/login/ResetPassword";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -90,6 +91,8 @@ const DashboardRoutes = () => (
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
         <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
         <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
         <Route path="/register" element={<Register />} />
