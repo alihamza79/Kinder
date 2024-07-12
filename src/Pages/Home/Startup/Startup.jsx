@@ -36,6 +36,9 @@ import { TeamData04 } from "../../../Components/Team/TeamData";
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
 );
+const IconWithText_Form = lazy(() =>
+  import("../../../Components/IconWithText/IconWithText")
+);
 const Buttons = lazy(() => import("../../../Components/Button/Buttons"));
 const Overlap = lazy(() => import("../../../Components/Overlap/Overlap"));
 const BlogMasonry = lazy(() => import("../../../Components/Blogs/BlogMasonry"));
@@ -78,7 +81,6 @@ const iconWithTextDataAfterHero1 = [
       "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
   },
 ];
-
 const HomeStartupPage = (props) => {
   const [informationCards, setInformationCards] = useState([
     {
@@ -114,6 +116,10 @@ const HomeStartupPage = (props) => {
   const [teamData, setTeamData] = useState(TeamData04);
   const [linksHeader, setLinksHeader] = useState("Links");
   const [linksData, setLinksData] = useState([]);
+  const [hospitalKontakteHeader, setHospitalKontakteHeader] = useState("");
+  const [hospitalKontakte, setHospitalKontakte] = useState([]);
+  const [formHeader, setFormHeader] = useState("Forms");
+  const [formBody, setFormBody] = useState([]);
 
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -152,9 +158,8 @@ const HomeStartupPage = (props) => {
         }
       } catch (error) {
         console.error("Error fetching About Us data:", error);
-      } 
+      }
     };
-
 
     const fetchServiceData = async () => {
       try {
@@ -202,7 +207,7 @@ const HomeStartupPage = (props) => {
         }
       } catch (error) {
         console.error("Error fetching Team data:", error);
-      } 
+      }
     };
 
     const fetchLinksData = async () => {
@@ -231,20 +236,26 @@ const HomeStartupPage = (props) => {
         const querySnapshot = await db.blogs.list(); // Fetch documents from Appwrite collection
         const data = await Promise.all(
           querySnapshot.documents.map(async (doc) => {
-            const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+            const imageUrl = await storageServices.images.getFileView(
+              doc.imageUrl
+            );
             return {
               id: doc.$id,
               title: doc.title,
-              date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
+              date: doc.publicationDate
+                ? new Date(doc.publicationDate).toLocaleDateString()
+                : "",
               content: doc.content,
               img: imageUrl.href,
               category: doc.tags,
-              publicationDate: new Date(doc.publicationDate) // Add a Date object for sorting
+              publicationDate: new Date(doc.publicationDate), // Add a Date object for sorting
             };
           })
         );
         // Sort the blogs by publication date in descending order and take the latest three
-        const latestBlogs = data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
+        const latestBlogs = data
+          .sort((a, b) => b.publicationDate - a.publicationDate)
+          .slice(0, 3);
         setBlogs(latestBlogs);
         setLoading(false);
       } catch (error) {
@@ -253,13 +264,66 @@ const HomeStartupPage = (props) => {
       }
     };
 
+    const fetchHospitalKontakteData = async () => {
+      try {
+        const headerSnapshot = await db.hospitalKontakteHeader.list();
+        const bodySnapshot = await db.hospitalKontakte.list();
+
+        if (headerSnapshot.documents.length > 0) {
+          setHospitalKontakteHeader(headerSnapshot.documents[0].title);
+        }
+
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = bodySnapshot.documents.map((doc) => ({
+            title: doc.title,
+            description: doc.description,
+          }));
+          setHospitalKontakte(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching hospital kontakte data:", error);
+      }
+    };
+    const fetchFormData = async () => {
+      try {
+        const headerSnapshot = await db.formHeader.list();
+        const bodySnapshot = await db.formBody.list();
+  
+        if (headerSnapshot.documents.length > 0) {
+          setFormHeader(headerSnapshot.documents[0].title);
+        }
+  
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = await Promise.all(
+            bodySnapshot.documents.map(async (doc) => {
+              const fileUrl = await storageServices.files.getFileView(doc.file);
+              return {
+                icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+                // Add an appropriate icon
+                title: doc.title,
+                content: `<a href="${fileUrl.href}" target="_blank" download>Download File</a>`,
+              };
+            })
+          );
+          setFormBody(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching form data:", error);
+      }
+    };
+
+    fetchFormData();
+
+
     fetchBlogData();
     fetchData();
     fetchAboutUsData();
     fetchServiceData();
     fetchTeamData();
     fetchLinksData();
+    fetchHospitalKontakteData();
   }, []);
+
   const getImageUrl = async (imageId) => {
     try {
       const result = storage.getFileView(buckets[0].id, imageId);
@@ -268,20 +332,15 @@ const HomeStartupPage = (props) => {
       console.error("Error fetching image URL:", error);
     }
   };
+
   return (
     <div style={props.style}>
       {/* Header Start */}
-      <HeaderSection {...props}  />      {/* Header End */}
-
-      {/* <SideButtons /> */}
+      <HeaderSection {...props} /> {/* Header End */}
 
       {/* Hero Section SLider Start */}
       <StartupPageBannerSlider />
 
-      {/* Three Cards on Hero Section Start */}
-      
-      {/* <section className="bg-cover bg-center pb-[100px] lg:pb-[10px] md:py-[110px] sm:py-[50px] startup-iconwithtext" > */}
-      {/* <Container> */}
       {/* Three Cards on Hero Section Start */}
       <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
         <Overlap className="md:mt-0">
@@ -298,35 +357,33 @@ const HomeStartupPage = (props) => {
         </Overlap>
       </div>
       {/* Three Cards on Hero Section End */}
-      {/* </Container> */}
-      {/* </section> */}
-      {/* Section End */}
 
-{/* Three Cards After Hero Section */}
+      {/* Three Cards After Hero Section */}
       <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
         <Container>
           <Row className="justify-center">
-            <m.div className="col-xl-3 col-lg-4 col-sm-7 flex flex-col md:mb-24" {...{ ...fadeIn, transition: { delay: 0.2 } }}>
-              {/* <div className="mb-[20px] md:text-center sm:mb-[10px]">
-                <span className="font-serif text-md uppercase font-medium text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] to-[#ff798e]"></span>
-              </div> */}
-              <h5 className="alt-font text-darkgray font-semibold mt-[90px] mb-[20px] font-serif md:text-center md:mb-[30px] heading-6"> Terminvergabe und Anforderung von Rezepten/Heilmitteln</h5>
-              {/* <div className="mt-auto mx-auto mx-lg-0">
-                <Buttons href="/" className="font-medium font-serif uppercase bg-[#fff] hover:bg-black rounded-none md:mb-[15px] text-xxs btn-fancy xs:mb-0" color="#000" size="sm" themeColor="#000" title="Discover litho" />
-              </div> */}
+            <m.div
+              className="col-xl-3 col-lg-4 col-sm-7 flex flex-col md:mb-24"
+              {...{ ...fadeIn, transition: { delay: 0.2 } }}
+            >
+              <h5 className="alt-font text-darkgray font-semibold mt-[90px] mb-[20px] font-serif md:text-center md:mb-[30px] heading-6">
+                Terminvergabe und Anforderung von Rezepten/Heilmitteln
+              </h5>
             </m.div>
             <Col xl={{ span: 7, offset: 2 }} lg={8}>
-              <IconWithText grid="row-cols-1 row-cols-lg-2 row-cols-sm-2 gap-y-[40px]" theme="icon-with-text-06" data={iconWithTextDataAfterHero1} animation={fadeIn} animationDelay={0.2} />
+              <IconWithText
+                grid="row-cols-1 row-cols-lg-2 row-cols-sm-2 gap-y-[40px]"
+                theme="icon-with-text-06"
+                data={iconWithTextDataAfterHero1}
+                animation={fadeIn}
+                animationDelay={0.2}
+              />
             </Col>
           </Row>
         </Container>
       </section>
 
-
-      {/* Lazy Load HTML */}
-      <InViewPort>
-        {/* About us */}
-        {/* About Us Section Start */}
+      {/* About Us Section Start */}
       <section
         className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]"
         style={{
@@ -380,10 +437,7 @@ const HomeStartupPage = (props) => {
       </section>
       {/* About Us Section End */}
 
-
-        {/* Services */}
-
-        {/* Services Section Start */}
+      {/* Services Section Start */}
       <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
         <Container>
           <Row>
@@ -416,130 +470,132 @@ const HomeStartupPage = (props) => {
       </section>
       {/* Services Section End */}
 
-       
-
-        {/* Team Section Start */}
-        <section className="py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-          <Container>
-            <Row>
-              <Col md={12} className="text-center mb-[7%]">
-                <h5 className="font-serif text-darkgray font-medium">
-                  {teamHeader}
-                </h5>
-              </Col>
-            </Row>
-            <Team
-              themeColor="dark"
-              theme="team-style-04"
-              color={[
-                "#05867E",
-                "#b263e4cc",
-                "#e05fc4cc",
-                "#f767a6cc",
-                "#ff798ecc",
-              ]}
-              data={teamData}
-              animation={fadeIn}
-              carousel={true}
-              carouselOption={{
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                navigation: false,
-                autoplay: { delay: 3000, disableOnInteraction: false },
-                pagination: { dynamicBullets: true, clickable: true },
-                breakpoints: {
-                  1200: { slidesPerView: 4 },
-                  992: { slidesPerView: 3 },
-                  768: { slidesPerView: 2 },
-                },
-              }}
-            />
-          </Container>
-          <Container>
-            <Row className="justify-center">
-              <Col className="text-center md:flex md:flex-col md:items-center gap-y-10">
-                <Buttons
-                  ariaLabel="button"
-                  href="/page/our-team"
-                  className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
-                  size="lg"
-                  color="#ffffff"
-                  themeColor="#05867E"
-                  title="All Team"
-                />
-              </Col>
-            </Row>
-          </Container>
-        </section>
-
+      {/* Team Section Start */}
+      <section className="py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col md={12} className="text-center mb-[7%]">
+              <h5 className="font-serif text-darkgray font-medium">
+                {teamHeader}
+              </h5>
+            </Col>
+          </Row>
+          <Team
+            themeColor="dark"
+            theme="team-style-04"
+            color={[
+              "#05867E",
+              "#b263e4cc",
+              "#e05fc4cc",
+              "#f767a6cc",
+              "#ff798ecc",
+            ]}
+            data={teamData}
+            animation={fadeIn}
+            carousel={true}
+            carouselOption={{
+              slidesPerView: 1,
+              spaceBetween: 30,
+              loop: true,
+              navigation: false,
+              autoplay: { delay: 3000, disableOnInteraction: false },
+              pagination: { dynamicBullets: true, clickable: true },
+              breakpoints: {
+                1200: { slidesPerView: 4 },
+                992: { slidesPerView: 3 },
+                768: { slidesPerView: 2 },
+              },
+            }}
+          />
+        </Container>
+        <Container>
+          <Row className="justify-center">
+            <Col className="text-center md:flex md:flex-col md:items-center gap-y-10">
+              <Buttons
+                ariaLabel="button"
+                href="/page/our-team"
+                className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
+                size="lg"
+                color="#ffffff"
+                themeColor="#05867E"
+                title="All Team"
+              />
+            </Col>
+          </Row>
+        </Container>
+      </section>
       {/* Team Section End */}
 
+      {/* Form Section Start */}
+      <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[6%]">
+              <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
+                {formHeader}
+              </h6>
+            </Col>
+          </Row>
+          <Row className="justify-center">
+            <Col xs={12} sm={8} md={12}>
+              <IconWithText_Form
+                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+                theme="icon-with-text-04"
+                data={formBody} // Use fetched form body data
+                animation={fadeIn}
+                animationDelay={0.2}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </section>
+      {/* Form Section End */}
 
-        {/* Form Section                     */}
-        {/* Section Start */}
-        <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+      {/* Hospital Kontakte Section Start */}
+      <section className="py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[8%]">
+              <h6 className="font-serif text-darkgray text-center font-medium mb-[25px] lg:mb-[15px]">
+                {hospitalKontakteHeader}
+              </h6>
+            </Col>
+          </Row>
+          <TextBox
+            className=""
+            grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10"
+            theme="text-box-style-02 flex-wrap"
+            data={hospitalKontakte} // Pass the fetched data here
+            animation={fadeIn}
+          />
+        </Container>
+      </section>
+      {/* Hospital Kontakte Section End */}
+
+      {/* Links Section Start */}
+      <section className="pt-20 switch-tabs">
+        <Col className="text-center">
+          <h6 className="font-serif text-darkgray text-center font-medium mb-[5%]">
+            {linksHeader}
+          </h6>
+        </Col>
+        <m.section className="py-20">
           <Container>
-            <Row>
-              <Col className="mb-[6%]">
-                <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
-                  Forms
-                </h6>
-              </Col>
-            </Row>
             <Row className="justify-center">
-              <Col xs={12} sm={8} md={12}>
-                <IconWithText
-                  grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-                  theme="icon-with-text-04"
-                  data={IconWithTextData_04}
+              <Col lg={16} md={20}>
+                <Accordions
+                  theme="accordion-style-03"
+                  data={linksData}
                   animation={fadeIn}
-                  animationDelay={0.2}
                 />
               </Col>
             </Row>
           </Container>
-        </section>
+        </m.section>
+      </section>
+      {/* Links Section End */}
 
-        {/* Section End */}
-
-        {/* Hospital Kontakte */}
-        <section className="py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-          <Container>
-            <Row>
-              <Col className="mb-[8%]">
-                <h6 className="font-serif text-darkgray text-center font-medium mb-[25px] lg:mb-[15px]">
-                  Hospital Kontakte
-                </h6>
-              </Col>
-            </Row>
-            <TextBox
-              className=""
-              grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10"
-              theme="text-box-style-02 flex-wrap"
-              data={TextBoxData02}
-              animation={fadeIn}
-            />
-          </Container>
-        </section>
-
-        {/* Links */}
-        <section className="pt-20 switch-tabs">
-          <Col className="text-center">
-            <h6 className="font-serif text-darkgray text-center font-medium mb-[5%]">{linksHeader}</h6>
-          </Col>
-          <m.section className="py-20">
-            <Container>
-              <Row className="justify-center">
-                <Col lg={16} md={20}>
-                  <Accordions theme="accordion-style-03" data={linksData} animation={fadeIn} />
-                </Col>
-              </Row>
-            </Container>
-          </m.section>
-        </section>
-
-        {/* News Section Start */}
+      {/* News Section Start */}
       <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">
         <Container>
           <Row className="justify-center">
@@ -579,85 +635,84 @@ const HomeStartupPage = (props) => {
       </section>
       {/* News Section End */}
 
-        {/* Section Start */}
-        <m.section
-          className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] cover-background overflow-visible"
-          style={{
-            backgroundImage:
-              "url(/assets/img/webp/home-startup-footer-top-bg.webp)",
-          }}
-          {...fadeIn}
-        >
-          <Container>
-            <Row className="justify-center">
-              <Col md={10} lg={7} className="text-center">
-                <span className="font-serif font-medium text-basecolor text-xmd mb-[20px] inline-block sm:mb-[10px]">
-                  Love to work together
-                </span>
-                <h2 className="heading-4 font-serif font-semibold text-darkgray inline-block text-center mb-[65px] xs:mb-[30px]">
-                  Are you ready to work with us? Let's grow your business.
-                </h2>
-                <Formik
-                  initialValues={{ email: "" }}
-                  validationSchema={Yup.object().shape({
-                    email: Yup.string()
-                      .email("Invalid email.")
-                      .required("Field is required."),
-                  })}
-                  onSubmit={async (values, actions) => {
-                    actions.setSubmitting(true);
-                    const response = await sendEmail(values);
-                    response.status === "success" && resetForm(actions);
-                  }}
-                >
-                  {({ isSubmitting, status }) => (
-                    <div className="relative subscribe-style-04 w-[93%] mx-auto xs:w-full">
-                      <Form className="relative">
-                        <Input
-                          showErrorMsg={false}
-                          type="email"
-                          name="email"
-                          className="border-[1px] border-solid border-transparent large-input xs:mb-[60px] pr-[190px]"
-                          placeholder="Enter your email address"
-                        />
-                        <button
-                          aria-label="submit"
-                          type="submit"
-                          className={`text-xs tracking-[1px] py-[12px] px-[28px] xs:!block uppercase${
-                            isSubmitting ? " loading" : ""
-                          }`}
+      {/* Footer Section Start */}
+      <m.section
+        className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] cover-background overflow-visible"
+        style={{
+          backgroundImage:
+            "url(/assets/img/webp/home-startup-footer-top-bg.webp)",
+        }}
+        {...fadeIn}
+      >
+        <Container>
+          <Row className="justify-center">
+            <Col md={10} lg={7} className="text-center">
+              <span className="font-serif font-medium text-basecolor text-xmd mb-[20px] inline-block sm:mb-[10px]">
+                Love to work together
+              </span>
+              <h2 className="heading-4 font-serif font-semibold text-darkgray inline-block text-center mb-[65px] xs:mb-[30px]">
+                Are you ready to work with us? Let's grow your business.
+              </h2>
+              <Formik
+                initialValues={{ email: "" }}
+                validationSchema={Yup.object().shape({
+                  email: Yup.string()
+                    .email("Invalid email.")
+                    .required("Field is required."),
+                })}
+                onSubmit={async (values, actions) => {
+                  actions.setSubmitting(true);
+                  const response = await sendEmail(values);
+                  response.status === "success" && resetForm(actions);
+                }}
+              >
+                {({ isSubmitting, status }) => (
+                  <div className="relative subscribe-style-04 w-[93%] mx-auto xs:w-full">
+                    <Form className="relative">
+                      <Input
+                        showErrorMsg={false}
+                        type="email"
+                        name="email"
+                        className="border-[1px] border-solid border-transparent large-input xs:mb-[60px] pr-[190px]"
+                        placeholder="Enter your email address"
+                      />
+                      <button
+                        aria-label="submit"
+                        type="submit"
+                        className={`text-xs tracking-[1px] py-[12px] px-[28px] xs:!block uppercase${
+                          isSubmitting ? " loading" : ""
+                        }`}
+                      >
+                        Subscribe Now
+                      </button>
+                    </Form>
+                    <AnimatePresence>
+                      {status && (
+                        <m.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          className="font-serif absolute top-[115%] left-0 w-full"
                         >
-                          Subscribe Now
-                        </button>
-                      </Form>
-                      <AnimatePresence>
-                        {status && (
-                          <m.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="font-serif absolute top-[115%] left-0 w-full"
-                          >
-                            <MessageBox
-                              className="py-[5px] rounded-[4px] z-[2]"
-                              theme="message-box01"
-                              variant="success"
-                              message="Your message has been sent successfully subscribed to our email list!"
-                            />
-                          </m.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
-                  )}
-                </Formik>
-              </Col>
-            </Row>
-          </Container>
-        </m.section>
-        {/* Section End */}
+                          <MessageBox
+                            className="py-[5px] rounded-[4px] z-[2]"
+                            theme="message-box01"
+                            variant="success"
+                            message="Your message has been sent successfully subscribed to our email list!"
+                          />
+                        </m.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
+              </Formik>
+            </Col>
+          </Row>
+        </Container>
+      </m.section>
+      {/* Footer Section End */}
 
-       <FooterSection/>
-      </InViewPort>
+      <FooterSection />
     </div>
   );
 };

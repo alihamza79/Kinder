@@ -22,7 +22,7 @@ const LandingRoutes = () => (
       <Routes>
         <Route
           path="/"
-          element={<HomeStartupPage style={{ "--base-color": "#02877E" }} />}
+          element={<HomeStartupPage style={{ "--base-color": "#24AE60" }} />}
         />
         <Route path="/vertretung" element={<Vertretung />} />
         <Route path="/wichtigeinfo" element={<WichtigeInfo />} />
@@ -33,17 +33,17 @@ const LandingRoutes = () => (
           <Route
             path=":id"
             element={
-              <BlogStandardPostPage style={{ "--base-color": "#02877E" }} />
+              <BlogStandardPostPage style={{ "--base-color": "#24AE60" }} />
             }
           />
         </Route>
         <Route
           path="/contactus"
-          element={<ContactUsClassicPage style={{ "--base-color": "#02877E" }} />}
+          element={<ContactUsClassicPage style={{ "--base-color": "#24AE60" }} />}
         />
         <Route
           path="/privacy"
-          element={<Privacy style={{ "--base-color": "#02877E" }} />}
+          element={<Privacy style={{ "--base-color": "#24AE60" }} />}
         />
       </Routes>
     </Suspense>
