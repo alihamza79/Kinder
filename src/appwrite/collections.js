@@ -67,4 +67,12 @@ export const collections = [
     id: "668ff363001fb9bcf614",
     name: "formHeader",
   },
+  {
+    id: "6691583e001bdf0a55fc",
+    name: "scheduleHeader",
+  },
+  {
+    id: "669158b0003967c1db1a",
+    name: "scheduleBody",
+  },
 ];

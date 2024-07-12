@@ -63,6 +63,10 @@ import AddFormBody from "./Pages/AdminDashboard/form/AddFormBody";
 import FormHeaderList from "./Pages/AdminDashboard/form/FormHeaderList";
 import EditFormHeader from "./Pages/AdminDashboard/form/EditFormHeader";
 import ResetPassword from "./Pages/login/ResetPassword";
+import ScheduleHeaderList from "./Pages/AdminDashboard/schedule/ScheduleHeaderList";
+import EditScheduleHeader from "./Pages/AdminDashboard/schedule/EditScheduleHeader";
+import ScheduleBodyList from "./Pages/AdminDashboard/schedule/ScheduleBodyList";
+import EditScheduleBody from "./Pages/AdminDashboard/schedule/EditScheduleBody";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -183,6 +187,17 @@ const DashboardRoutes = () => (
         <Route path="/formbody" element={<ProtectedRoute element={<FormBodyList />} />} />
         <Route path="/formbody/addformbody" element={<ProtectedRoute element={<AddFormBody />} />} />
         <Route path="/formbody/editformbody/:id" element={<ProtectedRoute element={<EditFormBody />} />} />
+
+        {/* Schedule Header  */}
+
+        <Route path="/scheduleheader" element={<ProtectedRoute element={<ScheduleHeaderList />} />} />
+        <Route path="/scheduleheader/editscheduleheader/:id" element={<ProtectedRoute element={<EditScheduleHeader />} />} />
+
+        {/* Schedule Body */}
+
+        <Route path="/schedulebody" element={<ProtectedRoute element={<ScheduleBodyList />} />} />
+        <Route path="/schedulebody/editschedule/:id" element={<ProtectedRoute element={<EditScheduleBody />} />} />
+
       </Routes>
     </Suspense>
   </AnimatePresence>

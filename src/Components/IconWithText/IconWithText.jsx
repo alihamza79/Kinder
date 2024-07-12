@@ -1,30 +1,21 @@
-import React, { memo } from 'react'
-
-// Libraries
+import React, { memo } from 'react';
 import { Row } from 'react-bootstrap';
 import { m } from 'framer-motion';
 import { PropTypes } from "prop-types";
 import { Link } from 'react-router-dom';
-
-// components
-import Buttons from '../Button/Buttons'
-
-// Data
-import { IconWithTextData_01 } from './IconWithTextData'
-
-// css
-import "../../Assets/scss/components/_iconwithtext.scss"
+import Buttons from '../Button/Buttons';
+import { IconWithTextData_01 } from './IconWithTextData';
 
 const IconWithText = (props) => {
   return (
-    <Row className={`${props.grid} md:justify-center`}>
+    <Row className={`${props.grid} md:justify-center items-stretch`}>
       {props.data.map((item, i) => (
         <m.div
           key={i}
-          className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}` : ""}`}
+          className={`col ${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}` : ""} flex`}
           {...{ ...props.animation, transition: { delay: i * props.animationDelay, ease: props.animationTransition, duration: props.animationDuration } }}
         >
-          <div className="rounded-md w-full">
+          <div className="rounded-md w-full flex flex-col">
             {item.img ? (
               <img height={42} width={51} className="inline-block items-center justify-center mb-[30px]" src={item.img} alt="featurebox" />
             ) : item.icon ? (
@@ -41,11 +32,11 @@ const IconWithText = (props) => {
               <span className="text-basecolor inline-block icon-text">{`${i <= 9 ? "0" : ""}${i + 1}`}</span>
             )}
 
-            <div className="feature-box-content">
+            <div className="feature-box-content flex-grow">
               {item.title && <span className="font-medium title font-serif">{item.title}</span>}
               {item.content && <p dangerouslySetInnerHTML={{ __html: item.content }} />}
             </div>
-            {(item.linkTitle || item.link) && <Buttons ariaLabel="iconwithtext" className="font-medium font-serif uppercase btn-link after:h-[1px] md:text-md md:mb-[15px] after:bg-basecolor hover:text-basecolor" to={item.link} title={item.linkTitle} />}
+            {(item.linkTitle || item.link) && <Buttons ariaLabel="iconwithtext" className="font-medium font-serif uppercase btn-link after:h-[1px] md:text-md md:mb-[15px] after:bg-basecolor hover:text-basecolor mt-auto" to={item.link} title={item.linkTitle} />}
           </div>
         </m.div>
       ))}

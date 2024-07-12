@@ -289,6 +289,20 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
+                {/* Schedule  */}
+
+                <li className="submenu">
+                  <Link
+                    to="/scheduleheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Schedule</span> 
+                  </Link>
+                </li>
 
               </ul>
               <div className="logout-btn">

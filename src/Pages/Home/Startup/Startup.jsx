@@ -1,4 +1,4 @@
-import React, { lazy, useState, useEffect } from "react";
+import React, { lazy, useEffect, useState } from "react";
 
 // Libraries
 import { Form, Formik } from "formik";
@@ -14,24 +14,21 @@ import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
 import { Input } from "../../../Components/Form/Form";
-import { IconWithTextData_04 } from "../../../Components/IconWithText/IconWithTextData";
-import InViewPort from "../../../Components/InViewPort";
 import Team from "../../../Components/Team/Team";
 import TextBox from "../../../Components/TextBox/TextBox";
-import { TextBoxData02 } from "../../../Components/TextBox/TextBoxData";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
 
 // Icons
-import db from "../../../appwrite/Services/dbServices";
-import { storage } from "../../../appwrite/config";
 import { buckets } from "../../../appwrite/buckets";
+import { storage } from "../../../appwrite/config";
+import db from "../../../appwrite/Services/dbServices";
 import storageServices from "../../../appwrite/Services/storageServices";
 // Data
 import { blogData } from "../../../Components/Blogs/BlogData";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
+import { TeamData04 } from "../../../Components/Team/TeamData";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
-import { TeamData04 } from "../../../Components/Team/TeamData";
 
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
@@ -62,6 +59,20 @@ const initialServiceData = [
   { title: "Seh- und Hörprüfungen" },
   { title: "Allergologie, Lungenfunktion, Allergie- Test" },
 ];
+const fallbackScheduleBody = [
+  {
+    icon: "line-icon-Bakelite text-[#27ae60]",
+    title: "Contact Info",
+    content: "Email an: praxis@kjk-wn.de. \n\n Telefonnummer: 07151 - 21080.",
+  },
+  {
+    icon: "line-icon-Boy text-[#27ae60]",
+    title: "OPENING HOURS",
+    content:
+      "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
+  },
+];
+
 
 // Filter the blog data category wise
 const blogMasonryData = blogData
@@ -120,7 +131,8 @@ const HomeStartupPage = (props) => {
   const [hospitalKontakte, setHospitalKontakte] = useState([]);
   const [formHeader, setFormHeader] = useState("Forms");
   const [formBody, setFormBody] = useState([]);
-
+  const [scheduleHeader, setScheduleHeader] = useState("");
+  const [scheduleBody, setScheduleBody] = useState(fallbackScheduleBody);
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -312,9 +324,30 @@ const HomeStartupPage = (props) => {
       }
     };
 
+    const fetchScheduleData = async () => {
+      try {
+        const headerSnapshot = await db.scheduleHeader.list();
+        const bodySnapshot = await db.scheduleBody.list();
+    
+        if (headerSnapshot.documents.length > 0) {
+          setScheduleHeader(headerSnapshot.documents[0].title);
+        }
+    
+        if (bodySnapshot.documents.length > 0) {
+          const bodyData = bodySnapshot.documents.map((doc, index) => ({
+            icon: fallbackScheduleBody[index]?.icon, // Keep the icon hardcoded
+            title: doc.title,
+            content: doc.description,
+          }));
+          setScheduleBody(bodyData);
+        }
+      } catch (error) {
+        console.error("Error fetching schedule data:", error);
+      }
+    };
+    
+
     fetchFormData();
-
-
     fetchBlogData();
     fetchData();
     fetchAboutUsData();
@@ -322,6 +355,7 @@ const HomeStartupPage = (props) => {
     fetchTeamData();
     fetchLinksData();
     fetchHospitalKontakteData();
+    fetchScheduleData();
   }, []);
 
   const getImageUrl = async (imageId) => {
@@ -358,30 +392,30 @@ const HomeStartupPage = (props) => {
       </div>
       {/* Three Cards on Hero Section End */}
 
-      {/* Three Cards After Hero Section */}
+      {/* Schedule section */}
       <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-        <Container>
-          <Row className="justify-center">
-            <m.div
-              className="col-xl-3 col-lg-4 col-sm-7 flex flex-col md:mb-24"
-              {...{ ...fadeIn, transition: { delay: 0.2 } }}
-            >
-              <h5 className="alt-font text-darkgray font-semibold mt-[90px] mb-[20px] font-serif md:text-center md:mb-[30px] heading-6">
-                Terminvergabe und Anforderung von Rezepten/Heilmitteln
-              </h5>
-            </m.div>
-            <Col xl={{ span: 7, offset: 2 }} lg={8}>
-              <IconWithText
-                grid="row-cols-1 row-cols-lg-2 row-cols-sm-2 gap-y-[40px]"
-                theme="icon-with-text-06"
-                data={iconWithTextDataAfterHero1}
-                animation={fadeIn}
-                animationDelay={0.2}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </section>
+  <Container>
+    <Row className="justify-center items-stretch">
+      <m.div
+        className="col-xl-3 col-lg-4 col-sm-7 flex flex-col md:mb-24"
+        {...{ ...fadeIn, transition: { delay: 0.2 } }}
+      >
+        <h5 className="alt-font text-darkgray font-semibold mt-[90px] mb-[20px] font-serif md:text-center md:mb-[30px] heading-6">
+          {scheduleHeader}
+        </h5>
+      </m.div>
+      <Col xl={{ span: 7, offset: 2 }} lg={8}>
+        <IconWithText
+          grid="row-cols-1 row-cols-lg-2 row-cols-sm-2 gap-y-[40px]"
+          theme="icon-with-text-06"
+          data={scheduleBody}
+          animation={fadeIn}
+          animationDelay={0.2}
+        />
+      </Col>
+    </Row>
+  </Container>
+</section>
 
       {/* About Us Section Start */}
       <section
@@ -538,7 +572,7 @@ const HomeStartupPage = (props) => {
           </Row>
           <Row className="justify-center">
             <Col xs={12} sm={8} md={12}>
-              <IconWithText_Form
+              <IconWithText
                 grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
                 theme="icon-with-text-04"
                 data={formBody} // Use fetched form body data
