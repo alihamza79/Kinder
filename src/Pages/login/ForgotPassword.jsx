@@ -37,8 +37,23 @@ const ForgotPassword = () => {
                 <div className="login-right">
                   <div className="login-right-wrap">
                     <div className="account-logo">
-                      <Link to="/admin-dashboard">
-                        <img src={loginlogo} alt="#" />
+                    <Link to="/">
+                      <div className="flex items-center">
+                        <img
+                          width={80}
+                          height={80}
+                          src="/assets/img/webp/logo1.png"
+                          data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                          alt="logo"
+                        />
+                        <img
+                           width={185}
+                           height={120}
+                          src="/assets/img/webp/logo2.png"
+                          data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                          alt="logo"
+                        />
+                        </div>
                       </Link>
                     </div>
                     <h2>Reset Password</h2>
@@ -63,22 +78,7 @@ const ForgotPassword = () => {
                         </button>
                       </div>
                     </form>
-                    <div className="next-sign">
-                      <p className="account-subtitle">
-                        Need an account? <Link to="/login">Login</Link>
-                      </p>
-                      <div className="social-login">
-                        <Link to="#">
-                          <img src={loginicon01} alt="#" />
-                        </Link>
-                        <Link to="#">
-                          <img src={loginicon02} alt="#" />
-                        </Link>
-                        <Link to="#">
-                          <img src={loginicon03} alt="#" />
-                        </Link>
-                      </div>
-                    </div>
+                    
                   </div>
                 </div>
               </div>

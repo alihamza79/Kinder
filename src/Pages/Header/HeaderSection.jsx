@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import React, { useState, useEffect, lazy } from 'react';
 import { Col, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Formik, Form } from 'formik';
@@ -42,6 +42,20 @@ const SocialIconsData = [
 
 const HeaderSection = (props) => {
   const { theme } = props;
+  const [scrollUp, setScrollUp] = useState(false);
+
+  useEffect(() => {
+    let lastScrollY = window.pageYOffset;
+    const updateScrollDirection = () => {
+      const scrollY = window.pageYOffset;
+      setScrollUp(scrollY < lastScrollY && scrollY !== 0);
+      lastScrollY = scrollY;
+    };
+    window.addEventListener('scroll', updateScrollDirection);
+    return () => {
+      window.removeEventListener('scroll', updateScrollDirection);
+    };
+  }, []);
 
   return (
     <Header topSpace={{ md: true }} type="reverse-scroll">
@@ -54,28 +68,31 @@ const HeaderSection = (props) => {
         <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0">
           <Link aria-label="header logo" className="flex items-center" to="/">
             <img
-              className="default-logo w-[80px] h-[60px] md:w-[60px] md:h-[60px] sm:w-[50px] sm:h-[50px]"
+              className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
               src="/assets/img/webp/logo1.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
               alt="logo"
             />
             <img
-              className="default-logo w-[170px] h-[120px] md:w-[160px] md:h-[110px] sm:w-[130px] sm:h-[100px]"
+              className="default-logo w-[210px] h-[130px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
               src="/assets/img/webp/logo2.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
               alt="logo"
             />
-
-
-            <Navbar.Brand>
-              <img
-                className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
-
-                src="/assets/img/webp/logo1.png"
-                data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                alt="logo"
-              />
-            </Navbar.Brand>
+            <img
+              className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+              src="/assets/img/webp/logo1.png"
+              data-rjs="/assets/img/webp/logo-cropped@2x.png"
+              alt="logo"
+              style={{ display: scrollUp ? 'block' : 'none' }}
+            />
+            <img
+              className="alt-logo w-[170px] h-[120px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
+              src="/assets/img/webp/logo2.png"
+              data-rjs="/assets/img/webp/logo-cropped@2x.png"
+              alt="logo"
+              style={{ display: scrollUp ? 'block' : 'none' }}
+            />
           </Link>
         </Col>
         <Navbar.Toggle className="order-last md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
@@ -163,4 +180,3 @@ const HeaderSection = (props) => {
 };
 
 export default HeaderSection;
-
