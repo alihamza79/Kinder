@@ -53,7 +53,22 @@ const Header = () => {
       <div className="header">
         <div className="header-left">
           <Link className="logo" to={"/"} onClick={handleLogoutHome}>
-            <img src={logo} width={35} height={35} alt="" /> <span>Eskino</span>
+            <div className="flex items-center">
+              <img
+                width={50}
+                height={50}
+                src="/assets/img/webp/logo1.png"
+                data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                alt="logo"
+              />
+              <img
+                width={130}
+                height={90}
+                src="/assets/img/webp/logo2.png"
+                data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                alt="logo"
+              />
+            </div>
           </Link>
         </div>
         <Link id="toggle_btn" to="#" onClick={handlesidebar}>
@@ -90,7 +105,7 @@ const Header = () => {
               </Link>
             </div>
           </li>
-          <button   className="inline-flex items-center me-5 cursor-pointer mx-[-2px] my-4 bg-transparent border-0">
+          <button className="inline-flex items-center me-5 cursor-pointer mx-[-2px] my-4 bg-transparent border-0">
             <div className="relative w-11 h-6 bg-blue-800 rounded-full peer dark:bg-blue-900 peer-focus:ring-4 peer-focus:ring-teal-300 dark:peer-focus:ring-teal-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600"></div>
           </button>
         </ul>
