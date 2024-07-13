@@ -55,18 +55,18 @@ const MonthlyTab06 = (props) => {
                                     {
                                         item.activities.map((activity, j) => (
                                             <div key={j} className='panel flex justify-center items-center border-b border-solid py-[35px] px-[70px] lg:py-[20px] lg:px-[40px] lg:text-[15px] lg:font-sans md:px-[20px] sm:block'>
-                                                <div className='mr-[75px] panel-heading lg:w-[170px] md:w-[135px] sm:w-full sm:text-center'>
+                                                <div className='pl-[20px] mr-[75px] panel-heading lg:w-[170px] md:w-[135px] sm:w-full sm:text-center'>
                                                     {activity.time && <span className='panel-time '><i className="feather-calendar mr-[10px]"></i>{activity.time}</span>}
                                                 </div>
                                                 <div className='flex flex-col'>
                                                     {activity.representatives.map((rep, k) => (
                                                         <div key={k}>
                                                             <div className='flex flex-row'>
-                                                                <div className='feature-box-icon py-[7px] md:items-center flex sm:pt-[10px] sm:px-0 sm:pb-[7px]'>
-                                                                    <i className="mt-[10px] feather-map-pin md:h-[70px] md:w-[70px]"></i>
-                                                                    <div className='feature-box-content'>
-                                                                        <div className='w-[250px] mb-[20px] '>
-                                                                            <span className="font-medium mb-[5px] text-darkgray inline-block pl-[40px] md:p-0">{rep.hospital}</span>
+                                                                <div className='sm:text-right feature-box-icon py-[7px] md:items-center flex sm:pt-[10px] sm:px-0 sm:pb-[7px]'>
+                                                                    <i className="mt-[10px] feather-map-pin md:h-[70px] md:w-[70px] mr-[20px]"></i>
+                                                                    <div className='text-center feature-box-content '>
+                                                                        <div className=' w-[250px] mb-[20px] text-left'>
+                                                                            <span className=" font-medium mb-[0px] text-darkgray inline-block pl-[40px] md:p-0">{rep.hospital}</span>
                                                                             <p className="mb-0 w-[65%]">{rep.address}</p>
                                                                             <p className="mb-0 w-[65%]">{rep.telephoneNumber}</p>
                                                                         </div>
@@ -81,8 +81,8 @@ const MonthlyTab06 = (props) => {
                                                                 </div>
                                                             </div>
                                                             {/* For small devices */}
-                                                            <div className='sm:block hidden'>
-                                                                <span className='panel-speaker mt-[8px]'>
+                                                            <div className='sm:block hidden sm:text-left'>
+                                                                <span className='panel-speaker lg:mt-[8px] sm:mb-[40px] sm:mt-[-20px]'>
                                                                     <i className="feather-user"></i>
                                                                     <span>{rep.doctors}</span>
                                                                 </span>
