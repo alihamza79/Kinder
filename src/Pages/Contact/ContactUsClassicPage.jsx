@@ -1,60 +1,90 @@
-import React, { useRef } from 'react'
-
-// Libraries
-import { Col, Container, Navbar, Row } from 'react-bootstrap';
+import React, { useRef } from 'react';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
-import { AnimatePresence, m } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion';
 import { Form, Formik } from 'formik';
-
-// Components
-import { Header, HeaderCart, HeaderLanguage, HeaderNav, Menu, SearchBar } from "../../Components/Header/Header";
-import { fancyTextBox02 } from '../../Components/FancyTextBox/FancyTextBoxData';
+import emailjs from 'emailjs-com';
+import {
+  Header,
+  HeaderCart,
+  HeaderLanguage,
+  HeaderNav,
+  Menu,
+  SearchBar
+} from "../../Components/Header/Header";
+import {
+  fancyTextBox02
+} from '../../Components/FancyTextBox/FancyTextBoxData';
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
 import FancyTextBox from '../../Components/FancyTextBox/FancyTextBox';
-import { ContactFormStyle03Schema } from '../../Components/Form/FormSchema';
-import { Checkbox, Input, TextArea } from '../../Components/Form/Form'
-import { fadeIn } from '../../Functions/GlobalAnimations';
+import {
+  ContactFormStyle03Schema
+} from '../../Components/Form/FormSchema';
+import {
+  Checkbox,
+  Input,
+  TextArea
+} from '../../Components/Form/Form';
+import {
+  fadeIn
+} from '../../Functions/GlobalAnimations';
 import MessageBox from '../../Components/MessageBox/MessageBox';
-import Buttons from '../../Components/Button/Buttons'
+import Buttons from '../../Components/Button/Buttons';
 import FooterStyle01 from '../../Components/Footers/FooterStyle01';
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
-import { resetForm, sendEmail } from '../../Functions/Utilities';
 import SideButtons from "../../Components/SideButtons";
 import HeaderSection from '../Header/HeaderSection';
 import FooterSection from '../Footer/FooterSection';
 
-//Data
-const SocialIconsData = [
-  {
-    color: "#3b5998",
-    link: "https://www.facebook.com/",
-    icon: "fab fa-facebook-f"
-  },
-  {
-    color: "#00aced",
-    link: "https://twitter.com/",
-    icon: "fab fa-twitter"
-  },
-  {
-    color: "#fe1f49",
-    link: "https://www.instagram.com/",
-    icon: "fab fa-instagram"
-  },
-  {
-    color: "#007bb6",
-    link: "https://www.linkedin.com/",
-    icon: "fab fa-linkedin-in"
-  },
+const SocialIconsData = [{
+  color: "#3b5998",
+  link: "https://www.facebook.com/",
+  icon: "fab fa-facebook-f"
+},
+{
+  color: "#00aced",
+  link: "https://twitter.com/",
+  icon: "fab fa-twitter"
+},
+{
+  color: "#fe1f49",
+  link: "https://www.instagram.com/",
+  icon: "fab fa-instagram"
+},
+{
+  color: "#007bb6",
+  link: "https://www.linkedin.com/",
+  icon: "fab fa-linkedin-in"
+},
 ]
 
+const sendEmail = async (values) => {
+  try {
+    const result = await emailjs.send(
+      process.env.REACT_APP_EMAILJS_SERVICE_ID,
+      process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+      values,
+      process.env.REACT_APP_EMAILJS_USER_ID,
+    );
+    return { status: 'success', result };
+  } catch (error) {
+    console.log(error);
+    return { status: 'error', error };
+  }
+};
+
+const resetForm = (actions) => {
+  actions.resetForm();
+  actions.setSubmitting(false);
+};
 
 const ContactUsClassicPage = (props) => {
-  const form = useRef(null)
+  const form = useRef(null);
   return (
     <div style={props.style}>
       {/* Header Start */}
-      <HeaderSection/>
+      <HeaderSection />
       {/* Header End */}
       <SideButtons />
       {/* Parallax Scrolling Start */}
@@ -72,8 +102,6 @@ const ContactUsClassicPage = (props) => {
       </m.div>
       {/* Parallax Scrolling End */}
 
-      
-
       {/* Section Start */}
       <m.section className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]" {...fadeIn}>
         <Container>
@@ -87,9 +115,15 @@ const ContactUsClassicPage = (props) => {
                 initialValues={{ name: '', email: '', phone: '', comment: '', terms_condition: false }}
                 validationSchema={ContactFormStyle03Schema}
                 onSubmit={async (values, actions) => {
-                  actions.setSubmitting(true)
-                  const response = await sendEmail(values)
-                  response.status === "success" && resetForm(actions)
+                  actions.setSubmitting(true);
+                  const response = await sendEmail(values);
+                  if (response.status === "success") {
+                    resetForm(actions);
+                    actions.setStatus({ success: true });
+                  } else {
+                    actions.setStatus({ success: false });
+                  }
+                  actions.setSubmitting(false);
                 }}
               >
                 {({ isSubmitting, status }) => (
@@ -109,22 +143,29 @@ const ContactUsClassicPage = (props) => {
                         </Checkbox>
                       </Col>
                       <Col className="text-right sm:text-center">
-                        <Buttons type="submit" className={`text-xs tracking-[1px] rounded-none py-[12px] px-[28px] uppercase${isSubmitting ? " loading" : ""}`} themeColor={["#b884fd", "#fe73a8", "b884fd"]} size="md" color="#fff" title="Send Message" />
+                        <Buttons type="submit" className={`text-xs tracking-[1px] rounded-none py-[12px] px-[28px] uppercase ${isSubmitting ? "loading" : "bg-green-600 hover:bg-green-700"}`} size="md" color="#fff" title="Send Message" />
                       </Col>
                     </Row>
                     <AnimatePresence>
-                      {status && <Row><Col xs={12}><div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}><MessageBox className="mt-[20px] py-[10px]" theme="message-box01" variant="success" message="Your message has been sent successfully!" /></div></Col></Row>}
+                      {status && status.success && (
+                        <Row>
+                          <Col xs={12}>
+                            <div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                              <MessageBox className="mt-[20px] py-[10px] bg-green-500 text-white" theme="message-box01" variant="success" message="Your message has been sent successfully!" />
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
                     </AnimatePresence>
                   </Form>
                 )}
               </Formik>
+
             </Col>
           </Row>
         </Container>
       </m.section>
       {/* Section End */}
-
-      
 
       {/* Section Start */}
       <section className="py-[100px] md:py-[75px] sm:py-[50px]">
@@ -154,10 +195,10 @@ const ContactUsClassicPage = (props) => {
       {/* Section End */}
 
       {/* Footer Start */}
-        <FooterSection/>
+      <FooterSection />
       {/* Footer End */}
     </div>
-  )
+  );
 }
 
-export default ContactUsClassicPage
+export default ContactUsClassicPage;
