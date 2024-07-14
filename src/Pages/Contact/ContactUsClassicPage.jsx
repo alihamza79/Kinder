@@ -210,11 +210,12 @@ const ContactUsClassicPage = (props) => {
       {/* Section Start */}
 
       {/* Section Start */}
-      <section>
-        <GoogleMap
-          className="grayscale h-[600px] p-0 md:h-[450px] xs:h-[300px]"
-          location="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.352587248077!2d9.318753489368806!3d48.83241292861733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799c8a38c3eea07%3A0xea25113db09e030e!2sBeinsteiner%20Str.%204%2C%2071334%20Waiblingen%2C%20Germany!5e0!3m2!1sen!2s!4v1720685585014!5m2!1sen!2s"
-        />
+      <section className="google-map-container">
+      <GoogleMap
+  className=" h-[550px] p-0 md:h-[400px] xs:h-[250px] w-[88%] mx-auto border border-gray-300 shadow-sm"
+  location="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.352587248077!2d9.318753489368806!3d48.83241292861733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799c8a38c3eea07%3A0xea25113db09e030e!2sBeinsteiner%20Str.%204%2C%2071334%20Waiblingen%2C%20Germany!5e0!3m2!1sen!2s!4v1720685585014!5m2!1sen!2s"
+/>
+
       </section>
       {/* Section End */}
 
