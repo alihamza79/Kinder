@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
@@ -81,6 +81,16 @@ const resetForm = (actions) => {
 
 const ContactUsClassicPage = (props) => {
   const form = useRef(null);
+
+  useEffect(() => {
+    let timer;
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, []);
+
   return (
     <div style={props.style}>
       {/* Header Start */}
@@ -120,6 +130,9 @@ const ContactUsClassicPage = (props) => {
                   if (response.status === "success") {
                     resetForm(actions);
                     actions.setStatus({ success: true });
+                    setTimeout(() => {
+                      actions.setStatus({ success: false });
+                    }, 3000);
                   } else {
                     actions.setStatus({ success: false });
                   }
@@ -128,6 +141,17 @@ const ContactUsClassicPage = (props) => {
               >
                 {({ isSubmitting, status }) => (
                   <Form ref={form}>
+                    <AnimatePresence>
+                      {status && status.success && (
+                        <Row>
+                          <Col xs={12}>
+                            <div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                              <MessageBox className="mt-[20px] py-[10px] bg-green-500 text-white" theme="message-box01" variant="success" message="Your message has been sent successfully!" />
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                    </AnimatePresence>
                     <Row className="row-cols-1 row-cols-md-2">
                       <Col className="mb-16 sm:mb-[25px]">
                         <Input showErrorMsg={false} type="text" name="name" className="py-[15px] px-[20px] text-md w-full border-[1px] border-solid border-[#dfdfdf]" labelClass="mb-[25px]" placeholder="Your name" />

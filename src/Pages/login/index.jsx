@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login02, loginicon01, loginicon02, loginicon03, loginlogo } from "../../Components/imagepath";
+import { login02 } from "../../Components/imagepath";
 import { Eye, EyeOff } from "feather-icons-react/build/IconComponents";
 import { signIn, checkAuth } from "../../appwrite/Services/authServices";
+import Preloader from "../../Components/Preloader";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -10,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState("P@ssw0rd288");
   const navigate = useNavigate();
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!localStorage.getItem("reloaded")) {
@@ -22,9 +24,12 @@ const Login = () => {
           const isLoggedIn = await checkAuth();
           if (isLoggedIn) {
             navigate("/herocarousel");
+          } else {
+            setIsLoading(false);
           }
         } catch (error) {
           console.error("Error checking authentication:", error);
+          setIsLoading(false);
         }
       };
 
@@ -54,6 +59,10 @@ const Login = () => {
     }
   };
 
+  if (isLoading) {
+    return <Preloader />;
+  }
+
   return (
     <div className="main-wrapper login-body">
       <div className="container-fluid px-0">
@@ -71,8 +80,23 @@ const Login = () => {
                 <div className="login-right">
                   <div className="login-right-wrap">
                     <div className="account-logo">
-                      <Link to="/admin-dashboard">
-                        <img src={loginlogo} alt="#" />
+                      <Link to="/">
+                        <div className="flex items-center">
+                          <img
+                            width={80}
+                            height={80}
+                            src="/assets/img/webp/logo1.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
+                          <img
+                            width={185}
+                            height={120}
+                            src="/assets/img/webp/logo2.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
+                        </div>
                       </Link>
                     </div>
                     <h2>Login</h2>
@@ -115,14 +139,6 @@ const Login = () => {
                         <button type="submit" className="btn btn-primary btn-block">Login</button>
                       </div>
                     </form>
-                    <div className="next-sign">
-                      <p className="account-subtitle">Need an account? <Link to="/signup">Sign Up</Link></p>
-                      <div className="social-login">
-                        <Link to="#"><img src={loginicon01} alt="#" /></Link>
-                        <Link to="#"><img src={loginicon02} alt="#" /></Link>
-                        <Link to="#"><img src={loginicon03} alt="#" /></Link>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>

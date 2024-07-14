@@ -29,6 +29,7 @@ import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText"
 import { TeamData04 } from "../../../Components/Team/TeamData";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
+import Preloader from "../../../Components/Preloader";
 
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
@@ -253,10 +254,10 @@ const HomeStartupPage = (props) => {
           .sort((a, b) => b.publicationDate - a.publicationDate)
           .slice(0, 3);
         setBlogs(latestBlogs);
-        setLoading(false);
+        
       } catch (error) {
         console.error("Error fetching data:", error);
-        setLoading(false);
+        
       }
     };
 
@@ -330,16 +331,34 @@ const HomeStartupPage = (props) => {
       }
     };
     
-
-    fetchFormData();
-    fetchBlogData();
-    fetchData();
-    fetchAboutUsData();
-    fetchServiceData();
-    fetchTeamData();
-    fetchLinksData();
-    fetchHospitalKontakteData();
-    fetchScheduleData();
+    const fetchall = async () => {
+      try {
+          // Optionally, set loading to true before starting the fetch operations
+          setLoading(true);
+  
+          await Promise.all([
+              fetchFormData(),
+              fetchBlogData(),
+              fetchData(),
+              fetchAboutUsData(),
+              fetchServiceData(),
+              fetchTeamData(),
+              fetchLinksData(),
+              fetchHospitalKontakteData(),
+              fetchScheduleData()
+          ]);
+      } catch (error) {
+          console.error("Error fetching data:", error);
+      } finally {
+          // Ensure loading is set to false once all fetch operations are complete or an error occurs
+          setLoading(false);
+      }
+  };
+  
+  // Call the function
+  fetchall();
+  
+  
   }, []);
 
   const getImageUrl = async (imageId) => {
@@ -350,7 +369,10 @@ const HomeStartupPage = (props) => {
       console.error("Error fetching image URL:", error);
     }
   };
-
+if(loading)
+{
+  return <Preloader></Preloader>
+}
   return (
     <div style={props.style}>
       {/* Header Start */}
@@ -628,16 +650,14 @@ const HomeStartupPage = (props) => {
           </Row>
         </Container>
         <Container fluid="xs" className="mx-auto">
-          {loading ? (
-            <div>Loading...</div>
-          ) : (
+        
             <BlogMasonry
               pagination={false}
               filter={false}
               grid="grid grid-3col xl-grid-3col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-double-extra-large"
               data={blogs}
             />
-          )}
+       
           <Col className="text-center mt-[40px] md:flex md:flex-col md:items-center gap-y-10">
             <Buttons
               ariaLabel="button"
