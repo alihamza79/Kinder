@@ -49,7 +49,22 @@ const FooterStyle04 = (props) => {
                     <Row className="justify-between md:justify-start">
                         <Col lg={{ span: 3, order: 0 }} sm={{ span: 6, order: 1 }} className="md:mb-[40px] xs:mb-[25px]">
                             <Link aria-label="link" to="/" className="mb-[25px] block">
-                                <img src={props.logo} alt="logo" width="111" height="36" />
+                            <div className="flex items-center">
+                          <img
+                            width={80}
+                            height={80}
+                            src="/assets/img/webp/logo1.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
+                          <img
+                            width={185}
+                            height={120}
+                            src="/assets/img/webp/logo2.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
+                        </div>
                             </Link>
                             <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Lorem ipsum dolor amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore.</p>
                             <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData} />
@@ -57,7 +72,7 @@ const FooterStyle04 = (props) => {
                         <FooterMenu data={FooterData.slice(0, 2)} lg={{ span: 2, order: 0 }} sm={{ span: 6, order: 2 }} className="xs:mb-[25px]" titleClass="capitalize" />
                         <Col xl={{ span: 3 }} lg={{ span: 4, order: 0 }} sm={{ span: 6, order: 3 }} md={5}>
                             <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Subscribe to newsletter</span>
-                            <p className="mb-[25px] md:mb-[20px]">Enter your email address for receiving valuable newsletters.</p>
+                            <p className="mb-[25px] md:mb-[20px]">Enter your email address for receiving valuable Updates</p>
                             <Formik
                                 initialValues={{ email: "" }}
                                 validationSchema={Yup.object().shape({ email: Yup.string().email("Invalid email.").required("Field is required.") })}
@@ -95,7 +110,7 @@ const FooterStyle04 = (props) => {
                                     </div>
                                 )}
                             </Formik>
-                            <p>&copy; Copyright {new Date().getFullYear()} <Link aria-label="link" to="/" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor">Litho</Link></p>
+                            <p>&copy; Copyright {new Date().getFullYear()} <Link aria-label="link" to="/" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor">Kinder</Link></p>
                         </Col>
                     </Row>
                 </Container>
