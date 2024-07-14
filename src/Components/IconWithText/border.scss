@@ -1,0 +1,48 @@
+.box {
+    width: 35vmin; /* Reduced width */
+    height: 20vmin; /* Reduced height */
+    display: grid;
+    place-content: center;
+    color: black; /* Ensuring text is black */
+    
+    --border-angle: 0turn; /* For animation */
+    --main-bg: conic-gradient(
+      from var(--border-angle),
+      rgb(255, 255, 255),
+      rgb(255, 255, 255) 5%,
+      rgb(255, 255, 255) 60%,
+      rgb(255, 255, 255) 95%
+    );
+    
+    border: solid 3px transparent;
+    border-radius: 2em;
+    --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, rgb(40, 165, 2), rgb(226, 226, 12) 99%, transparent);
+    
+    background:
+      var(--main-bg) padding-box, /* padding-box clip this background in to the overall element except the border */
+      var(--gradient-border) border-box, /* border-box extends this background to the border space */
+      var(--main-bg) border-box; /* Duplicate main background to fill in behind the gradient border. You can remove this if you want the border to extend "outside" the box background */
+    
+    background-position: center center;
+    
+    animation: bg-spin 3s linear infinite;
+    animation-play-state: paused;
+  }
+  
+  @keyframes bg-spin {
+    to {
+      --border-angle: 1turn;
+    }
+  }
+  
+  .box:hover {
+    animation-play-state: running;
+    animation-direction: reverse;
+  }
+  
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+  }
+  
