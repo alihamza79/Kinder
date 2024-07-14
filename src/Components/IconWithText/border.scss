@@ -45,4 +45,20 @@
     inherits: true;
     initial-value: 0turn;
   }
-  
+
+  /* Responsive adjustments for mobile view */
+  @media (max-width: 768px) {
+    .box {
+      width: 70vmin; /* Increased width for better visibility on smaller screens */
+      height: 40vmin; /* Increased height for better visibility on smaller screens */
+      border-radius: 1em; /* Adjust border-radius for smaller screens */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .box {
+      width: 80vmin; /* Further increased width for very small screens */
+      height: 50vmin; /* Further increased height for very small screens */
+      border-radius: 0.5em; /* Further adjust border-radius for very small screens */
+    }
+  }
