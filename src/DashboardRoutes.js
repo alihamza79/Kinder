@@ -77,6 +77,7 @@ import EditImportantInformationHeader from "./Pages/AdminDashboard/Important_inf
 import ImportantInformationList from "./Pages/AdminDashboard/Important_information/ImportantInformationList";
 import EditImportantInformation from "./Pages/AdminDashboard/Important_information/EditImportantInformation";
 import AddImportantInformation from "./Pages/AdminDashboard/Important_information/AddImportantInformation";
+import Preloader from "./Components/Preloader";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -92,7 +93,7 @@ const ProtectedRoute = ({ element }) => {
 
   if (isAuth === null) {
     // You can show a loader here while checking authentication
-    return <div>Loading...</div>;
+    return <Preloader/>;
   }
 
   return isAuth ? element : <Navigate to="/login" />;

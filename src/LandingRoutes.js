@@ -7,6 +7,7 @@ import HomeStartupPage from "./Pages/Home/Startup/Startup";
 import Vertretung from "./Pages/Vertretung/Vertretung";
 import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
 import ContactUsClassicPage from "./Pages/Contact/ContactUsClassicPage";
+import TeamDetail from "./Pages/TeamDetail";
 
 const Privacy = lazy(() => import("./Pages/Privacy"));
 
@@ -44,6 +45,10 @@ const LandingRoutes = () => (
         <Route
           path="/privacy"
           element={<Privacy style={{ "--base-color": "#24AE60" }} />}
+        />
+        <Route
+          path="/teamdetail"
+          element={<TeamDetail />}
         />
       </Routes>
     </Suspense>

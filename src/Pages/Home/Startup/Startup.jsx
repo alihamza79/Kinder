@@ -25,9 +25,7 @@ import Preloader from "../../../Components/Preloader";
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
 );
-const IconWithText_Form = lazy(() =>
-  import("../../../Components/IconWithText/IconWithText")
-);
+
 const Buttons = lazy(() => import("../../../Components/Button/Buttons"));
 const Overlap = lazy(() => import("../../../Components/Overlap/Overlap"));
 const BlogMasonry = lazy(() => import("../../../Components/Blogs/BlogMasonry"));
@@ -418,7 +416,7 @@ const HomeStartupPage = (props) => {
             <Col className="text-center md:flex md:flex-col md:items-center gap-y-10">
               <Buttons
                 ariaLabel="button"
-                href="/page/our-team"
+                href="/teamdetail"
                 className="btn-fill mx-[10px] rounded-none font-medium font-serif uppercase btn-fancy"
                 size="lg"
                 color="#ffffff"

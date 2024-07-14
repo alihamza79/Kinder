@@ -110,8 +110,8 @@ const FooterStyle04 = (props) => {
                                     </div>
                                 )}
                             </Formik>
-                            <p>&copy; Copyright {new Date().getFullYear()} <Link aria-label="link" to="/" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor">Kinder</Link></p>
                         </Col>
+                        <p className='text-right'>&copy; Copyright {new Date().getFullYear()} Kinder | Powered by  <Link aria-label="link" to="https://syntax-ai.vercel.app" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor"> SYNTAX</Link></p>
                     </Row>
                 </Container>
             </div>

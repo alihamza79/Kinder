@@ -89,7 +89,7 @@ const Sidebar = (props) => {
                     <span>Hero Section</span> <span className="menu-arrow" />
                   </Link>
                   <ul style={{ display: "none" }} className="menu-items4">
-                    <li>
+                    {/* <li>
                       <Link
                         className={
                           props?.activeClassName === "heroSection"
@@ -100,7 +100,7 @@ const Sidebar = (props) => {
                       >
                         Navbar
                       </Link>
-                    </li>
+                    </li> */}
 
                     {/* Carousels */}
                     <li>
