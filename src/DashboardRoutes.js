@@ -67,6 +67,16 @@ import ScheduleHeaderList from "./Pages/AdminDashboard/schedule/ScheduleHeaderLi
 import EditScheduleHeader from "./Pages/AdminDashboard/schedule/EditScheduleHeader";
 import ScheduleBodyList from "./Pages/AdminDashboard/schedule/ScheduleBodyList";
 import EditScheduleBody from "./Pages/AdminDashboard/schedule/EditScheduleBody";
+import WeeklyRepresentationHeaderList from "./Pages/AdminDashboard/weekly_representation/WeeklyRepresentationHeaderList";
+import EditWeeklyRepresentationHeader from "./Pages/AdminDashboard/weekly_representation/EditWeeklyRepresentationHeader";
+import WeeklyRepresentationList from "./Pages/AdminDashboard/weekly_representation/WeeklyRepresentationList";
+import AddWeeklyRepresentation from "./Pages/AdminDashboard/weekly_representation/AddWeeklyRepresentation";
+import EditWeeklyRepresentation from "./Pages/AdminDashboard/weekly_representation/EditWeeklyRepresentation";
+import ImportantInformationHeaderList from "./Pages/AdminDashboard/Important_information/ImportantInformationHeaderList";
+import EditImportantInformationHeader from "./Pages/AdminDashboard/Important_information/EditImportantInformationHeader";
+import ImportantInformationList from "./Pages/AdminDashboard/Important_information/ImportantInformationList";
+import EditImportantInformation from "./Pages/AdminDashboard/Important_information/EditImportantInformation";
+import AddImportantInformation from "./Pages/AdminDashboard/Important_information/AddImportantInformation";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -197,6 +207,28 @@ const DashboardRoutes = () => (
 
         <Route path="/schedulebody" element={<ProtectedRoute element={<ScheduleBodyList />} />} />
         <Route path="/schedulebody/editschedule/:id" element={<ProtectedRoute element={<EditScheduleBody />} />} />
+
+        {/* Weekly Representation  */}
+
+        <Route path="/weeklyrepresentationheader" element={<ProtectedRoute element={<WeeklyRepresentationHeaderList />} />} />
+        <Route path="/weeklyrepresentationheader/editweeklyrepresentationheader/:id" element={<ProtectedRoute element={<EditWeeklyRepresentationHeader />} />} />
+
+        {/* Weekly Representation Body  */}
+        <Route path="/weeklyrepresentationbody" element={<ProtectedRoute element={<WeeklyRepresentationList />} />} />
+        <Route path="/weeklyrepresentationbody/addweeklyrepresentation" element={<ProtectedRoute element={<AddWeeklyRepresentation />} />} />
+        <Route path="/weeklyrepresentationbody/editweeklyrepresentation/:id" element={<ProtectedRoute element={<EditWeeklyRepresentation />} />} />
+
+        {/* Important Information  */}
+
+        <Route path="/importantinformationheader" element={<ProtectedRoute element={<ImportantInformationHeaderList />} />} />
+        <Route path="/importantinformationheader/editimportantinformationheader/:id" element={<ProtectedRoute element={<EditImportantInformationHeader />} />} />
+
+        <Route path="/importantinformationbody" element={<ProtectedRoute element={<ImportantInformationList />} />} />
+        <Route path="/importantinformationbody/addimportantinformation" element={<ProtectedRoute element={<AddImportantInformation />} />} />
+        <Route path="/importantinformationbody/editimportantinformation/:id" element={<ProtectedRoute element={<EditImportantInformation />} />} />
+
+
+
 
       </Routes>
     </Suspense>

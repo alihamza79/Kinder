@@ -14,7 +14,7 @@ const BlogMasonry = (props) => {
       const grid = module.initializeIsotop(blogWrapper.current);
       grid.on("arrangeComplete", () => setLoading(false));
     });
-  }, []);
+  }, []);  
 
   const handleFilterChange = () => {
     blogWrapper.current
@@ -23,7 +23,7 @@ const BlogMasonry = (props) => {
   };
 
   const getSnippet = (content, wordCount) => {
-    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); // Remove HTML tags
+    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); 
     return plainTextContent.split(" ").slice(0, wordCount).join(" ") + "...";
   };
 

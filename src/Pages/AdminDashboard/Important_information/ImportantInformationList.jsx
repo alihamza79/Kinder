@@ -3,28 +3,30 @@ import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import db from "../../../appwrite/Services/dbServices";
-import {  refreshicon } from "../../../Components/imagepath";
+import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 
-const ScheduleBodyList = () => {
+const ImportantInformationList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedRecordId, setSelectedRecordId] = useState(null);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const updateSuccess = sessionStorage.getItem("updateScheduleSuccess");
-    const addSuccess = sessionStorage.getItem("addScheduleSuccess");
+    const updateSuccess = sessionStorage.getItem("updateImportantInformationSuccess");
+    const addSuccess = sessionStorage.getItem("addImportantInformationSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateScheduleSuccess");
+      sessionStorage.removeItem("updateImportantInformationSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addScheduleSuccess");
+      sessionStorage.removeItem("addImportantInformationSuccess");
     }
     fetchData();
   }, [location]);
@@ -32,26 +34,38 @@ const ScheduleBodyList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.scheduleBody.list();
+      const querySnapshot = await db.importantInformation.list();
       const data = querySnapshot.documents.map((doc) => ({
         id: doc.$id,
         ...doc,
       }));
-
-      if (data.length === 0) {
-        const newDocuments = [
-          await db.scheduleBody.create({ title: "Dummy Title 1", description: "Dummy Description 1" }),
-          await db.scheduleBody.create({ title: "Dummy Title 2", description: "Dummy Description 2" }),
-        ];
-        data.push(...newDocuments.map((doc) => ({ id: doc.$id, ...doc })));
-      }
-
       setDataSource(data);
       setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
     }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await db.importantInformation.delete(selectedRecordId);
+      toast.success("Important Information deleted successfully!", { autoClose: 2000 });
+      fetchData();
+      setSelectedRecordId(null);
+      hideDeleteModal();
+    } catch (error) {
+      console.error("Error deleting document:", error);
+    }
+  };
+
+  const showDeleteModal = (id) => {
+    setSelectedRecordId(id);
+    setDeleteModalVisible(true);
+  };
+
+  const hideDeleteModal = () => {
+    setDeleteModalVisible(false);
   };
 
   const truncateHtml = (text, length) => {
@@ -102,10 +116,17 @@ const ScheduleBodyList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/schedulebody/editschedule/${record.id}`}
+                to={`/importantinformationbody/editimportantinformation/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit
+              </Link>
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={() => showDeleteModal(record.id)}
+              >
+                <i className="fa fa-trash-alt m-r-5"></i> Delete
               </Link>
             </div>
           </div>
@@ -124,20 +145,20 @@ const ScheduleBodyList = () => {
       <Sidebar
         id="menu-item4"
         id1="menu-items4"
-        activeClassName="schedulebody"
+        activeClassName="importantinformationbody"
       />
       <div className="page-wrapper">
         <div className="content">
           <div className="settings-menu-links">
             <ul className="nav nav-tabs menu-tabs">
               <li className="nav-item">
-                <Link className="nav-link" to="/scheduleheader">
-                  Schedule Header
+                <Link className="nav-link" to="/importantinformationheader">
+                  Important Information Header
                 </Link>
               </li>
               <li className="nav-item active">
-                <Link className="nav-link" to="/schedulebody">
-                  Schedule Body
+                <Link className="nav-link" to="/importantinformationbody">
+                  Important Information Body
                 </Link>
               </li>
             </ul>
@@ -154,7 +175,7 @@ const ScheduleBodyList = () => {
                       <FeatherIcon icon="chevron-right" />
                     </i>
                   </li>
-                  <li className="breadcrumb-item active">Schedule</li>
+                  <li className="breadcrumb-item active">Important Information</li>
                 </ul>
               </div>
             </div>
@@ -167,9 +188,15 @@ const ScheduleBodyList = () => {
                     <div className="row align-items-center">
                       <div className="col">
                         <div className="doctor-table-blk">
-                          <h3>Schedule</h3>
+                          <h3>Important Information</h3>
                           <div className="doctor-search-blk">
                             <div className="add-group">
+                              <Link
+                                to="/importantinformationbody/addimportantinformation"
+                                className="btn btn-primary add-pluss ms-2"
+                              >
+                                <img src={plusicon} alt="#" />
+                              </Link>
                               <Link
                                 to="#"
                                 className="btn btn-primary doctor-refresh ms-2"
@@ -204,9 +231,46 @@ const ScheduleBodyList = () => {
           </div>
         </div>
       </div>
+      {deleteModalVisible && (
+        <div
+          className={
+            deleteModalVisible
+              ? "modal fade show delete-modal"
+              : "modal fade delete-modal"
+          }
+          style={{
+            display: deleteModalVisible ? "block" : "none",
+            backgroundColor: "rgba(0,0,0,0.5)",
+          }}
+          role="dialog"
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-body text-center">
+                <h3>Are you sure you want to delete this important information?</h3>
+                <div className="m-t-20">
+                  <Button
+                    onClick={hideDeleteModal}
+                    className="btn btn-white me-2 pt-1"
+                  >
+                    Close
+                  </Button>
+                  <Button
+                    type="button"
+                    className="btn btn-danger pt-1"
+                    onClick={handleDelete}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <ToastContainer />
     </>
   );
 };
 
-export default ScheduleBodyList;
+export default ImportantInformationList;

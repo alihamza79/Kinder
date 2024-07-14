@@ -69,7 +69,17 @@ const LoadStyles = () => {
         "/scheduleheader",
         "/scheduleheader/editscheduleheader/:id",
         "/schedulebody",
-        "/schedulebody/editschedule/:id"
+        "/schedulebody/editschedule/:id",
+        "/weeklyrepresentationheader",
+        "/weeklyrepresentationheader/editweeklyrepresentationheader/:id",
+        "/weeklyrepresentationbody",
+        "/weeklyrepresentationbody/addweeklyrepresentation",
+        "/weeklyrepresentationbody/editweeklyrepresentation/:id",
+        "/importantinformationheader",
+        "/importantinformationheader/editimportantinformationheader/:id",
+        "/importantinformationbody",
+        "/importantinformationbody/addimportantinformation",
+        "/importantinformationbody/editimportantinformation/:id"
       ];
 
       try {

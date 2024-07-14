@@ -75,23 +75,7 @@ const fallbackScheduleBody = [
 
 
 // Filter the blog data category wise
-const blogMasonryData = blogData
-  .filter((item) => item.blogType === "masonry")
-  .filter((item) => item.category.includes("startup"));
 
-const iconWithTextDataAfterHero1 = [
-  {
-    icon: "line-icon-Bakelite text-[#27ae60]",
-    title: "Contact Info",
-    content: "Email an: praxis@kjk-wn.de. \n\n Telefonnummer: 07151 - 21080.",
-  },
-  {
-    icon: "line-icon-Boy text-[#27ae60]",
-    title: "OPENING HOURS",
-    content:
-      "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
-  },
-];
 const HomeStartupPage = (props) => {
   const [informationCards, setInformationCards] = useState([
     {
@@ -139,7 +123,7 @@ const HomeStartupPage = (props) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const querySnapshot = await db.informationCard.list(); // Fetch documents from Appwrite collection
+        const querySnapshot = await db.informationCard.list();
         const fetchedData = querySnapshot.documents;
 
         if (fetchedData.length > 0) {

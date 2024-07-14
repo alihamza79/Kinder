@@ -150,11 +150,11 @@ const Sidebar = (props) => {
                     <li>
                       <Link
                         className={
-                          props?.activeClassName === "weeklyRepresentation"
+                          props?.activeClassName === "weeklyrepresentationheader"
                             ? "active"
                             : ""
                         }
-                        to="/herocarousel"
+                        to="/weeklyrepresentationheader"
                       >
                         Weekly Representation
                       </Link>
@@ -301,6 +301,22 @@ const Sidebar = (props) => {
                       <img src={blog} alt="" />
                     </span>{" "}
                     <span>Schedule</span> 
+                  </Link>
+                </li>
+
+
+                {/* Important information  */}
+
+                <li className="submenu">
+                  <Link
+                    to="/importantinformationheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Important Information</span> 
                   </Link>
                 </li>
 

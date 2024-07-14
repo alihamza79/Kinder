@@ -75,4 +75,21 @@ export const collections = [
     id: "669158b0003967c1db1a",
     name: "scheduleBody",
   },
+  {
+    id: "6692d079000fec70d2c6",
+    name: "weeklyRepresentation",
+  },
+  {
+    id: "6692d0bd000f12bd107d",
+    name: "weeklyRepresentationHeader",
+  },
+  {
+    id: "66931341002e285de550",
+    name: "importantInformation",
+  },
+  {
+    id: "66931391000a022d52ad",
+    name: "importantInformationHeader",
+  },
+  
 ];
