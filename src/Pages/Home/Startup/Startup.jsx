@@ -1,8 +1,8 @@
 import React, { lazy, useEffect, useState } from "react";
 
 // Libraries
-import { Form, Formik } from "formik";
-import { AnimatePresence, m } from "framer-motion";
+
+import {  m } from "framer-motion";
 import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
 
@@ -13,10 +13,10 @@ import { fadeIn } from "../../../Functions/GlobalAnimations";
 import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
-import { Input } from "../../../Components/Form/Form";
+
 import Team from "../../../Components/Team/Team";
 import TextBox from "../../../Components/TextBox/TextBox";
-import { resetForm, sendEmail } from "../../../Functions/Utilities";
+
 
 // Icons
 import { buckets } from "../../../appwrite/buckets";
@@ -672,84 +672,6 @@ if(loading)
           </Col>
         </Container>
       </section>
-      {/* News Section End */}
-
-      {/* Footer Section Start */}
-      <m.section
-        className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] cover-background overflow-visible"
-        style={{
-          backgroundImage:
-            "url(/assets/img/webp/home-startup-footer-top-bg.webp)",
-        }}
-        {...fadeIn}
-      >
-        <Container>
-          <Row className="justify-center">
-            <Col md={10} lg={7} className="text-center">
-              <span className="font-serif font-medium text-basecolor text-xmd mb-[20px] inline-block sm:mb-[10px]">
-                Love to work together
-              </span>
-              <h2 className="heading-4 font-serif font-semibold text-darkgray inline-block text-center mb-[65px] xs:mb-[30px]">
-                Are you ready to work with us? Let's grow your business.
-              </h2>
-              <Formik
-                initialValues={{ email: "" }}
-                validationSchema={Yup.object().shape({
-                  email: Yup.string()
-                    .email("Invalid email.")
-                    .required("Field is required."),
-                })}
-                onSubmit={async (values, actions) => {
-                  actions.setSubmitting(true);
-                  const response = await sendEmail(values);
-                  response.status === "success" && resetForm(actions);
-                }}
-              >
-                {({ isSubmitting, status }) => (
-                  <div className="relative subscribe-style-04 w-[93%] mx-auto xs:w-full">
-                    <Form className="relative">
-                      <Input
-                        showErrorMsg={false}
-                        type="email"
-                        name="email"
-                        className="border-[1px] border-solid border-transparent large-input xs:mb-[60px] pr-[190px]"
-                        placeholder="Enter your email address"
-                      />
-                      <button
-                        aria-label="submit"
-                        type="submit"
-                        className={`text-xs tracking-[1px] py-[12px] px-[28px] xs:!block uppercase${
-                          isSubmitting ? " loading" : ""
-                        }`}
-                      >
-                        Subscribe Now
-                      </button>
-                    </Form>
-                    <AnimatePresence>
-                      {status && (
-                        <m.div
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          exit={{ opacity: 0 }}
-                          className="font-serif absolute top-[115%] left-0 w-full"
-                        >
-                          <MessageBox
-                            className="py-[5px] rounded-[4px] z-[2]"
-                            theme="message-box01"
-                            variant="success"
-                            message="Your message has been sent successfully subscribed to our email list!"
-                          />
-                        </m.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                )}
-              </Formik>
-            </Col>
-          </Row>
-        </Container>
-      </m.section>
-      {/* Footer Section End */}
 
       <FooterSection />
     </div>
