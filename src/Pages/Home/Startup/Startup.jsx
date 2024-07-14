@@ -369,6 +369,7 @@ const HomeStartupPage = (props) => {
       console.error("Error fetching image URL:", error);
     }
   };
+  
 if(loading)
 {
   return <Preloader></Preloader>

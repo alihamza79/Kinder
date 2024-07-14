@@ -1,26 +1,8 @@
 import React from "react";
-// Libraries
-import { Col, Container, Row, Navbar } from "react-bootstrap";
+import { Col, Container,Row } from "react-bootstrap";
 import { m } from "framer-motion";
-import { Link } from "react-router-dom";
-
-// Components
 import { fadeIn } from "../../Functions/GlobalAnimations";
-import {
-  Header,
-  HeaderCart,
-  HeaderLanguage,
-  HeaderNav,
-  Menu,
-  SearchBar,
-} from "../../Components/Header/Header";
-import FooterStyle01 from "../../Components/Footers/FooterStyle01";
-import SideButtons from "../../Components/SideButtons";
-
-// Data
-import SimpleAccordion from "../../Components/Accordion/SimpleAccordion";
 import Accordion from "../../Components/Accordion/Accordion";
-import { data } from "isotope-layout";
 import FooterSection from "../Footer/FooterSection";
 import HeaderSection from "../Header/HeaderSection";
 
@@ -61,32 +43,30 @@ const WichtigeInfo = () => {
   return (
     <>
       {/* Header Start */}
-      <HeaderSection  theme="light" /> 
+      <HeaderSection theme="light" />
       {/* Header End */}
 
       {/* Page Title */}
-      {/* <MiniVersionPage className="ml-6" title="WichtigeInfo" /> */}
-
-      {/* Accordion style 03 ( Light ) start */}
-      <m.section className="py-60 ">
-        <Container>
-          {/* <Row className="justify-center"> */}
-          <Col lg={12} md={10}>
-            <Accordion
-              theme="accordion-style-03"
-              className=""
-              animation={fadeIn}
-              data={Data}
-            />
+      <Container>
+        <Row className="justify-center">
+          <Col md={12} className="text-center  mt-60">
+            <h5 className="font-serif text-darkgray font-medium">Important Information</h5>
+            <p className="text-darkgray font-medium" style={{fontSize:"1rem"}}>Here you can find useful information and tips.</p>
           </Col>
-          {/* </Row> */}
+        </Row>
+      </Container>
+
+      {/* Accordion */}
+      <m.section className="py-20">
+        <Container>
+          <Col lg={12} md={10}>
+            <Accordion theme="accordion-style-03" animation={fadeIn} data={Data} />
+          </Col>
         </Container>
       </m.section>
-      {/* Accordion style 03 ( Light ) end */}
 
-      {/* Footer Start */}
+      {/* Footer */}
       <FooterSection />
-      {/* Footer End */}
     </>
   );
 };
