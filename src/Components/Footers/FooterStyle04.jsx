@@ -69,7 +69,7 @@ const FooterStyle04 = (props) => {
                             <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Lorem ipsum dolor amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore.</p>
                             <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData} />
                         </Col>
-                        <FooterMenu data={FooterData.slice(0, 2)} lg={{ span: 2, order: 0 }} sm={{ span: 6, order: 2 }} className="xs:mb-[25px]" titleClass="capitalize" />
+                        {/* <FooterMenu data={FooterData.slice(0, 2)} lg={{ span: 2, order: 0 }} sm={{ span: 6, order: 2 }} className="xs:mb-[25px]" titleClass="capitalize" /> */}
                         <Col xl={{ span: 3 }} lg={{ span: 4, order: 0 }} sm={{ span: 6, order: 3 }} md={5}>
                             <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Subscribe to newsletter</span>
                             <p className="mb-[25px] md:mb-[20px]">Enter your email address for receiving valuable Updates</p>
