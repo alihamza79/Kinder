@@ -53,18 +53,43 @@ const RepresentationDatesList = () => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await db.representationDates.delete(selectedRecordId); // Delete the document from Appwrite
-      toast.success("Date deleted successfully!", { autoClose: 2000 });
+      
+      // Fetch the representation date document to get the representativesCollection
+      const representationDateDoc = await db.representationDates.get(selectedRecordId);
+      const { representativesCollection } = representationDateDoc;
+  
+     
+      
+      // Check if representativesCollection exists and is an array
+      if (Array.isArray(representativesCollection) && representativesCollection.length > 0) {
+        
+        await Promise.all(representativesCollection.map(async (repId) => {
+          console.log("Deleting representative with ID:", repId);
+          return await db.representatives.delete(repId);
+        }));
+        
+      } else {
+        console.log("No representatives to delete.");
+      }
+    
+      // Delete the representation date document
+      await db.representationDates.delete(selectedRecordId);
+      
+      toast.success("Date and related representatives deleted successfully!", { autoClose: 2000 });
       fetchData(); // Refresh data after deletion
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
-      console.error("Error deleting document:", error);
-      toast.error("Error deleting document: " + error.message, { autoClose: 2000 });
+      console.error("Error deleting documents:", error);
+      toast.error("Error deleting documents: " + error.message, { autoClose: 2000 });
     } finally {
       setDeleting(false);
     }
   };
+  
+  
+  
+  
 
   const showDeleteModal = (id) => {
     setSelectedRecordId(id);

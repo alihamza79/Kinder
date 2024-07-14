@@ -80,7 +80,8 @@ const LoadStyles = () => {
         "/importantinformationheader/editimportantinformationheader/:id",
         "/importantinformationbody",
         "/importantinformationbody/addimportantinformation",
-        "/importantinformationbody/editimportantinformation/:id"
+        "/importantinformationbody/editimportantinformation/:id",
+        "/representationdates/editrepresentationdate/:id"
       ];
 
       try {

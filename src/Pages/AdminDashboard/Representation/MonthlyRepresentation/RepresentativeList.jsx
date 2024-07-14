@@ -17,7 +17,7 @@ const RepresentativeList = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const location = useLocation();
-  const [representationDate,setRepresentationDate]=useState();
+  const [representationDate, setRepresentationDate] = useState();
   const navigate = useNavigate();
   const { id } = useParams(); // Get the representation date ID from the URL
 
@@ -45,9 +45,11 @@ const RepresentativeList = () => {
       setRepresentationDate(
         representationDateDoc.fromDate === representationDateDoc.toDate
           ? new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')
-          : `${new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')} - ${new Date(representationDateDoc.toDate).toLocaleDateString().replace(/\//g, '.')}`
+          : `${new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')}`
+          + ` - ${new Date(representationDateDoc.toDate).toLocaleDateString().replace(/\//g, '.')}`
       );
-            // Fetch the representative documents
+
+      // Fetch the representative documents
       const representativePromises = representativeIds.map((repId) => db.representatives.get(repId));
       const representatives = await Promise.all(representativePromises);
 
@@ -70,8 +72,21 @@ const RepresentativeList = () => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await db.representatives.delete(selectedRecordId); // Delete the document from Appwrite
-      toast.success("Representative deleted successfully!", { autoClose: 2000 });
+      
+      // Delete the representative document
+      await db.representatives.delete(selectedRecordId);
+
+      // Fetch the representation date document
+      const representationDateDoc = await db.representationDates.get(id);
+      const representativeIds = representationDateDoc.representativesCollection;
+
+      // Remove the representative ID from the representativesCollection array
+      const updatedRepresentativeIds = representativeIds.filter(repId => repId !== selectedRecordId);
+
+      // Update the representation date document
+      await db.representationDates.update(id, { representativesCollection: updatedRepresentativeIds });
+
+      toast.success("Representative and associated data deleted successfully!", { autoClose: 2000 });
       fetchData(); // Refresh data after deletion
       setSelectedRecordId(null);
       hideDeleteModal();
@@ -136,7 +151,7 @@ const RepresentativeList = () => {
             <div className="dropdown-menu dropdown-menu-end">
               <Link
                 className="dropdown-item"
-                to={`/representatives/editrepresentative/${record.id}`}
+                to={`/representationdates/${id}/representatives/editrepresentative/${record.id}`}
               >
                 <i className="far fa-edit me-2" />
                 Edit

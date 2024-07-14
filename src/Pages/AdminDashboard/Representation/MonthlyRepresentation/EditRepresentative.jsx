@@ -2,70 +2,86 @@ import React, { useState, useEffect } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
+import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
 import FeatherIcon from "feather-icons-react";
-import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
 const EditRepresentative = () => {
-    const { id, id1 } = useParams(); // Retrieve the representation date ID and representative ID from the URL
     const navigate = useNavigate();
+    const { id, repId } = useParams(); // Get the representation date ID and representative ID from the URL
+    const [hospital, setHospital] = useState('');
+    const [address, setAddress] = useState('');
+    const [telephoneNumber, setTelephoneNumber] = useState('');
+    const [doctors, setDoctors] = useState('');
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({
-        hospital: "",
-        address: "",
-        telephoneNumber: "",
-        doctors: "",
-    });
+    const [autocompleteOptions, setAutocompleteOptions] = useState([]);
 
     useEffect(() => {
-        const fetchDocumentData = async () => {
+        const fetchData = async () => {
             try {
-                const documentSnapshot = await db.representatives.get(id1);
-                if (documentSnapshot) {
-                    setFormData({
-                        hospital: documentSnapshot.hospital,
-                        address: documentSnapshot.address,
-                        telephoneNumber: documentSnapshot.telephoneNumber,
-                        doctors: documentSnapshot.doctors,
-                    });
-                } else {
-                    console.error('Document does not exist');
-                }
+                setLoading(true);
+                const representative = await db.representatives.get(repId);
+                console.log("Fetched Representative:", representative); // Added console log to check the fetched data
+                setHospital(representative.hospital);
+                setAddress(representative.address);
+                setTelephoneNumber(representative.telephoneNumber);
+                setDoctors(representative.doctors);
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching document data:', error);
+                console.error("Error fetching representative:", error);
+                setLoading(false);
             }
         };
 
-        fetchDocumentData();
-    }, [id1]);
+        fetchData();
+    }, [repId]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         setLoading(true);
+
         try {
-            await db.representatives.update(id1, {
-                hospital: formData.hospital,
-                address: formData.address,
-                telephoneNumber: formData.telephoneNumber,
-                doctors: formData.doctors,
+            await db.representatives.update(repId, {
+                hospital,
+                address,
+                telephoneNumber,
+                doctors,
             });
 
-            sessionStorage.setItem('updateRepresentativeSuccess', 'true'); // Set update flag
+            toast.success('Representative updated successfully!', { autoClose: 2000 });
+            sessionStorage.setItem('updateRepresentativeSuccess', 'true'); 
             navigate(`/representationdates/${id}/representatives`);
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error('Error updating representative: ' + error.message, { autoClose: 2000 });
+            console.error('Error updating representative: ', error);
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleAddressChange = async (e) => {
+        const value = e.target.value;
+        setAddress(value);
+
+        if (value.length > 2) {
+            try {
+                const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`);
+                const result = await response.json();
+                setAutocompleteOptions(result.features || []);
+            } catch (error) {
+                console.error("Error fetching autocomplete options:", error);
+            }
+        } else {
+            setAutocompleteOptions([]);
+        }
+    };
+
+    const handleSelect = (description) => {
+        setAddress(description);
+        setAutocompleteOptions([]);
     };
 
     return (
@@ -78,12 +94,13 @@ const EditRepresentative = () => {
             />
             <div className="page-wrapper">
                 <div className="content">
+                    {/* Page Header */}
                     <div className="page-header">
                         <div className="row">
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/representationdates">Landing Page</Link>
+                                        <Link to="/landingpage/representationdates">Representation Dates</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -103,6 +120,7 @@ const EditRepresentative = () => {
                             </div>
                         </div>
                     </div>
+                    {/* /Page Header */}
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
@@ -118,28 +136,14 @@ const EditRepresentative = () => {
                                             {/* Hospital */}
                                             <div className="col-12 col-md-12 col-xl-12">
                                                 <div className="form-group local-forms">
-                                                    <label>Hospital <span className="login-danger">*</span></label>
+                                                    <label>
+                                                        Hospital <span className="login-danger">*</span>
+                                                    </label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="hospital"
-                                                        value={formData.hospital}
-                                                        onChange={handleChange}
-                                                        disabled={loading}
-                                                    />
-                                                </div>
-                                            </div>
-
-                                            {/* Address */}
-                                            <div className="col-12 col-md-12 col-xl-12">
-                                                <div className="form-group local-forms">
-                                                    <label>Address <span className="login-danger">*</span></label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        name="address"
-                                                        value={formData.address}
-                                                        onChange={handleChange}
+                                                        value={hospital}
+                                                        onChange={(e) => setHospital(e.target.value)}
                                                         disabled={loading}
                                                     />
                                                 </div>
@@ -148,13 +152,14 @@ const EditRepresentative = () => {
                                             {/* Telephone */}
                                             <div className="col-12 col-md-12 col-xl-12">
                                                 <div className="form-group local-forms">
-                                                    <label>Telephone <span className="login-danger">*</span></label>
+                                                    <label>
+                                                        Telephone <span className="login-danger">*</span>
+                                                    </label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="telephoneNumber"
-                                                        value={formData.telephoneNumber}
-                                                        onChange={handleChange}
+                                                        value={telephoneNumber}
+                                                        onChange={(e) => setTelephoneNumber(e.target.value)}
                                                         disabled={loading}
                                                     />
                                                 </div>
@@ -163,15 +168,45 @@ const EditRepresentative = () => {
                                             {/* Doctors */}
                                             <div className="col-12 col-md-12 col-xl-12">
                                                 <div className="form-group local-forms">
-                                                    <label>Doctors <span className="login-danger">*</span></label>
+                                                    <label>
+                                                        Doctors <span className="login-danger">*</span>
+                                                    </label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
-                                                        name="doctors"
-                                                        value={formData.doctors}
-                                                        onChange={handleChange}
+                                                        value={doctors}
+                                                        onChange={(e) => setDoctors(e.target.value)}
                                                         disabled={loading}
                                                     />
+                                                </div>
+                                            </div>
+
+                                            {/* Address */}
+                                            <div className="col-12 col-md-12 col-xl-12">
+                                                <div className="form-group local-forms">
+                                                    <label>
+                                                        Address <span className="login-danger">*</span>
+                                                    </label>
+                                                    <Combobox onSelect={handleSelect}>
+                                                        <ComboboxInput
+                                                            value={address}
+                                                            onChange={handleAddressChange}
+                                                            className="form-control"
+                                                            placeholder="Enter a location"
+                                                        />
+                                                        {autocompleteOptions.length > 0 && (
+                                                            <ComboboxPopover>
+                                                                <ComboboxList>
+                                                                    {autocompleteOptions.map((option) => (
+                                                                        <ComboboxOption
+                                                                            key={option.properties.place_id}
+                                                                            value={option.properties.formatted}
+                                                                        />
+                                                                    ))}
+                                                                </ComboboxList>
+                                                            </ComboboxPopover>
+                                                        )}
+                                                    </Combobox>
                                                 </div>
                                             </div>
 
@@ -185,13 +220,15 @@ const EditRepresentative = () => {
                                                     >
                                                         {loading ? "Updating..." : "Update"}
                                                     </button>
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-primary cancel-form"
-                                                        onClick={() => navigate(`/representationdates/${id}/representatives`)}
-                                                    >
-                                                        Cancel
-                                                    </button>
+                                                    <Link to={`/representationdates/${id}/representatives`}>
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary cancel-form"
+                                                            disabled={loading}
+                                                        >
+                                                            Cancel
+                                                        </button>
+                                                    </Link>
                                                 </div>
                                             </div>
                                         </div>

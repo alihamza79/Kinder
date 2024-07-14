@@ -6,6 +6,8 @@ import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite da
 import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
+import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
+import "@reach/combobox/styles.css";
 
 const AddRepresentative = () => {
     const navigate = useNavigate();
@@ -15,6 +17,7 @@ const AddRepresentative = () => {
     const [telephoneNumber, setTelephoneNumber] = useState('');
     const [doctors, setDoctors] = useState('');
     const [loading, setLoading] = useState(false);
+    const [autocompleteOptions, setAutocompleteOptions] = useState([]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -42,6 +45,28 @@ const AddRepresentative = () => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const handleAddressChange = async (e) => {
+        const value = e.target.value;
+        setAddress(value);
+
+        if (value.length > 2) {
+            try {
+                const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`);
+                const result = await response.json();
+                setAutocompleteOptions(result.features || []);
+            } catch (error) {
+                console.error("Error fetching autocomplete options:", error);
+            }
+        } else {
+            setAutocompleteOptions([]);
+        }
+    };
+
+    const handleSelect = (description) => {
+        setAddress(description);
+        setAutocompleteOptions([]);
     };
 
     return (
@@ -109,22 +134,6 @@ const AddRepresentative = () => {
                                                 </div>
                                             </div>
 
-                                            {/* Address */}
-                                            <div className="col-12 col-md-12 col-xl-12">
-                                                <div className="form-group local-forms">
-                                                    <label>
-                                                        Address <span className="login-danger">*</span>
-                                                    </label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        value={address}
-                                                        onChange={(e) => setAddress(e.target.value)}
-                                                        disabled={loading}
-                                                    />
-                                                </div>
-                                            </div>
-
                                             {/* Telephone */}
                                             <div className="col-12 col-md-12 col-xl-12">
                                                 <div className="form-group local-forms">
@@ -154,6 +163,35 @@ const AddRepresentative = () => {
                                                         onChange={(e) => setDoctors(e.target.value)}
                                                         disabled={loading}
                                                     />
+                                                </div>
+                                            </div>
+
+                                            {/* Address */}
+                                            <div className="col-12 col-md-12 col-xl-12">
+                                                <div className="form-group local-forms">
+                                                    <label>
+                                                        Address <span className="login-danger">*</span>
+                                                    </label>
+                                                    <Combobox onSelect={handleSelect}>
+                                                        <ComboboxInput
+                                                            value={address}
+                                                            onChange={handleAddressChange}
+                                                            className="form-control"
+                                                            placeholder="Enter a location"
+                                                        />
+                                                        {autocompleteOptions.length > 0 && (
+                                                            <ComboboxPopover>
+                                                                <ComboboxList>
+                                                                    {autocompleteOptions.map((option) => (
+                                                                        <ComboboxOption
+                                                                            key={option.properties.place_id}
+                                                                            value={option.properties.formatted}
+                                                                        />
+                                                                    ))}
+                                                                </ComboboxList>
+                                                            </ComboboxPopover>
+                                                        )}
+                                                    </Combobox>
                                                 </div>
                                             </div>
 

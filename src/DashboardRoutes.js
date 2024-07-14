@@ -47,7 +47,6 @@ import RepresentationDates from "./Pages/AdminDashboard/Representation/MonthlyRe
 import AddRepresentationDate from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddRepresentationDate";
 import RepresentativeList from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/RepresentativeList";
 import AddRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/AddRepresentative";
-import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
 import Addblog from "./Pages/AdminDashboard/blogs/Addblog";
 import Editblog from "./Pages/AdminDashboard/blogs/Editblog";
 import BlogView from "./Pages/AdminDashboard/blogs/BlogView";
@@ -78,6 +77,8 @@ import ImportantInformationList from "./Pages/AdminDashboard/Important_informati
 import EditImportantInformation from "./Pages/AdminDashboard/Important_information/EditImportantInformation";
 import AddImportantInformation from "./Pages/AdminDashboard/Important_information/AddImportantInformation";
 import Preloader from "./Components/Preloader";
+import EditRepresentationDate from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentationDate";
+import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -168,9 +169,12 @@ const DashboardRoutes = () => (
         <Route path="/monthlyrepresentation/addmonthlyrepresentation" element={<ProtectedRoute element={<AddMonthlyRepresentation />} />} />
         <Route path="/representationdates" element={<ProtectedRoute element={<RepresentationDates />} />} />
         <Route path="/representationdates/addrepresentationdate" element={<ProtectedRoute element={<AddRepresentationDate />} />} />
+        <Route path="/representationdates/editrepresentationdate/:id" element={<ProtectedRoute element={<EditRepresentationDate />} />} />
+
         <Route path="/representationdates/:id/representatives" element={<ProtectedRoute element={<RepresentativeList />} />} />
         <Route path="/representationdates/:id/representatives/addrepresentative" element={<ProtectedRoute element={<AddRepresentative />} />} />
-        <Route path="/representationdates/:id/representatives/editrepresentative/:id1" element={<ProtectedRoute element={<EditRepresentative />} />} />
+        <Route path="/representationdates/:id/representatives/editrepresentative/:repId"  element={<ProtectedRoute element={<EditRepresentative />} />} />
+
         <Route path="representationdata" element={<ProtectedRoute element={<RepresentationData />} />} />
 
         {/* Location Autocomplete Component */}
