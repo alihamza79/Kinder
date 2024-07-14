@@ -45,6 +45,15 @@ module.exports = {
         error: 'red'
       }
     },
+    keyframes: {
+      borderMove: {
+        '0%': { backgroundPosition: '0% 50%' },
+        '100%': { backgroundPosition: '100% 50%' },
+      },
+    },
+    animation: {
+      borderMove: 'borderMove 2s linear infinite',
+    },
   },
   corePlugin: {
     order: false
