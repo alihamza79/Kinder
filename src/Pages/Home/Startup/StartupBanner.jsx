@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 import { LazyMotion, domMax, m } from 'framer-motion';
@@ -6,39 +7,29 @@ import { Container, Row, Col } from 'react-bootstrap';
 import db from '../../../appwrite/Services/dbServices';
 import { storage } from '../../../appwrite/config';
 import { buckets } from '../../../appwrite/buckets';
+import Preloader from '../../../Components/Preloader';
+
 const StartupPageBannerSlider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [swiperData, setSwiperData] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const fetchSwiperData = async () => {
+    const querySnapshot = await db.heroCarousel.list();
+    const data = await Promise.all(
+      querySnapshot.documents.map(async (doc) => {
+        const img = await getImageUrl(doc.image);
+        return {
+          img,
+          title: doc.text,
+        };
+      })
+    );
+    return data.length > 0 ? data : getDefaultData();
+  };
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await db.heroCarousel.list();
-        const data = await Promise.all(
-          querySnapshot.documents.map(async (doc) => {
-            const img = await getImageUrl(doc.image); // Fetch the image URL
-            console.log("Image URL:", img);
-
-            return {
-              img,
-              title: doc.text,
-            };
-          })
-        );
-        setSwiperData(data.length > 0 ? data : getDefaultData());
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setSwiperData(getDefaultData());
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
+  const { data: swiperData = [], isLoading } = useQuery({
+    queryKey: ['swiperData'],
+    queryFn: fetchSwiperData
+  });
 
   const getDefaultData = () => {
     return [
@@ -55,15 +46,15 @@ const StartupPageBannerSlider = () => {
 
   const getImageUrl = async (imageId) => {
     try {
-      const result = storage.getFileView(buckets[0].id, imageId);
+      const result = await storage.getFileView(buckets[0].id, imageId);
       return result.href;
     } catch (error) {
       console.error("Error fetching image URL:", error);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>; // Optionally, you can add a loading spinner here
+  if (isLoading) {
+    return <Preloader/>; // Optionally, you can add a loading spinner here
   }
 
   return (

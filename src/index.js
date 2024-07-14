@@ -4,6 +4,7 @@ import App from "./App";
 import { BrowserRouter, useLocation } from "react-router-dom";
 import { ParallaxProvider } from "react-scroll-parallax";
 import { LazyMotion, domMax } from "framer-motion";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const LoadStyles = () => {
   const location = useLocation();
@@ -112,8 +113,11 @@ const LoadStyles = () => {
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+const queryClient = new QueryClient();
 
 root.render(
+  <QueryClientProvider client={queryClient}>
+
   <LazyMotion features={domMax}>
     <ParallaxProvider>
       <BrowserRouter>
@@ -122,4 +126,6 @@ root.render(
       </BrowserRouter>
     </ParallaxProvider>
   </LazyMotion>
+  </QueryClientProvider>,
+
 );

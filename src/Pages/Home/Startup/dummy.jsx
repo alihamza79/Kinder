@@ -1,10 +1,16 @@
 import React, { lazy } from "react";
-import { useQueries } from "@tanstack/react-query";
+
+// Libraries
 import { Form, Formik } from "formik";
 import { AnimatePresence, m } from "framer-motion";
 import { Col, Container, Row } from "react-bootstrap";
 import * as Yup from "yup";
+import { useQuery } from '@tanstack/react-query';
+
+// Functions
 import { fadeIn } from "../../../Functions/GlobalAnimations";
+
+// Components
 import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
@@ -12,10 +18,14 @@ import { Input } from "../../../Components/Form/Form";
 import Team from "../../../Components/Team/Team";
 import TextBox from "../../../Components/TextBox/TextBox";
 import { resetForm, sendEmail } from "../../../Functions/Utilities";
+
+// Icons
 import { buckets } from "../../../appwrite/buckets";
 import { storage } from "../../../appwrite/config";
 import db from "../../../appwrite/Services/dbServices";
 import storageServices from "../../../appwrite/Services/storageServices";
+// Data
+import { blogData } from "../../../Components/Blogs/BlogData";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
 import { TeamData04 } from "../../../Components/Team/TeamData";
 import FooterSection from "../../Footer/FooterSection";
@@ -50,7 +60,6 @@ const initialServiceData = [
   { title: "Seh- und Hörprüfungen" },
   { title: "Allergologie, Lungenfunktion, Allergie- Test" },
 ];
-
 const fallbackScheduleBody = [
   {
     icon: "line-icon-Bakelite text-[#27ae60]",
@@ -67,149 +76,131 @@ const fallbackScheduleBody = [
 
 const fetchInformationCards = async () => {
   const querySnapshot = await db.informationCard.list();
-  const fetchedData = querySnapshot.documents;
-
-  if (fetchedData.length > 0) {
-    return [
-      {
-        icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-        title: fetchedData[0]?.Title || "NOTFALL",
-        content: fetchedData[0]?.Description || "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-      },
-      {
-        icon: "line-icon-Bakelite text-[#27ae60]",
-        title: fetchedData[1]?.Title || "NOTDIENST",
-        content: fetchedData[1]?.Description || "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
-      },
-      {
-        icon: "line-icon-Boy text-[#27ae60]",
-        title: fetchedData[2]?.Title || "OPENING HOURS",
-        content: fetchedData[2]?.Description || "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
-      },
-    ];
-  }
-
-  return [
-    {
-      icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-      title: "NOTFALL",
-      content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-    },
-    {
-      icon: "line-icon-Bakelite text-[#27ae60]",
-      title: "NOTDIENST",
-      content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
-    },
-    {
-      icon: "line-icon-Boy text-[#27ae60]",
-      title: "OPENING HOURS",
-      content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
-    },
-  ];
+  return querySnapshot.documents.map((doc, index) => ({
+    icon: "line-icon-Cursor-Click2 text-[#27ae60]",
+    title: doc.Title,
+    content: doc.Description,
+  }));
 };
 
 const fetchAboutUs = async () => {
   const querySnapshot = await db.about.list();
-  if (querySnapshot.documents.length > 0) {
-    const aboutData = querySnapshot.documents[0];
-    const image = await getImageUrl(aboutData.image);
-    return {
-      title: aboutData.title,
-      description: aboutData.description,
-      image: image,
-    };
-  }
+  const aboutData = querySnapshot.documents[0];
+  const image = await getImageUrl(aboutData.image);
   return {
-    title: "Liebe Eltern, Kinder und Jugendliche!",
-    description:
-      "Wir freuen uns, Sie auf der Internetseite der Kinderarztpraxis kunterbunt Waiblingen zu begrüßen. Für uns als Fachärzte für Kinder- und Jugendmedizin steht die körperliche und geistige Entwicklung Ihres Kindes vom Säugling bis zum Jugendlichen im Mittelpunkt unserer Arbeit. Dabei ist uns der einfühlsame und verantwortungsbewusste Umgang mit unseren kleinen und großen Patienten besonders wichtig. Schwerpunkt unserer Praxis ist die hausärztliche Versorgung und ganzheitliche Begleitung von Kindern. Wir versorgen alle akuten und chronischen Erkrankungen, wie z.B. Asthma, Allergien oder ADHS und haben dabei auch psychosomatische Beschwerden im Blick. Wir sind eng vernetzt mit den Kliniken und Spezialisten in der Region und stimmen mit Ihnen die Behandlung und Versorgung im Sinne Ihres Kindes ab. Wir freuen uns, Sie und Ihre Familie kennen zu lernen!",
-    image: "https://via.placeholder.com/700x1027",
+    title: aboutData.title,
+    description: aboutData.description,
+    image: image,
   };
 };
 
 const fetchServiceData = async () => {
   const headerSnapshot = await db.serviceHeader.list();
   const bodySnapshot = await db.services.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Leistungen";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.name }));
-  return { header, body };
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodySnapshot.documents.map((doc) => ({ title: doc.name })),
+  };
 };
 
 const fetchTeamData = async () => {
   const headerSnapshot = await db.teamHeader.list();
   const bodySnapshot = await db.teamBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Team";
-  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
-    const img = await getImageUrl(doc.image);
-    return { img, name: doc.name, designation: doc.designation };
-  }));
-  return { header, body };
+  const bodyData = await Promise.all(
+    bodySnapshot.documents.map(async (doc) => {
+      const img = await getImageUrl(doc.image);
+      return {
+        img,
+        name: doc.name,
+        designation: doc.designation,
+      };
+    })
+  );
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodyData,
+  };
 };
 
 const fetchLinksData = async () => {
   const headerSnapshot = await db.linkHeader.list();
   const bodySnapshot = await db.links.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Links";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.title, content: doc.description }));
-  return { header, body };
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodySnapshot.documents.map((doc) => ({
+      title: doc.title,
+      content: doc.description,
+    })),
+  };
 };
 
-const fetchBlogData = async () => {
+const fetchBlogs = async () => {
   const querySnapshot = await db.blogs.list();
-  const data = await Promise.all(querySnapshot.documents.map(async doc => {
-    const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
-    return {
-      id: doc.$id,
-      title: doc.title,
-      date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : "",
-      content: doc.content,
-      img: imageUrl.href,
-      category: doc.tags,
-      publicationDate: new Date(doc.publicationDate),
-    };
-  }));
-  const latestBlogs = data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
-  return latestBlogs;
+  const data = await Promise.all(
+    querySnapshot.documents.map(async (doc) => {
+      const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+      return {
+        id: doc.$id,
+        title: doc.title,
+        date: new Date(doc.publicationDate).toLocaleDateString(),
+        content: doc.content,
+        img: imageUrl.href,
+        category: doc.tags,
+        publicationDate: new Date(doc.publicationDate),
+      };
+    })
+  );
+  return data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
 };
 
 const fetchHospitalKontakteData = async () => {
   const headerSnapshot = await db.hospitalKontakteHeader.list();
   const bodySnapshot = await db.hospitalKontakte.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.title, description: doc.description }));
-  return { header, body };
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodySnapshot.documents.map((doc) => ({
+      title: doc.title,
+      description: doc.description,
+    })),
+  };
 };
 
 const fetchFormData = async () => {
   const headerSnapshot = await db.formHeader.list();
   const bodySnapshot = await db.formBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Forms";
-  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
-    const fileUrl = await storageServices.files.getFileView(doc.file);
-    return {
-      icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
-      title: doc.title,
-      content: `<a href="${fileUrl.href}" target="_blank" download>Download File</a>`,
-    };
-  }));
-  return { header, body };
+  const bodyData = await Promise.all(
+    bodySnapshot.documents.map(async (doc) => {
+      const fileUrl = await storageServices.files.getFileView(doc.file);
+      return {
+        icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+        title: doc.title,
+        content: `<a href="${fileUrl.href}" target="_blank" download>Download File</a>`,
+      };
+    })
+  );
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodyData,
+  };
 };
 
 const fetchScheduleData = async () => {
   const headerSnapshot = await db.scheduleHeader.list();
   const bodySnapshot = await db.scheduleBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "";
-  const body = bodySnapshot.documents.map((doc, index) => ({
+  const bodyData = bodySnapshot.documents.map((doc, index) => ({
     icon: fallbackScheduleBody[index]?.icon,
     title: doc.title,
     content: doc.description,
   }));
-  return { header, body };
+  return {
+    header: headerSnapshot.documents[0].title,
+    body: bodyData,
+  };
 };
 
 const getImageUrl = async (imageId) => {
   try {
-    const result = await storage.getFileView(buckets[0].id, imageId);
+    const result = storage.getFileView(buckets[0].id, imageId);
     return result.href;
   } catch (error) {
     console.error("Error fetching image URL:", error);
@@ -217,41 +208,34 @@ const getImageUrl = async (imageId) => {
 };
 
 const HomeStartupPage = (props) => {
-  const results = useQueries({
-    queries: [
-      { queryKey: ["informationCards"], queryFn: fetchInformationCards },
-      { queryKey: ["aboutUs"], queryFn: fetchAboutUs },
-      { queryKey: ["serviceData"], queryFn: fetchServiceData },
-      { queryKey: ["teamData"], queryFn: fetchTeamData },
-      { queryKey: ["linksData"], queryFn: fetchLinksData },
-      { queryKey: ["blogs"], queryFn: fetchBlogData },
-      { queryKey: ["hospitalKontakte"], queryFn: fetchHospitalKontakteData },
-      { queryKey: ["formData"], queryFn: fetchFormData },
-      { queryKey: ["scheduleData"], queryFn: fetchScheduleData },
-    ],
-  });
+  const { data: informationCards, isLoading: isLoadingInformationCards } = useQuery(['informationCards'], fetchInformationCards);
+  const { data: aboutUs, isLoading: isLoadingAboutUs } = useQuery(['aboutUs'], fetchAboutUs);
+  const { data: serviceData, isLoading: isLoadingServiceData } = useQuery(['serviceData'], fetchServiceData);
+  const { data: teamData, isLoading: isLoadingTeamData } = useQuery(['teamData'], fetchTeamData);
+  const { data: linksData, isLoading: isLoadingLinksData } = useQuery(['linksData'], fetchLinksData);
+  const { data: blogs, isLoading: isLoadingBlogs } = useQuery(['blogs'], fetchBlogs);
+  const { data: hospitalKontakte, isLoading: isLoadingHospitalKontakte } = useQuery(['hospitalKontakte'], fetchHospitalKontakteData);
+  const { data: formData, isLoading: isLoadingFormData } = useQuery(['formData'], fetchFormData);
+  const { data: scheduleData, isLoading: isLoadingScheduleData } = useQuery(['scheduleData'], fetchScheduleData);
 
-  const isLoading = results.some((result) => result.isLoading);
-
-  if (isLoading) {
+  if (
+    isLoadingInformationCards ||
+    isLoadingAboutUs ||
+    isLoadingServiceData ||
+    isLoadingTeamData ||
+    isLoadingLinksData ||
+    isLoadingBlogs ||
+    isLoadingHospitalKontakte ||
+    isLoadingFormData ||
+    isLoadingScheduleData
+  ) {
     return <Preloader />;
   }
-
-  const [
-    { data: informationCards },
-    { data: aboutUs },
-    { data: serviceData },
-    { data: teamData },
-    { data: linksData },
-    { data: blogs },
-    { data: hospitalKontakte },
-    { data: formData },
-    { data: scheduleData },
-  ] = results;
 
   return (
     <div style={props.style}>
       <HeaderSection {...props} />
+
       <StartupPageBannerSlider />
 
       <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">
@@ -259,8 +243,8 @@ const HomeStartupPage = (props) => {
           <Row className="justify-center">
             <Col xs={12} sm={9} lg={12} md={12}>
               <HeroIconWithText
-                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10 relative"
-                className="rounded-[4px] flex"
+                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10  relative"
+                className="rounded-[4px] flex "
                 theme="icon-with-text-11"
                 data={informationCards}
               />
@@ -601,6 +585,7 @@ const HomeStartupPage = (props) => {
           </Row>
         </Container>
       </m.section>
+
       <FooterSection />
     </div>
   );

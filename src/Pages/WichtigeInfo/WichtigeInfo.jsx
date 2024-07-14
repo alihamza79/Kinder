@@ -1,49 +1,50 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { m } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { fadeIn } from "../../Functions/GlobalAnimations";
 import Accordion from "../../Components/Accordion/Accordion";
 import FooterSection from "../Footer/FooterSection";
 import HeaderSection from "../Header/HeaderSection";
 import db from "../../appwrite/Services/dbServices";
 import 'react-toastify/dist/ReactToastify.css';
+import Preloader from "../../Components/Preloader";
+
+const fetchHeaderData = async () => {
+  const headerSnapshot = await db.importantInformationHeader.list();
+  if (headerSnapshot.documents.length > 0) {
+    return {
+      title: headerSnapshot.documents[0].title,
+      description: headerSnapshot.documents[0].description,
+    };
+  }
+  return null;
+};
+
+const fetchBodyData = async () => {
+  const bodySnapshot = await db.importantInformation.list();
+  return bodySnapshot.documents.map((doc) => ({
+    title: doc.title,
+    content: doc.description,
+  }));
+};
 
 const WichtigeInfo = () => {
-  const [headerData, setHeaderData] = useState(null);
-  const [bodyData, setBodyData] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { data: headerData, isLoading: headerLoading, error: headerError } = useQuery({
+    queryKey: ['headerData'],
+    queryFn: fetchHeaderData,
+  });
+  const { data: bodyData, isLoading: bodyLoading, error: bodyError } = useQuery({
+    queryKey: ['bodyData'],
+    queryFn: fetchBodyData,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch header data
-        const headerSnapshot = await db.importantInformationHeader.list();
-        if (headerSnapshot.documents.length > 0) {
-          setHeaderData({
-            title: headerSnapshot.documents[0].title,
-            description: headerSnapshot.documents[0].description,
-          });
-        }
+  if (headerLoading || bodyLoading) {
+    return <Preloader/>;
+  }
 
-        // Fetch body data
-        const bodySnapshot = await db.importantInformation.list();
-        const body = bodySnapshot.documents.map((doc) => ({
-          title: doc.title,
-          content: doc.description,
-        }));
-        setBodyData(body);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
+  if (headerError || bodyError) {
+    return <div>Error loading data</div>;
   }
 
   return (

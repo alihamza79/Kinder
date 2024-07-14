@@ -1,53 +1,40 @@
-import React, { useState, useEffect } from 'react';
-
-// Libraries
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Parallax } from "react-scroll-parallax";
-
-// Components
 import BlogSimple from '../../Components/Blogs/BlogSimple';
-
-// Data
 import db from "../../appwrite/Services/dbServices";
 import storageServices from "../../appwrite/Services/storageServices";
 import HeaderSection from '../Header/HeaderSection';
 import FooterSection from '../Footer/FooterSection';
 
-// BlogSimplePage Component
 const BlogSimplePage = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const blogsPerPage = 6;
 
-  useEffect(() => {
-    const fetchBlogData = async () => {
-      try {
-        const querySnapshot = await db.blogs.list(); // Fetch documents from Appwrite collection
-        const data = await Promise.all(
-          querySnapshot.documents.map(async (doc) => {
-            const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
-            return {
-              id: doc.$id,
-              title: doc.title,
-              date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
-              content: doc.content,
-              img: imageUrl.href,
-              category: doc.tags,
-              author:doc.author
-            };
-          })
-        );
-        setBlogs(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      }
-    };
+  const fetchBlogData = async () => {
+    const querySnapshot = await db.blogs.list();
+    const data = await Promise.all(
+      querySnapshot.documents.map(async (doc) => {
+        const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+        return {
+          id: doc.$id,
+          title: doc.title,
+          date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
+          content: doc.content,
+          img: imageUrl.href,
+          category: doc.tags,
+          author: doc.author,
+        };
+      })
+    );
+    return data;
+  };
 
-    fetchBlogData();
-  }, []);
+  const { data: blogs = [], isLoading } = useQuery({
+    queryKey: ['blogs'],
+    queryFn: fetchBlogData,
+  });
 
   // Get current blogs
   const indexOfLastBlog = currentPage * blogsPerPage;
@@ -59,8 +46,7 @@ const BlogSimplePage = () => {
 
   return (
     <>
-    <HeaderSection theme="light"/>
-      {/* Parallax Section Start */}
+      <HeaderSection theme="light" />
       <div className="py-[80px] h-auto overflow-hidden md:relative md:py-[40px]">
         <Parallax className="lg-no-parallax bg-cover absolute -top-[100px] landscape:md:top-[-20px] left-0 w-full h-[100vh]" translateY={[-40, 40]} style={{ backgroundImage: `url(/assets/img/webp/portfolio-bg2.webp)` }}></Parallax>
         <Container className="h-full relative">
@@ -72,14 +58,11 @@ const BlogSimplePage = () => {
           </Row>
         </Container>
       </div>
-      {/* Parallax Section End */}
-
-      {/* Section Start */}
       <section className="overflow-hidden relative px-[5%] pb-[130px] bg-lightgray lg:pb-[90px] lg:px-0 md:pb-[75px] sm:pb-[50px]">
         <Container fluid>
           <Row className="justify-center">
             <Col xl={12} lg={12} sm={10} className="lg:px-0">
-              {loading ? (
+              {isLoading ? (
                 <div>Loading...</div>
               ) : (
                 <BlogSimple 
@@ -98,9 +81,7 @@ const BlogSimplePage = () => {
           </Row>
         </Container>
       </section>
-      {/* Section End */}
-
-      <FooterSection/>
+      <FooterSection />
     </>
   );
 }
