@@ -10,6 +10,8 @@ import db from '../../appwrite/Services/dbServices';
 
 const Vertretung = () => {
   const [tabData, setTabData] = useState();
+  const [weeklyHeader, setWeeklyHeader] = useState("");
+  const [weeklyBodyData, setWeeklyBodyData] = useState([]);
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
 
   useEffect(() => {
@@ -61,50 +63,48 @@ const Vertretung = () => {
         });
   
         setTabData(data);
-        console.log("Tab data: ", data);
       } catch (error) {
         console.error('Error fetching representation dates:', error);
       }
     };
+
+    const fetchWeeklyRepresentation = async () => {
+      try {
+        // Fetch header data
+        const headerSnapshot = await db.weeklyRepresentationHeader.list();
+        if (headerSnapshot.documents.length > 0) {
+          setWeeklyHeader(headerSnapshot.documents[0].title);
+        }
+
+        // Fetch body data
+        const bodySnapshot = await db.weeklyRepresentation.list();
+        const body = bodySnapshot.documents.map((doc) => ({
+          // icon: "line-icon-Cursor-Click2 text-[#27ae60]", 
+          title: doc.title,
+          content: doc.description,
+        }));
+        setWeeklyBodyData(body);
+      } catch (error) {
+        console.error("Error fetching weekly representation data:", error);
+      }
+    };
   
     fetchRepresentationDates();
+    fetchWeeklyRepresentation();
   }, []);
   
-  
-  // Ensure that `tabData` is being logged and not `tabData` from the state
-  console.log("Tab data outside useEffect: ", tabData);
-
-  const iconWithTextData = [
-    {
-      icon: "line-icon-Cursor-Click2 text-[#27ae60]",
-      title: "NOTFALL",
-      content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
-    },
-    {
-      icon: "line-icon-Bakelite text-[#27ae60]",
-      title: "NOTDIENST",
-      content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
-    },
-    {
-      icon: "line-icon-Boy text-[#27ae60]",
-      title: "OPENING HOURS",
-      content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
-    },
-  ];
-
   return (
     <div>
       {/* Header Start */}
       <HeaderSection theme="light" />
       {/* Header End */}
-      {/* <SideButtons /> */}
 
       {/* Weekly Representation */}
       <Container>
         <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10 pt-[160px] lg:pt-[120px] md:pt-[95px] sm:pt-[80px] xs:pt-[50px] md:px-0 sm:px-0 xs:px-0" {...fadeIn}>
           <Row className="justify-center">
             <Col md={12} className="text-center mb-[6%]">
-              <h6 className="font-serif text-darkgray font-medium">Weekly Representation</h6>
+              <h6 className="font-serif text-darkgray font-medium">{weeklyHeader}</h6>
             </Col>
           </Row>
           <Row className="justify-center">
@@ -113,7 +113,7 @@ const Vertretung = () => {
                 grid="row-cols-1 row-cols-lg-2 row-cols-md-2 justify-center gap-y-10 z-10 relative"
                 className="rounded-[4px] flex"
                 theme="icon-with-text-02"
-                data={iconWithTextData}
+                data={weeklyBodyData}
               />
             </Col>
           </Row>
