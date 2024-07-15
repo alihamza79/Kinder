@@ -11,9 +11,8 @@ import db from '../../appwrite/Services/dbServices';
 import Preloader from '../../Components/Preloader';
 
 //icons
-import location from "../../Assets/img/icons/location.svg"
-import person from "../../Assets/img/icons/person.svg"
-// import calender from "../../Assets/img/icons/calender.svg"
+
+ import calender_03 from "../../Assets/img/icons/calender_03.svg"
 
 const fetchRepresentationDates = async () => {
   const { documents } = await db.representationDates.list();
@@ -74,6 +73,7 @@ const fetchWeeklyRepresentation = async () => {
   // Fetch body data
   const bodySnapshot = await db.weeklyRepresentation.list();
   const weeklyBodyData = bodySnapshot.documents.map((doc) => ({
+    img:calender_03,
     title: doc.title,
     content: doc.description,
   }));
