@@ -22,18 +22,18 @@ import "../../Assets/scss/components/_team.scss"
 
 const TeamSwitch = (params, item, i) => {
     switch (params.theme) {
-        case "team-style-01":
-            return <TeamStyle01 item={item} />
-        case "team-style-02":
-            return <TeamStyle02 item={item} />
-        case "team-style-03":
-            return <TeamStyle03 item={item} />
+        // case "team-style-01":
+        //     return <TeamStyle01 item={item} />
+        // case "team-style-02":
+        //     return <TeamStyle02 item={item} />
+        // case "team-style-03":
+        //     return <TeamStyle03 item={item} />
         case "team-style-04":
             return <TeamStyle04 item={item} />
-        case "team-style-05":
-            return <TeamStyle05 item={item} />
-        default:
-            return <TeamStyle04 item={item} />
+        // case "team-style-05":
+        //     return <TeamStyle05 item={item} />
+        // default:
+        //     return <TeamStyle04 item={item} />
     }
 }
 
