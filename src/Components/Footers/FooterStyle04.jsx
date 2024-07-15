@@ -21,11 +21,23 @@ import FooterData from './FooterData';
 // Appwrite
 import db from '../../appwrite/Services/dbServices';
 
+// Define footer links separately
+const footerLinks = [
+  { title: 'Home', link: '/' },
+  { title: 'Wichtige Information', link: '/wichtigeinfo' },
+  { title: 'Vertretung', link: '/vertretung' },
+  { title: 'All News', link: '/allnews' },
+  { title: 'Contact Us', link: '/contactus' },
+  { title: 'Privacy Policy', link: '/policy' },
+
+];
+
 const FooterStyle04 = (props) => {
   const [iconData, setIconData] = useState([
     { color: "#828282", link: "", icon: "fab fa-facebook-f" },
     { color: "#828282", link: "", icon: "fab fa-twitter" },
     { color: "#828282", link: "", icon: "fab fa-instagram" },
+    
   ]);
 
   useEffect(() => {
@@ -50,6 +62,11 @@ const FooterStyle04 = (props) => {
 
     fetchSocialLinks();
   }, []);
+
+  // Split the footerLinks array into two halves for two columns
+  const midIndex = Math.ceil(footerLinks.length / 2);
+  const firstColumnLinks = footerLinks.slice(0, midIndex);
+  const secondColumnLinks = footerLinks.slice(midIndex);
 
   return (
     <Footer topSpace={false} theme={props.theme} className={`footer-style-04${props.className ? ` ${props.className}` : ""}`}>
@@ -78,6 +95,36 @@ const FooterStyle04 = (props) => {
               <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Lorem ipsum dolor amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore.</p>
               <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData.filter(icon => icon.link)} />
             </Col>
+            
+            {/* Add this new section for listing pages */}
+            <Col lg={{ span: 3 }} sm={{ span: 6 }} className="md:mb-[40px] xs:mb-[25px]">
+              <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Pages</span>
+              <Row>
+                <Col xs={6}>
+                  <ul className="list-none p-0">
+                    {firstColumnLinks.map((page, index) => (
+                      <li key={index} className="mb-[10px]">
+                        <Link to={page.link} className="text-gray-600 hover:text-gray-800">
+                          {page.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+                <Col xs={6}>
+                  <ul className="list-none p-0">
+                    {secondColumnLinks.map((page, index) => (
+                      <li key={index} className="mb-[10px]">
+                        <Link to={page.link} className="text-gray-600 hover:text-gray-800">
+                          {page.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </Col>
+              </Row>
+            </Col>
+
             <Col xl={{ span: 3 }} lg={{ span: 4, order: 0 }} sm={{ span: 6, order: 3 }} md={5}>
               <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Subscribe to newsletter</span>
               <p className="mb-[25px] md:mb-[20px]">Enter your email address for receiving valuable Updates</p>

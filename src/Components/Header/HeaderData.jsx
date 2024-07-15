@@ -3,9 +3,6 @@ const HeaderData = [
         title: 'Home',
         link:"/"
     },
-
-  
-    
     
     {
         title: "Wichtige Information",
