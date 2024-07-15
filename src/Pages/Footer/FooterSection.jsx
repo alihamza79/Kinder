@@ -24,8 +24,6 @@ const FooterSection = () => {
               "url(/assets/img/webp/home-startup-footer-down-bg.webp)",
           }}
         >
-          
-          
         </FooterStyle04>
         {/* Footer End */}
    </>
