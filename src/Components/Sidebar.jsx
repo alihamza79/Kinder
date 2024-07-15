@@ -84,7 +84,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={blog} alt="" /> 
                     </span>{" "}
                     <span>Hero Section</span> <span className="menu-arrow" />
                   </Link>

@@ -5,6 +5,7 @@ import { signOutUser, getCurrentUser } from "../appwrite/Services/authServices";
 
 const Header = () => {
   const [userName, setUserName] = useState("");
+  const [showLogo, setShowLogo] = useState(true); // State for logo visibility
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +39,7 @@ const Header = () => {
 
   const handlesidebar = () => {
     document.body.classList.toggle("mini-sidebar");
+    setShowLogo(!showLogo); // Toggle logo visibility
   };
 
   const handlesidebarmobilemenu = () => {
@@ -61,13 +63,17 @@ const Header = () => {
                 data-rjs="/assets/img/webp/logo-cropped@2x.png"
                 alt="logo"
               />
-              <img
-                width={130}
-                height={90}
-                src="/assets/img/webp/logo2.png"
-                data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                alt="logo"
-              />
+              {showLogo && (
+                <>
+                  <img
+                    width={130}
+                    height={90}
+                    src="/assets/img/webp/logo2.png"
+                    data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                    alt="logo"
+                  />
+                </>
+              )}
             </div>
           </Link>
         </div>
@@ -96,11 +102,7 @@ const Header = () => {
               </div>
             </Link>
             <div className="dropdown-menu">
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={handleLogout}
-              >
+              <Link className="dropdown-item" to="#" onClick={handleLogout}>
                 Logout
               </Link>
             </div>

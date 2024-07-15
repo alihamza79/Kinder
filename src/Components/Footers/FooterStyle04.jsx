@@ -70,7 +70,7 @@ const FooterStyle04 = (props) => {
 
   return (
     <Footer topSpace={false} theme={props.theme} className={`footer-style-04${props.className ? ` ${props.className}` : ""}`}>
-      <div className="py-[6%] lg:py-[8%] md:py-[50px]">
+      <div className="py-[6%] lg:py-[8%] md:py-[50px]" style={{backgroundColor:"rgb(245 242 242)"}}>
         <Container>
           <Row className="justify-between md:justify-start">
             <Col lg={{ span: 3, order: 0 }} sm={{ span: 6, order: 1 }} className="md:mb-[40px] xs:mb-[25px]">

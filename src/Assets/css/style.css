@@ -1062,7 +1062,7 @@ textarea.form-control {
   transform: translate(0, -50%);
 }
 .sidebar-menu ul ul a.active {
-  color: #008c80;
+  color: #7daea9;
   font-weight: 500;
 }
 .mobile-user-menu {
@@ -6235,7 +6235,7 @@ h2.card-middle-avatar:hover > a {
   background-color: #00d3c7;
 }
 .nav-tabs.menu-tabs .nav-link:hover {
-  background: #008c80;
+  background: #01afa0;
   color: #fff;
 }
 .form-row.links-cont a:hover {
@@ -6251,7 +6251,7 @@ a.btn.add-links:hover {
   color: #00d3c7;
 }
 .breadcrumb-item.active {
-  color: #008c80;
+  color: #73c5bd;
 }
 .breadcrumb-item + .breadcrumb-item::before {
   display: none;
@@ -6482,7 +6482,7 @@ a.status-red {
 .status-green,
 a.status-green {
   background: rgba(0, 211, 199, 0.1);
-  color: #00d3c7;
+  color: #008c80;
 }
 .status-orange,
 a.status-orange {
@@ -9572,7 +9572,7 @@ span.rti--tag {
   padding: 10px 20px;
   border-radius: 5px;
   color: #fff;
-  background: #008c80;
+  background: #42b9ae;
 }
 .card .card-header .card-title {
   margin-bottom: 0;
