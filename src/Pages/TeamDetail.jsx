@@ -12,6 +12,7 @@ import { buckets } from '../appwrite/buckets';
 import { storage } from '../appwrite/config';
 import FooterSection from './Footer/FooterSection';
 import HeaderSection from './Header/HeaderSection';
+import Preloader from "../Components/Preloader";
 // Function to fetch team data
 const fetchTeamData = async () => {
     const headerSnapshot = await db.teamHeader.list();
@@ -40,7 +41,7 @@ const fetchTeamData = async () => {
     });
   
     if (isLoading) {
-      return <div>Loading...</div>;
+      return <Preloader/>;
     }
   
     return (

@@ -335,6 +335,21 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
+                {/* Subscriber  */}
+
+                <li className="submenu">
+                  <Link
+                    to="/subscribers"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Subscribers</span> 
+                  </Link>
+                </li>
+
               </ul>
               <div className="logout-btn">
                 <Link to="/login" onClick={handleLogout}>

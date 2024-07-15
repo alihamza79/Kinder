@@ -9,9 +9,8 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 
 // Components
-import { resetForm, sendEmail } from '../../Functions/Utilities';
+import { resetForm } from '../../Functions/Utilities';
 import { Input } from '../Form/Form';
-import MessageBox from '../MessageBox/MessageBox';
 import SocialIcons from '../SocialIcon/SocialIcons';
 import { Footer } from './Footer';
 
@@ -21,6 +20,10 @@ import FooterData from './FooterData';
 // Appwrite
 import db from '../../appwrite/Services/dbServices';
 
+// Toast notifications
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // Define footer links separately
 const footerLinks = [
   { title: 'Home', link: '/' },
@@ -29,7 +32,6 @@ const footerLinks = [
   { title: 'All News', link: '/allnews' },
   { title: 'Contact Us', link: '/contactus' },
   { title: 'Privacy Policy', link: '/privacy' },
-
 ];
 
 const FooterStyle04 = (props) => {
@@ -37,7 +39,6 @@ const FooterStyle04 = (props) => {
     { color: "#828282", link: "", icon: "fab fa-facebook-f" },
     { color: "#828282", link: "", icon: "fab fa-twitter" },
     { color: "#828282", link: "", icon: "fab fa-instagram" },
-    
   ]);
 
   useEffect(() => {
@@ -68,9 +69,43 @@ const FooterStyle04 = (props) => {
   const firstColumnLinks = footerLinks.slice(0, midIndex);
   const secondColumnLinks = footerLinks.slice(midIndex);
 
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  
+  const handleSubscription = async (email, actions) => {
+    if (!validateEmail(email)) {
+      toast.warn("Please enter a valid email address.");
+      actions.setSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await db.subscribers.list();
+      const emails = response.documents.map(doc => doc.email);
+
+      if (emails.includes(email)) {
+        toast.warn("This email is already subscribed.");
+      } else {
+        const createResponse = await db.subscribers.create({ email });
+        if (createResponse.$id) {
+          toast.success("Subscription successful!");
+          resetForm(actions);
+        }
+      }
+    } catch (error) {
+      console.error("Error subscribing:", error);
+      toast.error("Subscription failed. Please try again.");
+    } finally {
+      actions.setSubmitting(false);
+    }
+  };
+
   return (
     <Footer topSpace={false} theme={props.theme} className={`footer-style-04${props.className ? ` ${props.className}` : ""}`}>
-      <div className="py-[6%] lg:py-[8%] md:py-[50px]" style={{backgroundColor:"rgb(245 242 242)"}}>
+      <div className="py-[6%] lg:py-[8%] md:py-[50px]" style={{ backgroundColor: "rgb(245 242 242)" }}>
         <Container>
           <Row className="justify-between md:justify-start">
             <Col lg={{ span: 3, order: 0 }} sm={{ span: 6, order: 1 }} className="md:mb-[40px] xs:mb-[25px]">
@@ -95,8 +130,7 @@ const FooterStyle04 = (props) => {
               <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Lorem ipsum dolor amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore.</p>
               <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData.filter(icon => icon.link)} />
             </Col>
-            
-            {/* Add this new section for listing pages */}
+
             <Col lg={{ span: 3 }} sm={{ span: 6 }} className="md:mb-[40px] xs:mb-[25px]">
               <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Pages</span>
               <Row>
@@ -132,9 +166,7 @@ const FooterStyle04 = (props) => {
                 initialValues={{ email: "" }}
                 validationSchema={Yup.object().shape({ email: Yup.string().email("Invalid email.").required("Field is required.") })}
                 onSubmit={async (values, actions) => {
-                  actions.setSubmitting(true)
-                  const response = await sendEmail(values)
-                  response.status === "success" && resetForm(actions)
+                  await handleSubscription(values.email, actions);
                 }}
               >
                 {({ isSubmitting, status }) => (
@@ -153,12 +185,7 @@ const FooterStyle04 = (props) => {
                           exit={{ opacity: 0 }}
                           className="absolute top-[115%] left-0 w-full"
                         >
-                          <MessageBox
-                            className="py-[5px] rounded-[4px]"
-                            theme="message-box01"
-                            variant="success"
-                            message="Your message has been sent successfully subscribed to our email list!"
-                          />
+                          
                         </m.div>
                       )}
                     </AnimatePresence>
@@ -166,18 +193,18 @@ const FooterStyle04 = (props) => {
                 )}
               </Formik>
             </Col>
-            <p className='text-right'>&copy; Copyright {new Date().getFullYear()} Kinder | Powered by  <Link aria-label="link" to="https://syntax-ai.vercel.app" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor"> SYNTAX</Link></p>
+            <p className='text-right'>&copy; Copyright {new Date().getFullYear()} Kinder | Powered by <Link aria-label="link" to="https://syntax-ai.vercel.app" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4 text-themecolor font-medium hover:text-basecolor"> SYNTAX</Link></p>
           </Row>
         </Container>
       </div>
-    </Footer >
-  )
-}
-
+      <ToastContainer />
+    </Footer>
+  );
+};
 
 FooterStyle04.propTypes = {
   className: PropTypes.string,
   logo: PropTypes.string,
-}
+};
 
 export default memo(FooterStyle04);

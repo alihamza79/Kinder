@@ -46,7 +46,7 @@ const Login = () => {
     setError(""); // Reset error message
     try {
       await signIn(email, password);
-      navigate("/teamheader");
+      navigate("/herocarousel");
     } catch (error) {
       console.error("Login failed:", error); // Log the error for more details
       if (error.message.includes("Invalid credentials")) {

@@ -80,6 +80,7 @@ import Preloader from "./Components/Preloader";
 import EditRepresentationDate from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentationDate";
 import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
 import SocialLinks from "./Pages/AdminDashboard/SocialLinks";
+import SubscriberList from "./Pages/AdminDashboard/SuscriberList";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -236,7 +237,10 @@ const DashboardRoutes = () => (
         {/* Social Links  */}
 
         <Route path="/sociallinks" element={<ProtectedRoute element={<SocialLinks />} />} />
+      
+         {/* Suscribers */}
 
+        <Route path="/subscribers" element={<ProtectedRoute element={<SubscriberList />} />} />
 
 
 

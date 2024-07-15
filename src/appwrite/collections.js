@@ -95,6 +95,10 @@ export const collections = [
     id: "6694ee63002ffee893bd",
     name: "socialLinks",
   },
+  {
+    id: "66957c14002882f6022a",
+    name: "subscribers",
+  },
 
   
 ];

@@ -106,7 +106,7 @@ const HeaderSection = (props) => {
           <SearchBar />
           <div className="md:hidden pl-[17px]">
             <HamburgerMenu className="" theme={theme}>
-              <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_20px_rgba(0,0,0,0.3)] right-0 text-center bg-white">
+              <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_2x0px_rgba(0,0,0,0.3)] right-0 text-center bg-white">
                 <div>
                   <h1 className="mb-0 font-bold tracking-[-3px] text-darkgray font-serif uppercase">Hello</h1>
                   <p className="text-lg text-[#27ae60] font-serif uppercase block">Let's be friends.</p>
