@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
@@ -37,27 +37,7 @@ import SideButtons from "../../Components/SideButtons";
 import HeaderSection from '../Header/HeaderSection';
 import FooterSection from '../Footer/FooterSection';
 
-const SocialIconsData = [{
-  color: "#3b5998",
-  link: "https://www.facebook.com/",
-  icon: "fab fa-facebook-f"
-},
-{
-  color: "#00aced",
-  link: "https://twitter.com/",
-  icon: "fab fa-twitter"
-},
-{
-  color: "#fe1f49",
-  link: "https://www.instagram.com/",
-  icon: "fab fa-instagram"
-},
-{
-  color: "#007bb6",
-  link: "https://www.linkedin.com/",
-  icon: "fab fa-linkedin-in"
-},
-]
+import db from '../../appwrite/Services/dbServices';
 
 const sendEmail = async (values) => {
   try {
@@ -81,15 +61,35 @@ const resetForm = (actions) => {
 
 const ContactUsClassicPage = (props) => {
   const form = useRef(null);
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    linkedin: "",
+  });
 
   useEffect(() => {
-    let timer;
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
+    const fetchSocialLinks = async () => {
+      try {
+        const response = await db.socialLinks.list();
+        if (response.documents.length > 0) {
+          const { facebook, twitter, instagram, linkedin } = response.documents[0];
+          setSocialLinks({ facebook, twitter, instagram, linkedin });
+        }
+      } catch (error) {
+        console.error("Error fetching social links:", error);
       }
     };
+
+    fetchSocialLinks();
   }, []);
+
+  const socialIconsData = [
+    { color: "#3b5998", link: socialLinks.facebook, icon: "fab fa-facebook-f" },
+    { color: "#00aced", link: socialLinks.twitter, icon: "fab fa-twitter" },
+    { color: "#fe1f49", link: socialLinks.instagram, icon: "fab fa-instagram" },
+    { color: "#007bb6", link: socialLinks.linkedin, icon: "fab fa-linkedin-in" },
+  ].filter(icon => icon.link);
 
   return (
     <div style={props.style}>
@@ -202,7 +202,7 @@ const ContactUsClassicPage = (props) => {
               <span className="w-full h-[1px] inline-block bg-mediumgray"></span>
             </Col>
             <Col xs={12} xl={3} lg={4} md={5} sm={6}>
-              <SocialIcons theme="social-icon-style-01" className="justify-left xs:justify-center xs:text-center" size="sm" iconColor="dark" data={SocialIconsData} />
+              <SocialIcons theme="social-icon-style-01" className="justify-left xs:justify-center xs:text-center" size="sm" iconColor="dark" data={socialIconsData} />
             </Col>
           </Row>
         </Container>
@@ -211,11 +211,10 @@ const ContactUsClassicPage = (props) => {
 
       {/* Section Start */}
       <section className="google-map-container">
-      <GoogleMap
-  className=" h-[550px] p-0 md:h-[400px] xs:h-[250px] w-[88%] mx-auto border border-gray-300 shadow-sm"
-  location="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.352587248077!2d9.318753489368806!3d48.83241292861733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799c8a38c3eea07%3A0xea25113db09e030e!2sBeinsteiner%20Str.%204%2C%2071334%20Waiblingen%2C%20Germany!5e0!3m2!1sen!2s!4v1720685585014!5m2!1sen!2s"
-/>
-
+        <GoogleMap
+          className=" h-[550px] p-0 md:h-[400px] xs:h-[250px] w-[88%] mx-auto border border-gray-300 shadow-sm"
+          location="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2626.352587248077!2d9.318753489368806!3d48.83241292861733!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4799c8a38c3eea07%3A0xea25113db09e030e!2sBeinsteiner%20Str.%204%2C%2071334%20Waiblingen%2C%20Germany!5e0!3m2!1sen!2s!4v1720685585014!5m2!1sen!2s"
+        />
       </section>
       {/* Section End */}
 

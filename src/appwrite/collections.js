@@ -91,5 +91,10 @@ export const collections = [
     id: "66931391000a022d52ad",
     name: "importantInformationHeader",
   },
+  {
+    id: "6694ee63002ffee893bd",
+    name: "socialLinks",
+  },
+
   
 ];

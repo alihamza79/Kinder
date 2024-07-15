@@ -79,6 +79,7 @@ import AddImportantInformation from "./Pages/AdminDashboard/Important_informatio
 import Preloader from "./Components/Preloader";
 import EditRepresentationDate from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentationDate";
 import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
+import SocialLinks from "./Pages/AdminDashboard/SocialLinks";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -231,6 +232,10 @@ const DashboardRoutes = () => (
         <Route path="/importantinformationbody" element={<ProtectedRoute element={<ImportantInformationList />} />} />
         <Route path="/importantinformationbody/addimportantinformation" element={<ProtectedRoute element={<AddImportantInformation />} />} />
         <Route path="/importantinformationbody/editimportantinformation/:id" element={<ProtectedRoute element={<EditImportantInformation />} />} />
+
+        {/* Social Links  */}
+
+        <Route path="/sociallinks" element={<ProtectedRoute element={<SocialLinks />} />} />
 
 
 

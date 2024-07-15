@@ -17,39 +17,17 @@ import HeaderSection from '../../Header/HeaderSection';
 import db from "../../../appwrite/Services/dbServices";
 import storageServices from "../../../appwrite/Services/storageServices";
 
-const SocialIconsData = [
-  {
-    color: "#3b5998",
-    link: "https://www.facebook.com/",
-    icon: "fab fa-facebook-f"
-  },
-  {
-    color: "#ea4c89",
-    link: "https://dribbble.com/",
-    icon: "fab fa-dribbble"
-  },
-  {
-    color: "#00aced",
-    link: "https://twitter.com/",
-    icon: "fab fa-twitter"
-  },
-  {
-    color: "#fe1f49",
-    link: "https://www.instagram.com/",
-    icon: "fab fa-instagram"
-  },
-  {
-    color: "#0077b5",
-    link: "https://www.linkedin.com/",
-    icon: "fab fa-linkedin-in"
-  }
-];
-
 const BlogStandardPostPage = (props) => {
   const [data, setData] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [recentPosts, setRecentPosts] = useState([]);
   const [tags, setTags] = useState([]);
+  const [socialLinks, setSocialLinks] = useState({
+    facebook: "",
+    twitter: "",
+    instagram: "",
+    linkedin: "",
+  });
   const { id } = useParams();
 
   useEffect(() => {
@@ -141,10 +119,30 @@ const BlogStandardPostPage = (props) => {
       }
     };
 
+    const fetchSocialLinks = async () => {
+      try {
+        const response = await db.socialLinks.list();
+        if (response.documents.length > 0) {
+          const { facebook, twitter, instagram, linkedin } = response.documents[0];
+          setSocialLinks({ facebook, twitter, instagram, linkedin });
+        }
+      } catch (error) {
+        console.error("Error fetching social links:", error);
+      }
+    };
+
     fetchBlogData();
     fetchRecentPosts();
     fetchTags();
+    fetchSocialLinks();
   }, [id]);
+
+  const socialIconsData = [
+    { color: "#3b5998", link: socialLinks.facebook, icon: "fab fa-facebook-f" },
+    { color: "#00aced", link: socialLinks.twitter, icon: "fab fa-twitter" },
+    { color: "#fe1f49", link: socialLinks.instagram, icon: "fab fa-instagram" },
+    { color: "#0077b5", link: socialLinks.linkedin, icon: "fab fa-linkedin-in" },
+  ].filter(icon => icon.link);
 
   return (
     <div style={props.style}>
@@ -187,7 +185,7 @@ const BlogStandardPostPage = (props) => {
                         </div>
                       )}
                     </Col>
-                    <SocialIcons animation={fadeIn} theme="social-icon-style-09 m-auto" className="justify-center" size="md" iconColor="dark" data={SocialIconsData} />
+                    <SocialIcons animation={fadeIn} theme="social-icon-style-09 m-auto" className="justify-center" size="md" iconColor="dark" data={socialIconsData} />
                   </Row>
                 </Col>
                 <Sidebar recentPosts={recentPosts} tags={tags} />
