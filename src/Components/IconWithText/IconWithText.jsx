@@ -45,7 +45,6 @@ const IconWithText = (props) => {
 };
 
 IconWithText.defaultProps = {
-  data: IconWithTextData_01,
   animationDelay: 0.6,
   animationDuration: 0.8,
   animationTransition: "circOut",

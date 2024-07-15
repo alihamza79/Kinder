@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { login02, loginicon01, loginicon02, loginicon03, loginlogo } from '../../Components/imagepath';
+import { login02 } from '../../Components/imagepath';
 import { sendPasswordRecoveryEmail } from '../../appwrite/Services/authServices';
 
 const ForgotPassword = () => {

@@ -1,17 +1,17 @@
-import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { m } from "framer-motion";
+import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 
 // Components
 import { TiltBox } from '../Components/FancyText/FancyText';
 import Team from '../Components/Team/Team';
 import { fadeIn } from '../Functions/GlobalAnimations';
+import db from '../appwrite/Services/dbServices';
+import { buckets } from '../appwrite/buckets';
+import { storage } from '../appwrite/config';
 import FooterSection from './Footer/FooterSection';
 import HeaderSection from './Header/HeaderSection';
-import db from '../appwrite/Services/dbServices';
-import { storage } from '../appwrite/config';
-import { buckets } from '../appwrite/buckets';
 // Function to fetch team data
 const fetchTeamData = async () => {
     const headerSnapshot = await db.teamHeader.list();
