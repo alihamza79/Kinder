@@ -1,41 +1,28 @@
-import React, { useRef, useEffect, useState } from 'react';
+import emailjs from 'emailjs-com';
+import { Form, Formik } from 'formik';
+import { AnimatePresence, m } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
-import { AnimatePresence, m } from 'framer-motion';
-import { Form, Formik } from 'formik';
-import emailjs from 'emailjs-com';
-import {
-  Header,
-  HeaderCart,
-  HeaderLanguage,
-  HeaderNav,
-  Menu,
-  SearchBar
-} from "../../Components/Header/Header";
-import {
-  fancyTextBox02
-} from '../../Components/FancyTextBox/FancyTextBoxData';
-import SocialIcons from '../../Components/SocialIcon/SocialIcons';
-import FancyTextBox from '../../Components/FancyTextBox/FancyTextBox';
-import {
-  ContactFormStyle03Schema
-} from '../../Components/Form/FormSchema';
+import Buttons from '../../Components/Button/Buttons';
 import {
   Checkbox,
   Input,
   TextArea
 } from '../../Components/Form/Form';
 import {
+  ContactFormStyle03Schema
+} from '../../Components/Form/FormSchema';
+import GoogleMap from '../../Components/GoogleMap/GoogleMap';
+import MessageBox from '../../Components/MessageBox/MessageBox';
+import SideButtons from "../../Components/SideButtons";
+import SocialIcons from '../../Components/SocialIcon/SocialIcons';
+import {
   fadeIn
 } from '../../Functions/GlobalAnimations';
-import MessageBox from '../../Components/MessageBox/MessageBox';
-import Buttons from '../../Components/Button/Buttons';
-import FooterStyle01 from '../../Components/Footers/FooterStyle01';
-import GoogleMap from '../../Components/GoogleMap/GoogleMap';
-import SideButtons from "../../Components/SideButtons";
-import HeaderSection from '../Header/HeaderSection';
 import FooterSection from '../Footer/FooterSection';
+import HeaderSection from '../Header/HeaderSection';
 
 import db from '../../appwrite/Services/dbServices';
 

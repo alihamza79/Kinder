@@ -1,32 +1,30 @@
-import React, { lazy } from "react";
 import { useQueries } from "@tanstack/react-query";
-import { Form, Formik } from "formik";
-import { AnimatePresence, m } from "framer-motion";
+import { m } from "framer-motion";
+import React, { lazy } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import * as Yup from "yup";
-import { fadeIn } from "../../../Functions/GlobalAnimations";
 import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
+import { fadeIn } from "../../../Functions/GlobalAnimations";
 
-import Team from "../../../Components/Team/Team";
-import TextBox from "../../../Components/TextBox/TextBox";
 import { buckets } from "../../../appwrite/buckets";
 import { storage } from "../../../appwrite/config";
 import db from "../../../appwrite/Services/dbServices";
 import storageServices from "../../../appwrite/Services/storageServices";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
+import Preloader from "../../../Components/Preloader";
+import Team from "../../../Components/Team/Team";
+import TextBox from "../../../Components/TextBox/TextBox";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
-import Preloader from "../../../Components/Preloader";
 
 // Icons 
-import ambulance from "../../../Assets/img/icons/ambulance.svg"
-import emergency_services from "../../../Assets/img/icons/emergency_services.svg"
-import opening from  "../../../Assets/img/icons/opening.svg"
-import contact_info from "../../../Assets/img/icons/contact_info.svg"
-import opening_hour from "../../../Assets/img/icons/opening_hour.svg"
-import pdf from "../../../Assets/img/icons/pdf.svg"
+import ambulance from "../../../Assets/img/icons/ambulance.svg";
+import contact_info from "../../../Assets/img/icons/contact_info.svg";
+import emergency_services from "../../../Assets/img/icons/emergency_services.svg";
+import opening from "../../../Assets/img/icons/opening.svg";
+import opening_hour from "../../../Assets/img/icons/opening_hour.svg";
+import pdf from "../../../Assets/img/icons/pdf.svg";
 
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
@@ -40,20 +38,6 @@ const MessageBox = lazy(() =>
 );
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
 
-const initialServiceData = [
-  { title: "Vorsorge- Untersuchungen" },
-  { title: "Jugendgesundheits- Untersuchungen" },
-  { title: "Jugendarbeitsschutz- Untersuchungen" },
-  { title: "Kindergarten-Eingangsuntersuchungen" },
-  { title: "Entwicklungsdiagnostik im Säuglings-, Kleinkind- und Schulalter" },
-  { title: "Impfungen" },
-  { title: "Säuglingssonographie" },
-  { title: "Laboruntersuchungen" },
-  { title: "praeoperative Diagnostik" },
-  { title: "kleine Chirurgie (z.B. Wundversorgung)" },
-  { title: "Seh- und Hörprüfungen" },
-  { title: "Allergologie, Lungenfunktion, Allergie- Test" },
-];
 
 const fallbackScheduleBody = [
   {

@@ -5,28 +5,10 @@ import { Col, Container, Row } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 
 // Components
-import FooterStyle01 from "../Components/Footers/FooterStyle01"
-import { Header, HeaderCart, HeaderLanguage, HeaderNav, Menu, SearchBar } from '../Components/Header/Header'
-import Lists from "../Components/Lists/Lists"
-import HeaderSection from './Header/HeaderSection'
 import FooterSection from './Footer/FooterSection'
+import HeaderSection from './Header/HeaderSection'
 
 // Data
-
-const ListData = [
-    {
-        content: "This policy applies where we are acting as a data controller with respect to the personal data.",
-    },
-    {
-        content: "By using our website and agreeing to this policy, you consent to our use of cookies in accordance.",
-    },
-    {
-        content: "Our website incorporates privacy controls which affect how we will process your personal data.",
-    },
-    {
-        content: "Theme advantages are pixel perfect design clear code delivered.",
-    },
-]
 
 const Privacy = (props) => {
   return (

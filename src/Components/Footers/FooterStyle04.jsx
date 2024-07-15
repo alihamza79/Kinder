@@ -1,19 +1,19 @@
-import React, { useState, useEffect, memo } from 'react'
+import React, { memo, useEffect, useState } from 'react';
 
 // Libraries
+import { Form, Formik } from 'formik';
+import { AnimatePresence, m } from 'framer-motion';
+import { PropTypes } from "prop-types";
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { PropTypes } from "prop-types";
-import { m, AnimatePresence } from 'framer-motion';
 import * as Yup from 'yup';
-import { Form, Formik } from 'formik';
 
 // Components
-import MessageBox from '../MessageBox/MessageBox';
-import { Input } from '../Form/Form'
-import SocialIcons from '../SocialIcon/SocialIcons';
-import FooterMenu, { Footer } from './Footer';
 import { resetForm, sendEmail } from '../../Functions/Utilities';
+import { Input } from '../Form/Form';
+import MessageBox from '../MessageBox/MessageBox';
+import SocialIcons from '../SocialIcon/SocialIcons';
+import { Footer } from './Footer';
 
 // Data
 import FooterData from './FooterData';
@@ -28,7 +28,7 @@ const footerLinks = [
   { title: 'Vertretung', link: '/vertretung' },
   { title: 'All News', link: '/allnews' },
   { title: 'Contact Us', link: '/contactus' },
-  { title: 'Privacy Policy', link: '/policy' },
+  { title: 'Privacy Policy', link: '/privacy' },
 
 ];
 
@@ -174,10 +174,6 @@ const FooterStyle04 = (props) => {
   )
 }
 
-FooterStyle04.defaultProps = {
-  data: FooterData,
-  logo: "/assets/img/webp/logo-fast-blue-black.webp"
-}
 
 FooterStyle04.propTypes = {
   className: PropTypes.string,

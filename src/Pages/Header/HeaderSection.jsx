@@ -1,19 +1,17 @@
-import React, { useState, useEffect, lazy } from 'react';
+import { Form, Formik } from 'formik';
+import { AnimatePresence, m } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import { Col, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { m, AnimatePresence } from 'framer-motion';
 
 // Import functions and components
-import { resetForm, sendEmail } from '../../Functions/Utilities';
 import { Input } from '../../Components/Form/Form';
+import { HamburgerMenu, SearchBar } from '../../Components/Header/Header';
+import StaticInstagram from '../../Components/Instagram/StaticInstagram';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
-import StaticInstagram from '../../Components/Instagram/StaticInstagram';
-import { HamburgerMenu } from '../../Components/Header/Header';
-import { SearchBar } from '../../Components/Header/Header';
-import { fadeIn } from '../../Functions/GlobalAnimations';
+import { resetForm, sendEmail } from '../../Functions/Utilities';
 
 const Header = React.lazy(() =>
   import("../../Components/Header/Header").then((module) => ({
