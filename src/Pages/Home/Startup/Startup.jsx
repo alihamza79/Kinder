@@ -11,16 +11,22 @@ import Accordions from "../../../Components/Accordion/Accordion";
 
 import Team from "../../../Components/Team/Team";
 import TextBox from "../../../Components/TextBox/TextBox";
-import { resetForm, sendEmail } from "../../../Functions/Utilities";
 import { buckets } from "../../../appwrite/buckets";
 import { storage } from "../../../appwrite/config";
 import db from "../../../appwrite/Services/dbServices";
 import storageServices from "../../../appwrite/Services/storageServices";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
-import { TeamData04 } from "../../../Components/Team/TeamData";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
 import Preloader from "../../../Components/Preloader";
+
+// Icons 
+import ambulance from "../../../Assets/img/icons/ambulance.svg"
+import emergency_services from "../../../Assets/img/icons/emergency_services.svg"
+import opening from  "../../../Assets/img/icons/opening.svg"
+import contact_info from "../../../Assets/img/icons/contact_info.svg"
+import opening_hour from "../../../Assets/img/icons/opening_hour.svg"
+import pdf from "../../../Assets/img/icons/pdf.svg"
 
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
@@ -51,12 +57,12 @@ const initialServiceData = [
 
 const fallbackScheduleBody = [
   {
-    icon: "line-icon-Bakelite text-[#27ae60]",
+    img: contact_info,
     title: "Contact Info",
     content: "Email an: praxis@kjk-wn.de. \n\n Telefonnummer: 07151 - 21080.",
   },
   {
-    icon: "line-icon-Boy text-[#27ae60]",
+    img: opening_hour,
     title: "OPENING HOURS",
     content:
       "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n\n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr",
@@ -70,17 +76,17 @@ const fetchInformationCards = async () => {
   if (fetchedData.length > 0) {
     return [
       {
-        icon: "line-icon-Cursor-Click2 text-[#27ae60]",
+        img: ambulance,
         title: fetchedData[0]?.Title || "NOTFALL",
         content: fetchedData[0]?.Description || "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
       },
       {
-        icon: "line-icon-Bakelite text-[#27ae60]",
+        img: emergency_services,
         title: fetchedData[1]?.Title || "NOTDIENST",
         content: fetchedData[1]?.Description || "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
       },
       {
-        icon: "line-icon-Boy text-[#27ae60]",
+        img: opening,
         title: fetchedData[2]?.Title || "OPENING HOURS",
         content: fetchedData[2]?.Description || "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
       },
@@ -89,17 +95,17 @@ const fetchInformationCards = async () => {
 
   return [
     {
-      icon: "line-icon-Cursor-Click2 text-[#27ae60]",
+      img: ambulance,
       title: "NOTFALL",
       content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
     },
     {
-      icon: "line-icon-Bakelite text-[#27ae60]",
+      img: emergency_services,
       title: "NOTDIENST",
       content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
     },
     {
-      icon: "line-icon-Boy text-[#27ae60]",
+      img: opening,
       title: "OPENING HOURS",
       content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
     },
@@ -185,7 +191,7 @@ const fetchFormData = async () => {
   const body = await Promise.all(bodySnapshot.documents.map(async doc => {
     const fileUrl = await storageServices.files.getFileView(doc.file);
     return {
-      icon: "fas fa-file-pdf text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] via[#f767a6] to-[#ff798e]",
+      img: pdf,
       title: doc.title,
       content: `<a href="${fileUrl.href}" target="_blank" download>Download File</a>`,
     };
@@ -198,7 +204,7 @@ const fetchScheduleData = async () => {
   const bodySnapshot = await db.scheduleBody.list();
   const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "";
   const body = bodySnapshot.documents.map((doc, index) => ({
-    icon: fallbackScheduleBody[index]?.icon,
+    img: fallbackScheduleBody[index]?.img,
     title: doc.title,
     content: doc.description,
   }));

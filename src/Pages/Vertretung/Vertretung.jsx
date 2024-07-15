@@ -10,6 +10,11 @@ import MonthlyTab06 from '../../Components/Tab/MonthlyTab06';
 import db from '../../appwrite/Services/dbServices';
 import Preloader from '../../Components/Preloader';
 
+//icons
+import location from "../../Assets/img/icons/location.svg"
+import person from "../../Assets/img/icons/person.svg"
+// import calender from "../../Assets/img/icons/calender.svg"
+
 const fetchRepresentationDates = async () => {
   const { documents } = await db.representationDates.list();
   const fetchedData = await Promise.all(
