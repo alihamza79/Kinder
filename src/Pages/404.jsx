@@ -9,7 +9,6 @@ import Buttons from '../Components/Button/Buttons';
 import { fadeIn } from "../Functions/GlobalAnimations";
 import FooterSection from "./Footer/FooterSection";
 import HeaderSection from "./Header/HeaderSection";
-const SideButtons = lazy(() => import("../Components/SideButtons"))
 
 const NotFoundPage = (props) => {
   return (

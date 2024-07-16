@@ -10,7 +10,6 @@ import Buttons from '../Button/Buttons'
 import { fadeIn } from "../../Functions/GlobalAnimations";
 
 // Data
-import { TabData01 } from './TabData'
 
 const Tab01 = (props) => {
     return (
@@ -39,7 +38,6 @@ const Tab01 = (props) => {
 }
 
 Tab01.defaultProps = {
-    data: TabData01
 }
 
 Tab01.propTypes = {

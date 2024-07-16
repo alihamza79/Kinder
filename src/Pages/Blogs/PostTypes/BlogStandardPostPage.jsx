@@ -6,7 +6,6 @@ import { Link, useParams } from 'react-router-dom';
 
 // Components
 import Sidebar from '../../../Components/Blogs/HelperComponents/Sidebar';
-import SideButtons from "../../../Components/SideButtons";
 import SocialIcons from "../../../Components/SocialIcon/SocialIcons";
 import BlogClean from '../../../Components/Blogs/BlogClean';
 
@@ -149,7 +148,6 @@ const BlogStandardPostPage = (props) => {
       {/* Header Start */}
       <HeaderSection theme="light" />
       {/* Header End */}
-      <SideButtons />
       {data ? (
         <>
           <section className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]">

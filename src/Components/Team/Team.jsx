@@ -1,24 +1,19 @@
-import React, { memo } from 'react'
+import React, { memo } from 'react';
 
 // Libraries
-import { Row } from 'react-bootstrap'
-import { Swiper, SwiperSlide } from "swiper/react";
+import { m } from "framer-motion";
+import { Row } from 'react-bootstrap';
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
-import { m } from "framer-motion"
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Components
-import TeamStyle01 from './TeamStyle01';
-import TeamStyle02 from './TeamStyle02';
-import TeamStyle03 from './TeamStyle03';
 import TeamStyle04 from './TeamStyle04';
-import TeamStyle05 from './TeamStyle05';
 
 // Data
-import { TeamData01 } from './TeamData'
 import { PropTypes } from 'prop-types';
 
 // css
-import "../../Assets/scss/components/_team.scss"
+import "../../Assets/scss/components/_team.scss";
 
 const TeamSwitch = (params, item, i) => {
     switch (params.theme) {
@@ -91,7 +86,6 @@ const Team = (props) => {
 
 Team.defaultProps = {
     theme: "team-style-05",
-    data: TeamData01,
     overlay: ["#556fffcc", "#b263e4cc", "#e05fc4cc", "#f767a6cc", "#ff798ecc"],
     animationDelay: 0.5,
     carouselOption: {

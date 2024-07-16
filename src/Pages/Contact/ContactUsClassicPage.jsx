@@ -10,7 +10,6 @@ import { Checkbox, Input, TextArea } from '../../Components/Form/Form';
   
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
 import MessageBox from '../../Components/MessageBox/MessageBox';
-import SideButtons from "../../Components/SideButtons";
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
 import { fadeIn } from '../../Functions/GlobalAnimations';
 import FooterSection from '../Footer/FooterSection';
@@ -77,7 +76,6 @@ const ContactUsClassicPage = (props) => {
       {/* Header Start */}
       <HeaderSection />
       {/* Header End */}
-      <SideButtons />
       {/* Parallax Scrolling Start */}
       <m.div className="md:flex md:items-center overflow-hidden relative md:h-[465px] sm:h-[350px] xs:h-[357px]" {...fadeIn}>
         <Parallax className="lg-no-parallax bg-cover cover-background absolute left-0 h-[120vh] top-[60px] lg:h-[64vh] lg:top-[-46px] lg:!translate-y-0 md:h-[60vh] md:-top-[30px] sm:top-[-44px] sm:h-[49vh] xs:top-0 xs:h-[40vh] w-full" translateY={[-40, 40]} style={{ backgroundImage: `url(/assets/img/webp/contactus.jpg)` }}></Parallax>

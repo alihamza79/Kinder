@@ -5,7 +5,6 @@ import { Col, Nav, Row, Tab } from 'react-bootstrap'
 import { PropTypes } from "prop-types";
 
 // Data
-import { TabData06 } from './TabData'
 
 
 const Tab06 = (props) => {
@@ -76,7 +75,6 @@ const Tab06 = (props) => {
 }
 
 Tab06.defaultProps = {
-    data: TabData06
 }
 
 Tab06.propTypes = {
