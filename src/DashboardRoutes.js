@@ -5,15 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { checkAuth } from "./appwrite/Services/authServices";
 import Login from "./Pages/login";
 import ForgotPassword from "./Pages/login/ForgotPassword";
-import Signup from "./Pages/login/Signup";
-import Profile from "./Pages/login/Profile";
-import EditProfile from "./Pages/login/EditProfile";
-import Register from "./Pages/login/Register";
-import LockScreen from "./Pages/login/LockScreen";
-import ChangePassword from "./Pages/login/ChangePassword";
-import Error from "./Pages/login/Error";
-import ServerError from "./Pages/login/ServerError";
-import BlankPage from "./Pages/login/BlankPage";
+
 import GalleryImage from "./Pages/Gallery/Gallery";
 
 import Admin_Dashboard from "./Components/Dashboard/Admin_Dashboard/Admin_Dashboard";
@@ -108,17 +100,9 @@ const DashboardRoutes = () => (
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
-        <Route path="/signup" element={<Signup />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
-        <Route path="/edit-profile" element={<ProtectedRoute element={<EditProfile />} />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/lockscreen" element={<ProtectedRoute element={<LockScreen />} />} />
-        <Route path="/changepassword" element={<ProtectedRoute element={<ChangePassword />} />} />
-        <Route path="/error" element={<Error />} />
-        <Route path="/server-error" element={<ServerError />} />
-        <Route path="/blankpage" element={<ProtectedRoute element={<BlankPage />} />} />
+       
         <Route path="/gallery" element={<ProtectedRoute element={<GalleryImage />} />} />
 
         <Route path="/admin-dashboard" element={<ProtectedRoute element={<Admin_Dashboard />} />} />
