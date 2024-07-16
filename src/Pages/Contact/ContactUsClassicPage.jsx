@@ -6,25 +6,19 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
 import Buttons from '../../Components/Button/Buttons';
-import {
-  Checkbox,
-  Input,
-  TextArea
-} from '../../Components/Form/Form';
-import {
-  ContactFormStyle03Schema
-} from '../../Components/Form/FormSchema';
+import { Checkbox, Input, TextArea } from '../../Components/Form/Form';
+import * as Yup from 'yup';
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SideButtons from "../../Components/SideButtons";
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
-import {
-  fadeIn
-} from '../../Functions/GlobalAnimations';
+import { fadeIn } from '../../Functions/GlobalAnimations';
 import FooterSection from '../Footer/FooterSection';
 import HeaderSection from '../Header/HeaderSection';
-
 import db from '../../appwrite/Services/dbServices';
+import {
+  ContactFormStyle03Schema
+} from '../../Components/Form/FormSchema';
 
 const sendEmail = async (values) => {
   try {
@@ -116,12 +110,13 @@ const ContactUsClassicPage = (props) => {
                   const response = await sendEmail(values);
                   if (response.status === "success") {
                     resetForm(actions);
-                    actions.setStatus({ success: true });
+                    actions.setStatus({ success: true, error: false });
                     setTimeout(() => {
                       actions.setStatus({ success: false });
                     }, 3000);
                   } else {
-                    actions.setStatus({ success: false });
+                    actions.setStatus({ success: false, error: true });
+                    
                   }
                   actions.setSubmitting(false);
                 }}
@@ -134,6 +129,15 @@ const ContactUsClassicPage = (props) => {
                           <Col xs={12}>
                             <div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                               <MessageBox className="mt-[20px] py-[10px] bg-green-500 text-white" theme="message-box01" variant="success" message="Your message has been sent successfully!" />
+                            </div>
+                          </Col>
+                        </Row>
+                      )}
+                      {status && status.error && (
+                        <Row>
+                          <Col xs={12}>
+                            <div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                              <MessageBox className="mt-[20px] py-[10px] bg-red-500 text-white" theme="message-box01" variant="error" message="An error occurred while sending your message. Please try again." />
                             </div>
                           </Col>
                         </Row>
@@ -157,21 +161,9 @@ const ContactUsClassicPage = (props) => {
                         <Buttons type="submit" className={`text-xs tracking-[1px] rounded-none py-[12px] px-[28px] uppercase ${isSubmitting ? "loading" : "bg-green-600 hover:bg-green-700"}`} size="md" color="#fff" title="Send Message" />
                       </Col>
                     </Row>
-                    <AnimatePresence>
-                      {status && status.success && (
-                        <Row>
-                          <Col xs={12}>
-                            <div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                              <MessageBox className="mt-[20px] py-[10px] bg-green-500 text-white" theme="message-box01" variant="success" message="Your message has been sent successfully!" />
-                            </div>
-                          </Col>
-                        </Row>
-                      )}
-                    </AnimatePresence>
                   </Form>
                 )}
               </Formik>
-
             </Col>
           </Row>
         </Container>
