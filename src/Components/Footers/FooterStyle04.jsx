@@ -127,7 +127,7 @@ const FooterStyle04 = (props) => {
                   />
                 </div>
               </Link>
-              <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Lorem ipsum dolor amet consectetur adipiscing elit do eiusmod tempor incididunt ut labore et dolore.</p>
+              <p className="w-full md:w-[80%] mb-[30px] xs:w-11/12">Follow us on Social Platsforms to get latest updates</p>
               <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData.filter(icon => icon.link)} />
             </Col>
 
