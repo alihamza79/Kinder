@@ -90,7 +90,7 @@ const Login = () => {
                             alt="logo"
                           />
                           <img
-                            width={185}
+                            width={230}
                             height={120}
                             src="/assets/img/webp/logo2.png"
                             data-rjs="/assets/img/webp/logo-cropped@2x.png"

@@ -55,10 +55,10 @@ const Header = () => {
       <div className="header">
         <div className="header-left">
           <Link className="logo" to={"/"} onClick={handleLogoutHome}>
-            <div className="flex items-center">
+            <div className="flex items-center w-4/6">
               <img
-                width={50}
-                height={50}
+                width={55}
+                height={55}
                 src="/assets/img/webp/logo1.png"
                 data-rjs="/assets/img/webp/logo-cropped@2x.png"
                 alt="logo"
@@ -66,8 +66,8 @@ const Header = () => {
               {showLogo && (
                 <>
                   <img
-                    width={130}
-                    height={90}
+                    width={190}
+                    height={105}
                     src="/assets/img/webp/logo2.png"
                     data-rjs="/assets/img/webp/logo-cropped@2x.png"
                     alt="logo"
