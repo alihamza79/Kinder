@@ -140,7 +140,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "representation", "representations")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon06} alt="" />
                     </span>{" "}
                     <span>Representation</span> <span className="menu-arrow" />
                   </Link>
@@ -185,7 +185,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon15} alt="" />
                     </span>{" "}
                     <span>About Us</span> 
                   </Link>
@@ -200,7 +200,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon16} alt="" />
                     </span>{" "}
                     <span>Services</span> 
                   </Link>
@@ -215,7 +215,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={patients} alt="" />
                     </span>{" "}
                     <span>Team</span> 
                   </Link>
@@ -230,7 +230,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={sidemenu} alt="" />
                     </span>{" "}
                     <span>Links</span> 
                   </Link>
@@ -269,7 +269,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={doctor} alt="" />
                     </span>{" "}
                     <span>Hospital Kontakte</span> 
                   </Link>
@@ -298,7 +298,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={doctorschedule} alt="" />
                     </span>{" "}
                     <span>Schedule</span> 
                   </Link>
@@ -314,9 +314,9 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon12} alt="" />
                     </span>{" "}
-                    <span>Important Information</span> 
+                    <span>Important Info</span> 
                   </Link>
                 </li>
 
@@ -329,7 +329,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon11} alt="" />
                     </span>{" "}
                     <span>Social Accounts</span> 
                   </Link>
@@ -344,7 +344,7 @@ const Sidebar = (props) => {
                     onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
                   >
                     <span className="menu-side">
-                      <img src={blog} alt="" />
+                      <img src={menuicon10} alt="" />
                     </span>{" "}
                     <span>Subscribers</span> 
                   </Link>
