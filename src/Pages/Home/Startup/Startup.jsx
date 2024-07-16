@@ -270,29 +270,34 @@ const HomeStartupPage = (props) => {
         </Overlap>
       </div>
 
-      <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-        <Container>
-          <Row className="justify-center items-stretch">
-            <m.div
-              className="col-xl-3 col-lg-4 col-sm-7 flex flex-col md:mb-24"
-              {...{ ...fadeIn, transition: { delay: 0.2 } }}
-            >
-              <h5 className="alt-font text-darkgray font-semibold mt-[90px] mb-[20px] font-serif md:text-center md:mb-[30px] heading-6">
-                {scheduleData.header}
-              </h5>
-            </m.div>
-            <Col xl={{ span: 7, offset: 2 }} lg={8}>
-              <IconWithText
-                grid="row-cols-1 row-cols-lg-2 row-cols-sm-2 gap-y-[40px]"
-                theme="icon-with-text-06"
-                data={scheduleData.body}
-                animation={fadeIn}
-                animationDelay={0.2}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </section>
+
+  <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+  <Container>
+    <Row className="justify-content-center">
+      <m.div
+        className="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mb-24"
+        {...{ ...fadeIn, transition: { delay: 0.2 } }}
+      >
+        <h5 className="alt-font text-darkgray font-semibold mt-[30px] mb-[20px] font-serif text-center heading-6">
+          {scheduleData.header}
+        </h5>
+      </m.div>
+    </Row>
+    <Row className="justify-content-center">
+      <Col xl={10} lg={12}>
+        <IconWithText
+          grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
+          theme="icon-with-text-04"
+          data={scheduleData.body}
+          animation={fadeIn}
+          animationDelay={0.2}
+          highlightSecondCard={true}
+        />
+      </Col>
+    </Row>
+  </Container>
+</section>
+
 
       <section
         className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]"
@@ -444,10 +449,12 @@ const HomeStartupPage = (props) => {
             <Col xs={12} sm={8} md={12}>
               <IconWithText
                 grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-                theme="icon-with-text-04"
+                theme="icon-with-text-08"
                 data={formData.body}
                 animation={fadeIn}
                 animationDelay={0.2}
+                highlightAllCard={true}
+
               />
             </Col>
           </Row>
