@@ -19,6 +19,7 @@ const AddBlog = () => {
     const [imageFile, setImageFile] = useState(null);
     const [imageUrl, setImageUrl] = useState('');
     const [loading, setLoading] = useState(false);
+    const [imageError, setImageError] = useState('');
     const editorRef = useRef(null);
 
     const handleImageLoad = (event) => {
@@ -27,26 +28,32 @@ const AddBlog = () => {
             const newImageUrl = URL.createObjectURL(file);
             setImageFile(file);
             setImageUrl(newImageUrl);
+            setImageError('');
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Check if all required fields are filled
+        if (!title || !author || !tags || !content || !imageFile) {
+            toast.error('Please fill in all required fields.', { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
 
         try {
             let uploadedImageId = "";
 
-            if (imageFile) {
-                const toastId = toast.loading("Uploading image...");
-                try {
-                    const uploadedImage = await storageServices.images.createFile(imageFile);
-                    uploadedImageId = uploadedImage.$id;
-                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-                } catch (error) {
-                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-                    throw error;
-                }
+            const toastId = toast.loading("Uploading image...");
+            try {
+                const uploadedImage = await storageServices.images.createFile(imageFile);
+                uploadedImageId = uploadedImage.$id;
+                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+            } catch (error) {
+                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                throw error;
             }
 
             const blogData = {
@@ -112,6 +119,7 @@ const AddBlog = () => {
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -124,6 +132,7 @@ const AddBlog = () => {
                                                         value={author}
                                                         onChange={(e) => setAuthor(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -136,6 +145,7 @@ const AddBlog = () => {
                                                         value={tags}
                                                         onChange={(e) => setTags(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -145,12 +155,14 @@ const AddBlog = () => {
                                                     <TextEditor 
                                                         ref={editorRef} 
                                                         onChange={(data) => setContent(data)} 
+                                                        required
                                                     />
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-top-form">
                                                     <ImageUpload id="image" src={imageUrl} loadFile={handleImageLoad} imageName="Avatar" />
+                                                    {imageError && <div className="text-danger">{imageError}</div>}
                                                 </div>
                                             </div>
                                             <div className="col-12">

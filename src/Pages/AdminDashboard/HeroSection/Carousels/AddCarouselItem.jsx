@@ -27,6 +27,20 @@ const AddCarouselItem = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validation checks
+        if (!text.trim()) {
+            toast.error("Text is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!imageFile) {
+            toast.error("Image is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
 
         try {

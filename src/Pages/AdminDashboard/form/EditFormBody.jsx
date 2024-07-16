@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Header from "../../../Components/Header";
-import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import db from "../../../appwrite/Services/dbServices";
+import storageServices from "../../../appwrite/Services/storageServices";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
 
 const EditFormBody = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
@@ -15,10 +15,11 @@ const EditFormBody = () => {
     const [formData, setFormData] = useState({
         title: "",
         fileId: "",
-        newFile: null, // State to handle new file
-        newFileId: "", // State to handle new file ID
-        newFileURL: "", // State to handle new file URL
+        newFile: null,
+        newFileId: "",
+        newFileURL: "",
     });
+    const [formErrors, setFormErrors] = useState({}); // State for form validation errors
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -67,9 +68,19 @@ const EditFormBody = () => {
         e.preventDefault();
         setLoading(true);
         try {
+            if (!formData.title || !formData.newFile) {
+                // Handle validation errors
+                const errors = {};
+                if (!formData.title) errors.title = 'Title is required';
+                if (!formData.newFile) errors.file = 'File is required';
+                setFormErrors(errors);
+                setLoading(false);
+                return;
+            }
+    
             let newFileId = formData.fileId;
-
-            // Upload the new file if a new file is selected
+    
+            // Upload new file if selected
             if (formData.newFile) {
                 const toastId = toast.loading("Uploading file...");
                 try {
@@ -81,20 +92,23 @@ const EditFormBody = () => {
                     throw error;
                 }
             }
-
-            // Delete the old file if a new one was uploaded
+    
+            // Delete old file if new one was uploaded
             if (formData.newFile && formData.fileId !== newFileId) {
                 await storageServices.files.deleteFile(formData.fileId);
             }
-
+    
+            // Update document in database
             await db.formBody.update(id, {
                 title: formData.title,
                 file: newFileId,
             });
-
+    
             sessionStorage.setItem('updateFormBodySuccess', 'true'); // Set update flag
             navigate("/formbody");
         } catch (error) {
+            // Display more detailed error message
+            console.error("Error updating document:", error);
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
         } finally {
             setLoading(false);
@@ -116,7 +130,7 @@ const EditFormBody = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/formbody">Landing Page </Link>
+                                        <Link to="/landingpage/formbody">Landing Page</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -152,12 +166,17 @@ const EditFormBody = () => {
                                                 <div className="form-group local-forms">
                                                     <label>Title <span className="login-danger">*</span></label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${formErrors.title ? 'is-invalid' : ''}`}
                                                         type="text"
                                                         name="title"
                                                         value={formData.title}
                                                         onChange={handleChange}
                                                     />
+                                                    {formErrors.title && (
+                                                        <div className="invalid-feedback">
+                                                            {formErrors.title}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             {/* File Upload */}
@@ -165,10 +184,20 @@ const EditFormBody = () => {
                                                 <div className="form-group local-forms">
                                                     <label>Upload File <span className="login-danger">*</span></label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${formErrors.file ? 'is-invalid' : ''}`}
                                                         type="file"
                                                         onChange={handleFileChange}
                                                     />
+                                                    {formErrors.file && (
+                                                        <div className="invalid-feedback">
+                                                            {formErrors.file}
+                                                        </div>
+                                                    )}
+                                                    {formData.newFileURL && (
+                                                        <div className="mt-2">
+                                                            <a href={formData.newFileURL} target="_blank" rel="noopener noreferrer">View Current File</a>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                             {/* Submit/Cancel Button */}
@@ -185,6 +214,7 @@ const EditFormBody = () => {
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
                                                         onClick={() => navigate("/formbody")}
+                                                        disabled={loading}
                                                     >
                                                         Cancel
                                                     </button>

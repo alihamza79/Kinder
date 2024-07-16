@@ -105,6 +105,7 @@ const EditService = () => {
                                                         name="name"
                                                         value={name}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

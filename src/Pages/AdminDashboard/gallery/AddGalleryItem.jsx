@@ -61,6 +61,16 @@ const AddGalleryItem = () => {
           toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
           throw error;
         }
+      } else {
+        toast.error("Please upload an image", { autoClose: 2000 });
+        setLoading(false);
+        return;
+      }
+
+      if (!category) {
+        toast.error("Please select a category", { autoClose: 2000 });
+        setLoading(false);
+        return;
       }
 
       await db.galleryBody.create({
@@ -132,7 +142,9 @@ const AddGalleryItem = () => {
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                             disabled={loading}
+                            required
                           >
+                            <option value="">Select a category...</option>
                             {categories.map((cat) => (
                               <option key={cat} value={cat}>
                                 {cat}
@@ -144,7 +156,7 @@ const AddGalleryItem = () => {
 
                       {/* Image Upload Component */}
                       <div className="col-12">
-                        <ImageUpload id="image" src={imageURL} loadFile={handleImageLoad} imageName="Image" />
+                        <ImageUpload id="image" src={imageURL} loadFile={handleImageLoad} imageName="Image" required />
                       </div>
 
                       {/* Submit/Cancel Button */}

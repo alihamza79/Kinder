@@ -17,16 +17,26 @@ const AddRepresentationDate = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validation checks
+        if (!fromDate) {
+            toast.error("Start Date is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!toDate) {
+            toast.error("End Date is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (toDate && toDate.isBefore(fromDate)) {
+            toast.error("End Date should be the same as or after Start Date", { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
 
         try {
-            // Validation checks
-            if (fromDate && toDate && toDate.isBefore(fromDate)) {
-                toast.error("End Date should be the same as or after Start Date");
-                setLoading(false);
-                return;
-            }
-
             const formattedData = {
                 fromDate: fromDate ? fromDate.toDate() : null,
                 toDate: toDate ? toDate.toDate() : null,
@@ -122,11 +132,6 @@ const AddRepresentationDate = () => {
                                                         value={fromDate}
                                                         disabled={loading}
                                                     />
-                                                    {fromDate && (
-                                                        <div className="error text-danger">
-                                                            {fromDate.message}
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-12 col-xl-12">
@@ -143,11 +148,6 @@ const AddRepresentationDate = () => {
                                                         value={toDate}
                                                         disabled={loading}
                                                     />
-                                                    {toDate && (
-                                                        <div className="error text-danger">
-                                                            {toDate.message}
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
 

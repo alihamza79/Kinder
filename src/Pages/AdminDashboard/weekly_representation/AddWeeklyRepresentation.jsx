@@ -17,6 +17,17 @@ const AddWeeklyRepresentation = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
+    if (!title.trim()) {
+      toast.error('Title is required', { autoClose: 2000 });
+      return;
+    }
+
+    if (!description.trim()) {
+      toast.error('Description is required', { autoClose: 2000 });
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -83,6 +94,7 @@ const AddWeeklyRepresentation = () => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             disabled={loading}
+                            required
                           />
                         </div>
                       </div>

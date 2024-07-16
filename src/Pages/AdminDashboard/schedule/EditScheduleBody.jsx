@@ -5,15 +5,17 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; 
+import db from "../../../appwrite/Services/dbServices";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditScheduleBody = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [titleError, setTitleError] = useState('');
+    const [descriptionError, setDescriptionError] = useState('');
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -37,10 +39,27 @@ const EditScheduleBody = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!title.trim()) {
+            setTitleError('Title is required');
+            toast.error("Title is required", { autoClose: 2000 });
+            return;
+        } else {
+            setTitleError('');
+        }
+
+        if (!description.trim()) {
+            setDescriptionError('Description is required');
+            toast.error("Description is required", { autoClose: 2000 });
+            return;
+        } else {
+            setDescriptionError('');
+        }
+
         setLoading(true);
         try {
             await db.scheduleBody.update(id, { title, description });
-            sessionStorage.setItem('updateScheduleSuccess', 'true'); 
+            sessionStorage.setItem('updateScheduleSuccess', 'true');
             navigate("/schedulebody");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
@@ -95,28 +114,33 @@ const EditScheduleBody = () => {
                                                     <h4>Edit Schedule</h4>
                                                 </div>
                                             </div>
+                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>Title <span className="login-danger">*</span></label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${titleError ? 'is-invalid' : ''}`}
                                                         type="text"
                                                         name="title"
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                     />
+                                                    {titleError && <div className="invalid-feedback">{titleError}</div>}
                                                 </div>
                                             </div>
+                                            {/* Description */}
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>Description <span className="login-danger">*</span></label>
-                                                    <TextEditor 
-                                                        ref={editorRef} 
-                                                        onChange={(data) => setDescription(data)} 
+                                                    <TextEditor
+                                                        ref={editorRef}
+                                                        onChange={(data) => setDescription(data)}
                                                         value={description}
                                                     />
+                                                    {descriptionError && <div className="invalid-feedback">{descriptionError}</div>}
                                                 </div>
                                             </div>
+                                            {/* Submit/Cancel Buttons */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button

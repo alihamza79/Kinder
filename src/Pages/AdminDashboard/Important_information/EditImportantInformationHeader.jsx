@@ -13,6 +13,8 @@ const EditImportantInformationHeader = () => {
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [titleError, setTitleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
 
   useEffect(() => {
     const fetchDocumentData = async () => {
@@ -34,6 +36,21 @@ const EditImportantInformationHeader = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!title.trim()) {
+      setTitleError('Title is required');
+      return;
+    } else {
+      setTitleError('');
+    }
+
+    if (!description.trim()) {
+      setDescriptionError('Description is required');
+      return;
+    } else {
+      setDescriptionError('');
+    }
+
     setLoading(true);
     try {
       await db.importantInformationHeader.update(id, { title, description });
@@ -96,23 +113,25 @@ const EditImportantInformationHeader = () => {
                         <div className="form-group local-forms">
                           <label>Title <span className="login-danger">*</span></label>
                           <input
-                            className="form-control"
+                            className={`form-control ${titleError ? 'is-invalid' : ''}`}
                             type="text"
                             name="title"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                           />
+                          {titleError && <div className="invalid-feedback">{titleError}</div>}
                         </div>
                       </div>
                       <div className="col-12 col-md-6 col-xl-12">
                         <div className="form-group local-forms">
                           <label>Description <span className="login-danger">*</span></label>
                           <textarea
-                            className="form-control"
+                            className={`form-control ${descriptionError ? 'is-invalid' : ''}`}
                             rows="4"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                           />
+                          {descriptionError && <div className="invalid-feedback">{descriptionError}</div>}
                         </div>
                       </div>
                       <div className="col-12">

@@ -6,6 +6,7 @@ import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import db from "../../../appwrite/Services/dbServices";
+
 const EditTeamHeader = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
     const navigate = useNavigate();
@@ -31,6 +32,13 @@ const EditTeamHeader = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate title field
+        if (!title.trim()) {
+            toast.error('Please enter a title.', { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
         try {
             await db.teamHeader.update(id, {
@@ -102,6 +110,7 @@ const EditTeamHeader = () => {
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         disabled={loading}
+                                                        required  // HTML5 validation
                                                     />
                                                 </div>
                                             </div>

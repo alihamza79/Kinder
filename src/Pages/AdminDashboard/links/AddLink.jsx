@@ -1,4 +1,3 @@
-// AddLink.js
 import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
@@ -18,6 +17,13 @@ const AddLink = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validate form fields
+        if (!title.trim() || !description.trim()) {
+            toast.error('Please fill in all required fields.', { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -86,6 +92,7 @@ const AddLink = () => {
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -97,6 +104,7 @@ const AddLink = () => {
                                                     <TextEditor 
                                                         ref={editorRef} 
                                                         onChange={(data) => setDescription(data)} 
+                                                        required
                                                     />
                                                 </div>
                                             </div>

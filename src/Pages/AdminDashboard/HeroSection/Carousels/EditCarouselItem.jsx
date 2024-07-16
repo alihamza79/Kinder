@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
@@ -68,19 +66,31 @@ const EditCarouselItem = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validation checks
+        if (!formData.text.trim()) {
+            toast.error("Text is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.newImageFile && !formData.imageId) {
+            toast.error("Image is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         try {
             let newImageId = formData.imageId;
 
             // Upload the new image if a new file is selected
             if (formData.newImageFile) {
-                // const toastId = toast.loading("Uploading image...");
                 try {
                     const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
                     newImageId = uploadedImage.$id;
-                    // toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
-                    // toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    toast.error("Image upload failed: " + error.message, { autoClose: 2000 });
                     throw error;
                 }
             }
@@ -160,6 +170,7 @@ const EditCarouselItem = () => {
                                                         name="text"
                                                         value={formData.text}
                                                         onChange={handleChange}
+                                                        disabled={loading}
                                                     />
                                                 </div>
                                             </div>
@@ -179,6 +190,7 @@ const EditCarouselItem = () => {
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
                                                         onClick={() => navigate("/herocarousel")}
+                                                        disabled={loading}
                                                     >
                                                         Cancel
                                                     </button>

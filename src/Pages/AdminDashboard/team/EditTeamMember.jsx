@@ -84,6 +84,11 @@ const EditTeamMember = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.name || !formData.designation || !formData.newImageURL) {
+            toast.error("All fields are required, including the image.");
+            return;
+        }
+
         setLoading(true);
         try {
             let newImageId = formData.imageId;
@@ -183,6 +188,7 @@ const EditTeamMember = () => {
                                                         name="name"
                                                         value={formData.name}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -196,6 +202,7 @@ const EditTeamMember = () => {
                                                         name="designation"
                                                         value={formData.designation}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

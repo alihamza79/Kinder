@@ -16,17 +16,18 @@ const Categories = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      category1: "...",
-      category2: "...",
-      category3: "...",
+      category1: "", // Initialize default values for categories
+      category2: "",
+      category3: "",
     },
   });
 
-  const [submitting, setSubmitting] = useState(false);
-  const [docId, setDocId] = useState(null);
-  const [initialCategories, setInitialCategories] = useState({});
+  const [submitting, setSubmitting] = useState(false); // State to manage form submission
+  const [docId, setDocId] = useState(null); // State to store document ID from Firestore
+  const [initialCategories, setInitialCategories] = useState({}); // State to store initial category values
 
   useEffect(() => {
+    // Fetch categories data from Firestore on component mount
     const fetchCategories = async () => {
       try {
         const response = await db.categories.list();
@@ -38,6 +39,7 @@ const Categories = () => {
             category2: doc.category2,
             category3: doc.category3,
           });
+          // Set form values using setValue from react-hook-form
           setValue("category1", doc.category1);
           setValue("category2", doc.category2);
           setValue("category3", doc.category3);
@@ -48,8 +50,9 @@ const Categories = () => {
     };
 
     fetchCategories();
-  }, [setValue]);
+  }, [setValue]); // Dependency array ensures fetch happens once on mount
 
+  // Function to update gallery items when categories change
   const updateGalleryCategories = async (oldCategory, newCategory) => {
     try {
       const response = await db.galleryBody.list();
@@ -62,8 +65,9 @@ const Categories = () => {
     }
   };
 
+  // Form submission handler
   const onSubmit = async (data) => {
-    setSubmitting(true);
+    setSubmitting(true); // Set submitting state to true to disable form during submission
     try {
       const promises = [];
       if (data.category1 !== initialCategories.category1) {
@@ -76,8 +80,10 @@ const Categories = () => {
         promises.push(updateGalleryCategories(initialCategories.category3, data.category3));
       }
 
+      // Wait for all promises to resolve
       await Promise.all(promises);
 
+      // Update or create categories document in Firestore
       if (docId) {
         await db.categories.update(docId, data);
       } else {
@@ -89,7 +95,7 @@ const Categories = () => {
       toast.error("Failed to submit categories!", { autoClose: 2000 });
       console.error("Error submitting categories:", error);
     } finally {
-      setSubmitting(false);
+      setSubmitting(false); // Reset submitting state
     }
   };
 
@@ -126,22 +132,25 @@ const Categories = () => {
                   <label className="text-dark">Category 1</label>
                   <input
                     className="form-control"
-                    {...register("category1")}
+                    {...register("category1", { required: true })}
                   />
+                  {errors.category1 && <span className="text-danger">Category 1 is required</span>}
                 </div>
                 <div className="form-group">
                   <label className="text-dark">Category 2</label>
                   <input
                     className="form-control"
-                    {...register("category2")}
+                    {...register("category2", { required: true })}
                   />
+                  {errors.category2 && <span className="text-danger">Category 2 is required</span>}
                 </div>
                 <div className="form-group">
                   <label className="text-dark">Category 3</label>
                   <input
                     className="form-control"
-                    {...register("category3")}
+                    {...register("category3", { required: true })}
                   />
+                  {errors.category3 && <span className="text-danger">Category 3 is required</span>}
                 </div>
                 <div className="doctor-submit text-end">
                   <button

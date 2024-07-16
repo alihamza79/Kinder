@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices"; 
-import { toast, ToastContainer } from "react-toastify"; 
+import db from "../../../appwrite/Services/dbServices";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import TextEditor from "../InformationCard/TextEditor";
@@ -17,6 +17,12 @@ const AddHospitalKontakte = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!title || !description) {
+            toast.error("Please fill in all required fields.");
+            return;
+        }
+
         setLoading(true);
 
         try {
@@ -85,6 +91,7 @@ const AddHospitalKontakte = () => {
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

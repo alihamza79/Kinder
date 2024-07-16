@@ -12,6 +12,7 @@ const EditScheduleHeader = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
+    const [titleError, setTitleError] = useState('');
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -32,6 +33,14 @@ const EditScheduleHeader = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!title.trim()) {
+            setTitleError('Title is required');
+            return;
+        } else {
+            setTitleError('');
+        }
+
         setLoading(true);
         try {
             await db.scheduleHeader.update(id, { title });
@@ -95,12 +104,13 @@ const EditScheduleHeader = () => {
                                                 <div className="form-group local-forms">
                                                     <label>Title <span className="login-danger">*</span></label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${titleError ? 'is-invalid' : ''}`}
                                                         type="text"
                                                         name="title"
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                     />
+                                                    {titleError && <div className="invalid-feedback">{titleError}</div>}
                                                 </div>
                                             </div>
                                             {/* Submit/Cancel Button */}

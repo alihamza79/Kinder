@@ -21,6 +21,32 @@ const AddRepresentative = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validation checks
+        if (!hospital.trim()) {
+            toast.error("Hospital is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!address.trim()) {
+            toast.error("Address is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!telephoneNumber.trim()) {
+            toast.error("Telephone number is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!doctors.trim()) {
+            toast.error("Doctors are required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
 
         try {

@@ -27,7 +27,7 @@ const EditAboutItem = () => {
             try {
                 const documentSnapshot = await db.about.get(id);
                 if (documentSnapshot) {
-                    const imageUrl = "";
+                    let imageUrl = "";
                     try {
                         const imageView = await storageServices.images.getFileView(documentSnapshot.image);
                         const response = await fetch(imageView.href);
@@ -49,7 +49,7 @@ const EditAboutItem = () => {
                         ...documentSnapshot,
                         imageId: documentSnapshot.image,
                         newImageId: documentSnapshot.image,
-                        newImageURL: imageUrl.href,
+                        newImageURL: imageUrl,
                     });
                 } else {
                     console.error('Document does not exist');
@@ -84,6 +84,11 @@ const EditAboutItem = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.title || !formData.description || !formData.newImageURL) {
+            toast.error("All fields are required, including the image.");
+            return;
+        }
+
         setLoading(true);
         try {
             let newImageId = formData.imageId;
@@ -104,14 +109,10 @@ const EditAboutItem = () => {
             // Delete the old image if a new one was uploaded
             if (formData.newImageFile && formData.imageId !== newImageId) {
                 try {
-                    console.log("Image id to be deleted: ",formData.imageId)
+                    console.log("Image id to be deleted: ", formData.imageId);
                     await storageServices.images.deleteFile(formData.imageId);
                 } catch (error) {
-                    // if (error.response && error.response.status === 404) {
-                        toast.warn("Old image not found in storage.", { autoClose: 2000 });
-                    // } else {
-                    //     throw error;
-                    // }
+                    console.warn("Old image not found in storage.");
                 }
             }
 
@@ -146,7 +147,7 @@ const EditAboutItem = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/about">Landing Page </Link>
+                                        <Link to="/landingpage/about">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -154,7 +155,7 @@ const EditAboutItem = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/about">About</Link>
+                                        <Link to="/landingpage/about">About</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -187,6 +188,7 @@ const EditAboutItem = () => {
                                                         name="title"
                                                         value={formData.title}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -194,18 +196,19 @@ const EditAboutItem = () => {
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>Description <span className="login-danger">*</span></label>
-                                                    <textarea
+                                                    <input
                                                         className="form-control"
-                                                        rows="4"
+                                                        type="text"
                                                         name="description"
                                                         value={formData.description}
                                                         onChange={handleChange}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
                                             {/* Image Upload Component */}
                                             <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
-                                           {/* Submit/Cancel Button */}
+                                            {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button

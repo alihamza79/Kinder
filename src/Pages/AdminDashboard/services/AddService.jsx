@@ -86,6 +86,7 @@ const AddService = () => {
                                                         value={name}
                                                         onChange={(e) => setName(e.target.value)}
                                                         disabled={loading}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

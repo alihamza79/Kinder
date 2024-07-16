@@ -49,6 +49,20 @@ const EditInformationCard = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validation checks
+        if (!formData.Title.trim()) {
+            toast.error("Title is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!formData.Description.trim()) {
+            toast.error("Description is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
         try {
             await db.informationCard.update(id, {

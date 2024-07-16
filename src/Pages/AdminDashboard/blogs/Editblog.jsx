@@ -24,6 +24,13 @@ const EditBlog = () => {
         newImageId: "",
         newImageUrl: "",
     });
+    const [formErrors, setFormErrors] = useState({
+        title: "",
+        author: "",
+        tags: "",
+        content: "",
+        image: "",
+    });
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -73,8 +80,53 @@ const EditBlog = () => {
         }
     };
 
+    const validateForm = () => {
+        const { title, author, tags, content } = formData;
+        let valid = true;
+        const errors = {
+            title: "",
+            author: "",
+            tags: "",
+            content: "",
+            image: "",
+        };
+
+        if (!title.trim()) {
+            errors.title = "Title is required";
+            valid = false;
+        }
+
+        if (!author.trim()) {
+            errors.author = "Author name is required";
+            valid = false;
+        }
+
+        if (!tags.trim()) {
+            errors.tags = "Tags are required";
+            valid = false;
+        }
+
+        if (!content.trim()) {
+            errors.content = "Content is required";
+            valid = false;
+        }
+
+        // If no new image file is selected and imageId is not set, show error
+        if (!formData.newImageFile && !formData.imageId) {
+            errors.image = "Image is required";
+            valid = false;
+        }
+
+        setFormErrors(errors);
+        return valid;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) {
+            return;
+        }
+
         setLoading(true);
         try {
             let newImageId = formData.imageId;
@@ -100,7 +152,7 @@ const EditBlog = () => {
                 imageUrl: newImageId,
             });
 
-            sessionStorage.setItem('updateBlogSuccess', 'true'); 
+            toast.success("Blog updated successfully");
             navigate("/blogview");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
@@ -157,7 +209,11 @@ const EditBlog = () => {
                                                         value={formData.title}
                                                         onChange={handleChange}
                                                         disabled={loading}
+                                                        required
                                                     />
+                                                    {formErrors.title && (
+                                                        <div className="text-danger">{formErrors.title}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-6">
@@ -170,7 +226,11 @@ const EditBlog = () => {
                                                         value={formData.author}
                                                         onChange={handleChange}
                                                         disabled={loading}
+                                                        required
                                                     />
+                                                    {formErrors.author && (
+                                                        <div className="text-danger">{formErrors.author}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-6">
@@ -183,7 +243,11 @@ const EditBlog = () => {
                                                         value={formData.tags}
                                                         onChange={handleChange}
                                                         disabled={loading}
+                                                        required
                                                     />
+                                                    {formErrors.tags && (
+                                                        <div className="text-danger">{formErrors.tags}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-12">
@@ -192,12 +256,19 @@ const EditBlog = () => {
                                                     <TextEditor 
                                                         ref={editorRef} 
                                                         onChange={(data) => setFormData(prevData => ({ ...prevData, content: data }))} 
+                                                        required
                                                     />
+                                                    {formErrors.content && (
+                                                        <div className="text-danger">{formErrors.content}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-top-form">
                                                     <ImageUpload id="image" src={formData.newImageUrl} loadFile={handleImageLoad} imageName="Avatar" />
+                                                    {formErrors.image && (
+                                                        <div className="text-danger">{formErrors.image}</div>
+                                                    )}
                                                 </div>
                                             </div>
                                             <div className="col-12">

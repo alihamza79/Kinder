@@ -104,6 +104,7 @@ const EditHospitalKontakte = () => {
                                                         name="title"
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -114,6 +115,7 @@ const EditHospitalKontakte = () => {
                                                         ref={editorRef} 
                                                         onChange={(data) => setDescription(data)} 
                                                         value={description}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

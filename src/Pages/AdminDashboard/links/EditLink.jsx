@@ -1,4 +1,3 @@
-// EditLink.js
 import React, { useState, useEffect, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
@@ -38,6 +37,13 @@ const EditLink = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate form fields
+        if (!title.trim() || !description.trim()) {
+            toast.error('Please fill in all required fields.', { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
         try {
             await db.links.update(id, { title, description });
@@ -105,6 +111,7 @@ const EditLink = () => {
                                                         name="title"
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
+                                                        required
                                                     />
                                                 </div>
                                             </div>
@@ -115,6 +122,7 @@ const EditLink = () => {
                                                         ref={editorRef} 
                                                         onChange={(data) => setDescription(data)} 
                                                         value={description}
+                                                        required
                                                     />
                                                 </div>
                                             </div>

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage service
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import storageServices from "../../../appwrite/Services/storageServices";
+import db from "../../../appwrite/Services/dbServices";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,7 @@ const AddFormBody = () => {
     const [title, setTitle] = useState('');
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [formErrors, setFormErrors] = useState({}); // State for form validation errors
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -23,8 +24,19 @@ const AddFormBody = () => {
         setLoading(true);
 
         try {
+            // Validate form fields
+            if (!title || !file) {
+                const errors = {};
+                if (!title) errors.title = 'Title is required';
+                if (!file) errors.file = 'File is required';
+                setFormErrors(errors);
+                setLoading(false);
+                return;
+            }
+
             let uploadedFileId = "";
 
+            // Upload file if selected
             if (file) {
                 const toastId = toast.loading("Uploading file...");
                 try {
@@ -64,7 +76,6 @@ const AddFormBody = () => {
             />
             <div className="page-wrapper">
                 <div className="content">
-                    {/* Page Header */}
                     <div className="page-header">
                         <div className="row">
                             <div className="col-sm-12">
@@ -90,7 +101,6 @@ const AddFormBody = () => {
                             </div>
                         </div>
                     </div>
-                    {/* /Page Header */}
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
@@ -110,12 +120,17 @@ const AddFormBody = () => {
                                                         Title <span className="login-danger">*</span>
                                                     </label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${formErrors.title ? 'is-invalid' : ''}`}
                                                         type="text"
                                                         value={title}
                                                         onChange={(e) => setTitle(e.target.value)}
                                                         disabled={loading}
                                                     />
+                                                    {formErrors.title && (
+                                                        <div className="invalid-feedback">
+                                                            {formErrors.title}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
@@ -126,11 +141,16 @@ const AddFormBody = () => {
                                                         Upload File <span className="login-danger">*</span>
                                                     </label>
                                                     <input
-                                                        className="form-control p-3"
+                                                        className={`form-control p-3 ${formErrors.file ? 'is-invalid' : ''}`}
                                                         type="file"
                                                         onChange={handleFileChange}
                                                         disabled={loading}
                                                     />
+                                                    {formErrors.file && (
+                                                        <div className="invalid-feedback">
+                                                            {formErrors.file}
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 

@@ -13,8 +13,6 @@ import Sidebar from "../../../Components/Sidebar";
 const InformationCardList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRecordId, setSelectedRecordId] = useState(null);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -61,27 +59,6 @@ const InformationCardList = () => {
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await db.informationCard.delete(selectedRecordId);
-      toast.success("Information card deleted successfully!", { autoClose: 2000 });
-      fetchData();
-      setSelectedRecordId(null);
-      hideDeleteModal();
-    } catch (error) {
-      console.error("Error deleting document:", error);
-    }
-  };
-
-  const showDeleteModal = (id) => {
-    setSelectedRecordId(id);
-    setDeleteModalVisible(true);
-  };
-
-  const hideDeleteModal = () => {
-    setDeleteModalVisible(false);
-  };
-
   const columns = [
     {
       title: "S/N",
@@ -126,13 +103,6 @@ const InformationCardList = () => {
               >
                 <i className="far fa-edit me-2" />
                 Edit
-              </Link>
-              <Link
-                className="dropdown-item"
-                to="#"
-                onClick={() => showDeleteModal(record.id)}
-              >
-                <i className="fa fa-trash-alt m-r-5"></i> Delete
               </Link>
             </div>
           </div>
@@ -184,21 +154,7 @@ const InformationCardList = () => {
                         <div className="doctor-table-blk">
                           <h3>Information Cards</h3>
                           <div className="doctor-search-blk">
-                            <div className="add-group">
-                              <Link
-                                to="/informationcard/addinformationcard"
-                                className="btn btn-primary add-pluss ms-2"
-                              >
-                                <img src={plusicon} alt="#" />
-                              </Link>
-                              <Link
-                                to="#"
-                                className="btn btn-primary doctor-refresh ms-2"
-                                onClick={handleRefresh}
-                              >
-                                <img src={refreshicon} alt="#" />
-                              </Link>
-                            </div>
+                            
                           </div>
                         </div>
                       </div>
@@ -225,43 +181,6 @@ const InformationCardList = () => {
           </div>
         </div>
       </div>
-      {deleteModalVisible && (
-        <div
-          className={
-            deleteModalVisible
-              ? "modal fade show delete-modal"
-              : "modal fade delete-modal"
-          }
-          style={{
-            display: deleteModalVisible ? "block" : "none",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this information card?</h3>
-                <div className="m-t-20">
-                  <Button
-                    onClick={hideDeleteModal}
-                    className="btn btn-white me-2 pt-1"
-                  >
-                    Close
-                  </Button>
-                  <Button
-                    type="button"
-                    className="btn btn-danger pt-1"
-                    onClick={handleDelete}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       <ToastContainer />
     </>
   );

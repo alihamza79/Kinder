@@ -37,6 +37,17 @@ const EditWeeklyRepresentation = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!title.trim()) {
+      toast.error('Title is required', { autoClose: 2000 });
+      return;
+    }
+
+    if (!description.trim()) {
+      toast.error('Description is required', { autoClose: 2000 });
+      return;
+    }
+
     setLoading(true);
     try {
       await db.weeklyRepresentation.update(id, { title, description });

@@ -12,6 +12,7 @@ const EditHospitalKontakteHeader = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -32,6 +33,11 @@ const EditHospitalKontakteHeader = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!title.trim()) {
+            setError('Title is required');
+            return;
+        }
+
         setLoading(true);
         try {
             await db.hospitalKontakteHeader.update(id, { title });
@@ -99,8 +105,12 @@ const EditHospitalKontakteHeader = () => {
                                                         type="text"
                                                         name="title"
                                                         value={title}
-                                                        onChange={(e) => setTitle(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setTitle(e.target.value);
+                                                            setError('');
+                                                        }}
                                                     />
+                                                    {error && <div className="text-danger">{error}</div>}
                                                 </div>
                                             </div>
                                             {/* Submit/Cancel Button */}

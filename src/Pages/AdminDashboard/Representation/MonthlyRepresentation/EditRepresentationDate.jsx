@@ -35,15 +35,29 @@ const EditRepresentationDate = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Validation checks
+        if (!fromDate) {
+            toast.error("Start Date is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (!toDate) {
+            toast.error("End Date is required", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
+        if (fromDate && toDate && toDate.isBefore(fromDate)) {
+            toast.error("End Date should be the same as or after Start Date", { autoClose: 2000 });
+            setLoading(false);
+            return;
+        }
+
         setLoading(true);
 
         try {
-            if (fromDate && toDate && toDate.isBefore(fromDate)) {
-                toast.error("End Date should be the same as or after Start Date");
-                setLoading(false);
-                return;
-            }
-
             const formattedData = {
                 fromDate: fromDate ? fromDate.toDate() : null,
                 toDate: toDate ? toDate.toDate() : null,

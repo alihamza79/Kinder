@@ -14,7 +14,6 @@ import CarouselList from "./Pages/AdminDashboard/HeroSection/Carousels/CarouselL
 import EditCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/EditCarouselItem";
 import InformationCardList from "./Pages/AdminDashboard/InformationCard/InformationCardList";
 import EditInformationCard from "./Pages/AdminDashboard/InformationCard/EditInformationCard";
-import AddInformationCard from "./Pages/AdminDashboard/InformationCard/AddInformationCard";
 import AboutList from "./Pages/AdminDashboard/about/AboutList";
 import EditAboutItem from "./Pages/AdminDashboard/about/EditAboutItem";
 import ServicesList from "./Pages/AdminDashboard/services/ServicesList";
@@ -122,7 +121,6 @@ const DashboardRoutes = () => (
         {/* InformationCard */}
         <Route path="/informationcard" element={<ProtectedRoute element={<InformationCardList />} />} />
         <Route path="/informationcard/editinformationcard/:id" element={<ProtectedRoute element={<EditInformationCard />} />} />
-        <Route path="/informationcard/addinformationcard" element={<ProtectedRoute element={<AddInformationCard />} />} />
 
         {/* About list */}
         <Route path="/aboutlist" element={<ProtectedRoute element={<AboutList />} />} />

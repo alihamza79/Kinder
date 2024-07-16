@@ -29,21 +29,27 @@ const AddTeamMember = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // Basic form validation
+        if (!name.trim() || !designation.trim() || !imageFile) {
+            toast.error('Please fill in all required fields.', { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
 
         try {
             let uploadedImageId = imageId;
 
-            if (imageFile) {
-                const toastId = toast.loading("Uploading image...");
-                try {
-                    const uploadedImage = await storageServices.images.createFile(imageFile);
-                    uploadedImageId = uploadedImage.$id;
-                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-                } catch (error) {
-                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-                    throw error;
-                }
+            // Upload image if a new file is selected
+            const toastId = toast.loading("Uploading image...");
+            try {
+                const uploadedImage = await storageServices.images.createFile(imageFile);
+                uploadedImageId = uploadedImage.$id;
+                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+            } catch (error) {
+                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                throw error;
             }
 
             // Store data in Appwrite database
@@ -125,6 +131,7 @@ const AddTeamMember = () => {
                                                         value={name}
                                                         onChange={(e) => setName(e.target.value)}
                                                         disabled={loading}
+                                                        required  // HTML5 validation
                                                     />
                                                 </div>
                                             </div>
@@ -141,12 +148,13 @@ const AddTeamMember = () => {
                                                         value={designation}
                                                         onChange={(e) => setDesignation(e.target.value)}
                                                         disabled={loading}
+                                                        required  // HTML5 validation
                                                     />
                                                 </div>
                                             </div>
 
                                             {/* Image Upload Component */}
-                                            <ImageUpload id="image" src={imageURL} loadFile={handleImageLoad} imageName="Image" />
+                                            <ImageUpload id="image" src={imageURL} loadFile={handleImageLoad} imageName="Image" required />
 
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
