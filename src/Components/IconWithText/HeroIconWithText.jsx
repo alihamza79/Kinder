@@ -4,7 +4,6 @@ import { m } from 'framer-motion';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import Buttons from '../Button/Buttons';
-import { IconWithTextData_01 } from './IconWithTextData';
 import "../../Assets/scss/components/_iconwithtext.scss";
 
 const HeroIconWithText = (props) => {

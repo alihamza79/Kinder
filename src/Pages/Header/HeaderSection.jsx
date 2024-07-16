@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 // Import functions and components
 import { Input } from '../../Components/Form/Form';
 import { HamburgerMenu, SearchBar } from '../../Components/Header/Header';
-import StaticInstagram from '../../Components/Instagram/StaticInstagram';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
 import { resetForm, sendEmail } from '../../Functions/Utilities';
@@ -110,9 +109,7 @@ const HeaderSection = (props) => {
                 <div>
                   <h1 className="mb-0 font-bold tracking-[-3px] text-darkgray font-serif uppercase">Hello</h1>
                   <p className="text-lg text-[#27ae60] font-serif uppercase block">Let's be friends.</p>
-                  <div className="my-20 w-full">
-                    <StaticInstagram className="" />
-                  </div>
+                 
                   <p className="w-[70%] mb-12 text-darkgray leading-[26px] text-lg font-serif mx-auto inline-block">
                     Get latest update for our trusted applications
                   </p>

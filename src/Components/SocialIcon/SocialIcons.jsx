@@ -1,12 +1,7 @@
 import React, { memo } from 'react'
-
 // Libraries
 import { m } from "framer-motion"
 import { PropTypes } from "prop-types";
-
-// Data
-import { SocialIconsData01 } from './SocialIconsData'
-
 // css
 import "../../Assets/scss/components/_socialicons.scss"
 
@@ -43,7 +38,7 @@ const SocialIcons = (props) => {
 }
 
 SocialIcons.defaultProps = {
-    data: SocialIconsData01,
+    data:"",
     theme: "social-icon-style-01",
     size: "lg",
     iconColor: "light",
