@@ -6,9 +6,6 @@ import { checkAuth } from "./appwrite/Services/authServices";
 import Login from "./Pages/login";
 import ForgotPassword from "./Pages/login/ForgotPassword";
 
-import GalleryImage from "./Pages/Gallery/Gallery";
-
-import Admin_Dashboard from "./Components/Dashboard/Admin_Dashboard/Admin_Dashboard";
 import AddCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/AddCarouselItem";
 import CarouselList from "./Pages/AdminDashboard/HeroSection/Carousels/CarouselList";
 import EditCarouselItem from "./Pages/AdminDashboard/HeroSection/Carousels/EditCarouselItem";
@@ -108,9 +105,7 @@ const DashboardRoutes = () => (
         <Route path="/reset-password" element={<ResetPassword />} />
 
        
-        <Route path="/gallery" element={<ProtectedRoute element={<GalleryImage />} />} />
 
-        <Route path="/admin-dashboard" element={<ProtectedRoute element={<Admin_Dashboard />} />} />
 
         {/* Hero Section */}
         {/* Hero Carousel */}

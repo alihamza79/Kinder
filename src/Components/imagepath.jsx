@@ -1,20 +1,16 @@
 export { default as login02 } from "../Assets/img/login-02.png";
-export { default as loginlogo } from "../Assets/img/login-logo.png";
 export { default as loginicon01 } from "../Assets/img/icons/login-icon-01.svg";
 export { default as loginicon02} from "../Assets/img/icons/login-icon-02.svg";
 export { default as loginicon03 } from "../Assets/img/icons/login-icon-03.svg";
 export { default as logout } from "../Assets/img/icons/logout.svg";
 
-export { default as logo } from "../Assets/img/logo.png";
 
 export { default as baricon } from "../Assets/img/icons/bar-icon.svg";
 export { default as baricon1 } from "../Assets/img/icons/bar-icon.svg";
 
 export { default as searchnormal } from "../Assets/img/icons/search-normal.svg";
 export { default as noteicon } from "../Assets/img/icons/note-icon-02.svg";
-export { default as imguser } from "../Assets/img/user.jpg";
 export { default as noteicon1 } from "../Assets/img/icons/note-icon-01.svg";
-export { default as user06 } from "../Assets/img/user-06.jpg";
 export { default as settingicon01 } from "../Assets/img/icons/setting-icon-01.svg";
 
 export { default as menuicon08 } from "../Assets/img/icons/menu-icon-08.svg";
@@ -34,24 +30,12 @@ export { default as social02} from "../Assets/img/icons/social-02.svg";
 export { default as social03} from "../Assets/img/icons/social-03.svg";
 export { default as social04} from "../Assets/img/icons/social-04.svg";
 
-export { default as profiles03} from "../Assets/img/profiles/avatar-03.jpg";
 export { default as iconsocial} from "../Assets/img/icons/social-01.svg";
 export { default as iconsocial02} from "../Assets/img/icons/social-02.svg";
 export { default as iconsocial03} from "../Assets/img/icons/social-03.svg";
 export { default as iconsocial04} from "../Assets/img/icons/social-04.svg";
-export { default as profileavatar03} from "../Assets/img/profiles/avatar-03.jpg";
-export { default as profileavatar04 } from "../Assets/img/profiles/avatar-04.jpg";
-export { default as profileavatar05 } from "../Assets/img/profiles/avatar-05.jpg";
- export { default as profileavatar07 } from "../Assets/img/profiles/avatar-07.jpg";
 
-export { default as blog7 } from "../Assets/img/blog/blog-7.jpg";
-export { default as blog08 } from "../Assets/img/blog/blog-8.jpg";
-export { default as blog09 } from "../Assets/img/blog/blog-9.jpg";
-export { default as blog10 } from "../Assets/img/blog/blog-10.jpg";
-export { default as blog11 } from "../Assets/img/blog/blog-11.jpg";
-export { default as blog12 } from "../Assets/img/blog/blog-12.jpg";
-export { default as blog13 } from "../Assets/img/blog/blog-13.jpg";
-export { default as blogdetail } from "../Assets/img/blog/blog-detail.jpg";
+
 
 export { default as tag } from "../Assets/img/icons/tag.svg";
 export { default as tag1 } from "../Assets/img/icons/tag.svg";
@@ -66,26 +50,10 @@ export { default as doctorschedule } from "../Assets/img/icons/menu-icon-05.svg"
 export { default as patients } from "../Assets/img/icons/menu-icon-03.svg";
 //edit blog
 export { default as imagesend } from "../Assets/img/sent.png";
-export { default as favicon } from "../Assets/img/favicon.png";
 ///for blog view
-export { default as blogimg1 } from "../Assets/img/blog/blog-1.jpg";
-export { default as blogimg2 } from "../Assets/img/profiles/avatar-01.jpg";
-export { default as blogimg3} from "../Assets/img/blog/blog-2.jpg";
-export { default as blogimg4} from "../Assets/img/profiles/avatar-02.jpg";
-export { default as blogimg5} from "../Assets/img/blog/blog-3.jpg";
-export { default as blogimg6} from "../Assets/img/profiles/avatar-03.jpg";
-export { default as blogimg7} from "../Assets/img/blog/blog-4.jpg";
-export { default as blogimg8} from "../Assets/img/profiles/avatar-05.jpg";
-export { default as blogimg9} from "../Assets/img/blog/blog-5.jpg";
-export { default as blogimg10} from "../Assets/img/profiles/avatar-06.jpg";
-export { default as blogimg11} from "../Assets/img/blog/blog-6.jpg";
-export { default as blogimg12} from "../Assets/img/profiles/avatar-04.jpg";
+
 /// Setthings
-export { default as logodark} from "../Assets/img/logo-dark.png";
-export { default as favicon1} from "../Assets/img/favicon.png";
-// Settings-Them
-export { default as image1} from "../Assets/img/logo-dark.png";
-export { default as image2} from "../Assets/img/favicon.png";
+
 //Assests
 export { default as serchimage} from "../Assets/img/icons/search-normal.svg";
 export { default as plusicon} from "../Assets/img/icons/plus.svg";
@@ -94,18 +62,16 @@ export { default as pdficon} from "../Assets/img/icons/pdf-icon-01.svg";
 export { default as pdficon2} from "../Assets/img/icons/pdf-icon-02.svg";
 export { default as pdficon3} from "../Assets/img/icons/pdf-icon-03.svg";
 export { default as pdficon4} from "../Assets/img/icons/pdf-icon-04.svg";
-export { default as proavatar} from "../Assets/img/profiles/avatar-01.jpg";
 
 //Profile 
-export { default as profilebg } from "../Assets/img/profile-bg.jpg";
-export { default as Profileuser } from "../Assets/img/profile-user.jpg";
+
 export { default as cameraicon } from "../Assets/img/icons/camera-icon.svg";
 export { default as medalicon } from "../Assets/img/icons/medal-01.svg";
 export { default as medalicon02 } from "../Assets/img/icons/medal-02.svg";
 export { default as medalicon03 } from "../Assets/img/icons/medal-03.svg";
-export { default as profileuser01 } from "../Assets/img/profile-user-01.jpg";
-export { default as profileuser02 } from "../Assets/img/profile-user-02.jpg";
-export { default as doctor03 } from "../Assets/img/doctor-03.jpg";
+export { default as morning_img_01 } from "../Assets/img/morning-img-01.png";
+
+
 
 
 export { default as editicon2 } from "../Assets/img/icons/edit-2.svg";
@@ -139,44 +105,8 @@ export { default as galleryicon} from "../Assets/img/icons/gallery-icon.svg";
 export { default as replayicon} from "../Assets/img/icons/replay.svg";
 export { default as replayicon01} from "../Assets/img/icons/replay-01.svg";
 export { default as printericon} from "../Assets/img/icons/printer.svg";
-export { default as user02} from "../Assets/img/user-02.jpg";
-export { default as activity01} from "../Assets/img/activity-01.jpg";
-export { default as activity02} from "../Assets/img/activity-02.jpg";
-export { default as activity03} from "../Assets/img/activity-03.jpg";
-export { default as user05} from "../Assets/img/user-05.jpg";
-export { default as user03} from "../Assets/img/user-03.jpg";
-export { default as user04} from "../Assets/img/user-04.jpg";
-//Chat
-export { default as Avatar1 } from "../Assets/img/profiles/avatar-01.jpg";
-export { default as Avatar2 } from "../Assets/img/profiles/avatar-02.jpg";
-export { default as Avatar3 } from "../Assets/img/profiles/avatar-03.jpg";
-export { default as Avatar4 } from "../Assets/img/profiles/avatar-04.jpg";
-export { default as Avatar5 } from "../Assets/img/profiles/avatar-05.jpg";
-export { default as Avatar6 } from "../Assets/img/profiles/avatar-06.jpg";
-export { default as Avatar7 } from "../Assets/img/profiles/avatar-07.jpg";
-export { default as Avatar8 } from "../Assets/img/profiles/avatar-08.jpg";
-export { default as Avatar9 } from "../Assets/img/profiles/avatar-09.jpg";
-export { default as Avatar10 } from "../Assets/img/profiles/avatar-10.jpg";
-export { default as Avatar11 } from "../Assets/img/profiles/avatar-11.jpg";
-export { default as Avatar12 } from "../Assets/img/profiles/avatar-12.jpg";
-export { default as Avatar13 } from "../Assets/img/profiles/avatar-13.jpg";
-export { default as Avatar14 } from "../Assets/img/profiles/avatar-14.jpg";
-export { default as Avatar15 } from "../Assets/img/profiles/avatar-15.jpg";
-export { default as Avatar16 } from "../Assets/img/profiles/avatar-16.jpg";
-export { default as Avatar17 } from "../Assets/img/profiles/avatar-17.jpg";
-export { default as Avatar18 } from "../Assets/img/profiles/avatar-18.jpg";
-export { default as Avatar19 } from "../Assets/img/profiles/avatar-19.jpg";
-export { default as Avatar20 } from "../Assets/img/profiles/avatar-20.jpg";
-export { default as Avatar21 } from "../Assets/img/profiles/avatar-21.jpg";
-export { default as Avatar22 } from "../Assets/img/profiles/avatar-22.jpg";
-export { default as Avatar23 } from "../Assets/img/profiles/avatar-23.jpg";
-export { default as Avatar24 } from "../Assets/img/profiles/avatar-24.jpg";
-export { default as Avatar25 } from "../Assets/img/profiles/avatar-25.jpg";
-export { default as Avatar26 } from "../Assets/img/profiles/avatar-26.jpg";
-export { default as Avatar27 } from "../Assets/img/profiles/avatar-27.jpg";
-export { default as Avatar28 } from "../Assets/img/profiles/avatar-28.jpg";
-export { default as Avatar29 } from "../Assets/img/profiles/avatar-29.jpg";
-export { default as Avatar30 } from "../Assets/img/profiles/avatar-30.jpg";
+
+
 
 export {default as chaticon1} from "../Assets/img/icons/chat-icon-01.svg";
 export {default as chaticon2} from "../Assets/img/icons/chat-icon-02.svg";
@@ -209,31 +139,15 @@ export {default as voiceicon1} from "../Assets/img/icons/voice-icon-01.svg";
 export {default as voiceicon2} from "../Assets/img/icons/voice-icon-02.svg";
 export {default as voiceicon3} from "../Assets/img/icons/voice-icon-03.svg";
 export { default as ProfileUser } from "../Assets/img/icons/profile-user.svg";
-export {default as call} from "../Assets/img/call.jpg";
-export {default as call01} from "../Assets/img/call-01.jpg";
-export {default as call02} from "../Assets/img/call-02.jpg";
-export {default as call03} from "../Assets/img/call-03.jpg";
 
-//Invoice
-export {default as invoice_circle1} from "../Assets/img/invoice-circle1.png";
-export {default as invoice_circle2} from "../Assets/img/invoice-circle2.png";
-export {default as invoiceicon5} from "../Assets/img/invoices-icon5.png";
-export {default as invoice_icon1} from "../Assets/img/invoices-icon1.svg";
-export {default as invoice_icon2} from "../Assets/img/invoices-icon2.svg";
-export {default as invoice_icon3} from "../Assets/img/invoices-icon3.svg";
-export {default as invoice_icon4} from "../Assets/img/invoices-icon4.svg";
-export {default as invoice_icon5} from "../Assets/img/invoices-icon5.svg";
 
-export { default as error1 } from "../Assets/img/error-01.png"
+
+
 export { default as dangericon } from "../Assets/img/icons/danger.svg"
-export { default as error02 } from "../Assets/img/error-02.png"
-export {default as signature} from "../Assets/img/signature.png";
 
 
 //Dashboard//
 
-export {default as morning_img_01} from "../Assets/img/morning-img-01.png";
-export {default as morning_img_02} from "../Assets/img/morning-img-02.png";
 export {default as doctor_dashboard_01} from "../Assets/img/icons/doctor-dash-01.svg";
 export {default as doctor_dashboard_02} from "../Assets/img/icons/doctor-dash-02.svg";
 export {default as doctor_dashboard_03} from "../Assets/img/icons/doctor-dash-03.svg";
@@ -254,17 +168,11 @@ export {default as dep_icon3} from "../Assets/img/icons/dep-icon-03.svg";
 export {default as dep_icon4} from "../Assets/img/icons/dep-icon-04.svg";
 export {default as dep_icon5} from "../Assets/img/icons/dep-icon-05.svg";
 export {default as health_img} from "../Assets/img/icons/health-img.svg";
-export {default as morning_img_03} from "../Assets/img/morning-img-03.png";
 // export {default as report_icon_04} from "Assets/img/icons/report-icon-04.svg";
 // export {default as report_icon} from "Assets/img/icons/report-icon-03.svg";
 
 
- //Blog //
-export { default as Blog1 } from "../Assets/img/blog/blog-01.jpg";
-export { default as Blog2 } from "../Assets/img/blog/blog-02.jpg";
-export { default as Blog3 } from "../Assets/img/blog/blog-03.jpg";
-export { default as Blog4 } from "../Assets/img/blog/blog-04.jpg";
-export { default as Blog10 } from "../Assets/img/blog/blog-10.jpg";
+
 
 
 export { default as report_icon1 } from "../Assets/img/icons/report-icon-01.svg";
