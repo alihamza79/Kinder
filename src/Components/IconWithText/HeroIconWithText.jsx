@@ -11,8 +11,19 @@ const HeroIconWithText = (props) => {
   return (
     <Row className={`${props.grid} md:justify-center`}>
       {props.data.map((item, i) => (
-        <m.div key={i} className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}` : ""}`} {...{ ...props.animation, transition: { delay: i * props.animationDelay, ease: props.animationTransition, duration: props.animationDuration } }}>
-          <div className="rounded-md w-full">
+        <m.div
+          key={i}
+          className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}` : ""}`}
+          {...{ ...props.animation, transition: { delay: i * props.animationDelay, ease: props.animationTransition, duration: props.animationDuration } }}
+        >
+          <div className="rounded-md w-full"  
+            style={{
+              transition: 'background-color 0.3s',
+              
+            }}
+            onMouseEnter={e => i === 0 && e.currentTarget.style.setProperty('background-color', '#f35e5e', 'important')}
+            onMouseLeave={e => i === 0 && e.currentTarget.style.setProperty('background-color', '', 'important')}
+          >
             <div className="flex items-center mb-4">
               {item.img ? (
                 <img height={42} width={51} className="inline-block items-center justify-center mr-4" src={item.img} alt="featurebox" />
