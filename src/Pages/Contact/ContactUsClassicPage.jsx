@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
 import Buttons from '../../Components/Button/Buttons';
 import { Checkbox, Input, TextArea } from '../../Components/Form/Form';
-import * as Yup from 'yup';
+  
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SideButtons from "../../Components/SideButtons";

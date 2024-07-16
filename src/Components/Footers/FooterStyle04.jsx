@@ -14,8 +14,7 @@ import { Input } from '../Form/Form';
 import SocialIcons from '../SocialIcon/SocialIcons';
 import { Footer } from './Footer';
 
-// Data
-import FooterData from './FooterData';
+
 
 // Appwrite
 import db from '../../appwrite/Services/dbServices';

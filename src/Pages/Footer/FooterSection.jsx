@@ -1,16 +1,6 @@
 import React from 'react'
-import FooterMenu, { Footer } from "../../Components/Footers/Footer";
-import { Container } from 'react-bootstrap'
-import { Col, Row } from "react-bootstrap";
-import { Link } from 'react-router-dom';
-import FooterData from '../../Components/Footers/FooterData'
 import FooterStyle04 from '../../Components/Footers/FooterStyle04'
-const Footer_Data = [
-  FooterData[0],
-  FooterData[1],
-  FooterData[4],
-  FooterData[3],
-];
+
 
 const FooterSection = () => {
   return (
