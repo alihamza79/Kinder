@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState,lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
@@ -75,6 +75,21 @@ import EditGalleryHeader from "./Pages/AdminDashboard/gallery/EditGalleryHeader"
 import GalleryBodyList from "./Pages/AdminDashboard/gallery/GalleryBodyList";
 import EditGalleryItem from "./Pages/AdminDashboard/gallery/EditGalleryItem";
 import AddGalleryItem from "./Pages/AdminDashboard/gallery/AddGalleryItem";
+import NotFoundPage from "./Pages/404";
+// Landing page Imports 
+import HomeStartupPage from "./Pages/Home/Startup/Startup";
+import Vertretung from "./Pages/Vertretung/Vertretung";
+import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
+import ContactUsClassicPage from "./Pages/Contact/ContactUsClassicPage";
+import TeamDetail from "./Pages/TeamDetail";
+
+const Privacy = lazy(() => import("./Pages/Privacy"));
+
+const BlogSimplePage = lazy(() => import("./Pages/Blogs/BlogSimple"));
+
+const BlogStandardPostPage = lazy(() =>
+  import("./Pages/Blogs/PostTypes/BlogStandardPostPage")
+);
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -99,7 +114,48 @@ const ProtectedRoute = ({ element }) => {
 const DashboardRoutes = () => (
   <AnimatePresence mode="wait">
     <Suspense fallback={<></>}>
+
       <Routes>
+
+        {/* Landing page Routes  */}
+        <Route
+          path="/"
+          element={<HomeStartupPage style={{ "--base-color": "#24AE60" }} />}
+        />
+        <Route path="/vertretung" element={<Vertretung />} />
+        <Route path="/wichtigeinfo" element={<WichtigeInfo />} />
+
+        <Route path="/allnews" element={<BlogSimplePage />} />
+
+        <Route path="blogdetail">
+          <Route
+            path=":id"
+            element={
+              <BlogStandardPostPage style={{ "--base-color": "#24AE60" }} />
+            }
+          />
+        </Route>
+        <Route
+          path="/contactus"
+          element={<ContactUsClassicPage style={{ "--base-color": "#24AE60" }} />}
+        />
+        <Route
+          path="/privacy"
+          element={<Privacy style={{ "--base-color": "#24AE60" }} />}
+        />
+        <Route
+          path="/teamdetail"
+          element={<TeamDetail />}
+        />
+
+
+
+        {/* Dashboard Routes  */}
+
+
+
+
+
         <Route path="/login" element={<Login />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -237,6 +293,8 @@ const DashboardRoutes = () => (
         <Route path="/gallerylist" element={<ProtectedRoute element={<GalleryBodyList />} />} />
         <Route path="/gallerylist/addgalleryitem" element={<ProtectedRoute element={<AddGalleryItem />} />} />
         <Route path="/gallerylist/editgalleryitem/:id" element={<ProtectedRoute element={<EditGalleryItem />} />} />
+
+        <Route path="*" element={<NotFoundPage />} /> 
 
       </Routes>
     </Suspense>

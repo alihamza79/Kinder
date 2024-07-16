@@ -3,9 +3,7 @@ import { useLocation } from "react-router-dom";
 import retina from "retinajs";
 import GlobalContext from "./Context/Context";
 import ScrollToTopButton from "./Components/ScrollToTop";
-import LandingRoutes from "./LandingRoutes";
-import DashboardRoutes from "./DashboardRoutes";
-
+import AppRouter from  "./AppRouter"
 function App() {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [footerHeight, setFooterHeight] = useState(0);
@@ -69,8 +67,7 @@ function App() {
       <div className="App" style={{ "--header-height": `${headerHeight}px` }}>
         <main style={{ marginTop: headerHeight, marginBottom: footerHeight }}>
           <ScrollToTopButton />
-          <LandingRoutes />
-          <DashboardRoutes />
+          <AppRouter />
         </main>
       </div>
     </GlobalContext.Provider>
