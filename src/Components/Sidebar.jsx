@@ -350,6 +350,31 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
+
+                {/* Gallery  */}
+
+                <li className="submenu">
+                  <Link to="#" id="menu-item13" onClick={(e) => handleClick(e, "menu-item13", "menu-items13")}>
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span> Gallery</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="menu-items13">
+                    
+                    <li>
+                      <Link className={props?.activeClassName === 'galleryheader' ? 'active' : ''} to="/galleryheader">
+                        Gallery View
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className={props?.activeClassName === 'categories' ? 'active' : ''} to="/categories">Edit Categories</Link>
+                    </li>
+                    
+                  </ul>
+                </li>
+
+
               </ul>
               <div className="logout-btn">
                 <Link to="/login" onClick={handleLogout}>

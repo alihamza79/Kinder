@@ -17,7 +17,8 @@ import Team from "../../../Components/Team/Team";
 import TextBox from "../../../Components/TextBox/TextBox";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
-
+import ImageGallery from "../../ImageGallery/ImageGallery";
+import { imageGalleryData02 } from "../../ImageGallery/ImageGalleryData";
 // Icons 
 import ambulance from "../../../Assets/img/icons/ambulance.svg";
 import contact_info from "../../../Assets/img/icons/contact_info.svg";
@@ -203,6 +204,16 @@ const getImageUrl = async (imageId) => {
     console.error("Error fetching image URL:", error);
   }
 };
+const fetchGalleryData = async () => {
+  const headerSnapshot = await db.galleryHeader.list();
+  const bodySnapshot = await db.galleryBody.list();
+  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Image Gallery";
+  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
+    const img = await getImageUrl(doc.image);
+    return { src: img, category: doc.category, title: doc.title };
+  }));
+  return { header, body };
+};
 
 const HomeStartupPage = (props) => {
   const results = useQueries({
@@ -216,6 +227,7 @@ const HomeStartupPage = (props) => {
       { queryKey: ["hospitalKontakte"], queryFn: fetchHospitalKontakteData },
       { queryKey: ["formData"], queryFn: fetchFormData },
       { queryKey: ["scheduleData"], queryFn: fetchScheduleData },
+      { queryKey: ["galleryData"], queryFn: fetchGalleryData },
     ],
   });
 
@@ -235,6 +247,7 @@ const HomeStartupPage = (props) => {
     { data: hospitalKontakte },
     { data: formData },
     { data: scheduleData },
+    { data: galleryData },
   ] = results;
 
   return (
@@ -479,6 +492,27 @@ const HomeStartupPage = (props) => {
             </Row>
           </Container>
         </m.section>
+      </section>
+
+      <section className="bg-lightgray py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row>
+            <Col className="mb-[6%]">
+              <h6 className="font-serif text-dark text-center font-medium mb-[25px] lg:mb-[15px]">
+                {galleryData.header}
+              </h6>
+            </Col>
+            </Row>
+            <Row>
+              <ImageGallery 
+                theme="image-gallery-02" 
+                grid="grid grid-4col xl-grid-4col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-large" 
+                data={galleryData.body} 
+                overlay={["#36c1e1", "#28ccc0", "#74cf8e", "#bac962", "#feb95b"]} 
+                animation={fadeIn} 
+              />
+            </Row>
+        </Container>
       </section>
 
       <section className="py-32 p-[130px] bg-lightgray lg:px-[2%] lg:py-[95px] md:py-[75px] sm:py-[50px] sm:px-0 xs:px-0">

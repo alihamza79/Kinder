@@ -99,6 +99,18 @@ export const collections = [
     id: "66957c14002882f6022a",
     name: "subscribers",
   },
+  {
+    id: "669631af00271d1a4628",
+    name: "categories",
+  },
+  {
+    id: "669636af001ce0a6d24c",
+    name: "galleryHeader",
+  },
+  {
+    id: "669636e30013763c79e7",
+    name: "galleryBody",
+  },
 
   
 ];

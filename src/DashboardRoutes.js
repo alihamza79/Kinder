@@ -73,6 +73,12 @@ import EditRepresentationDate from "./Pages/AdminDashboard/Representation/Monthl
 import EditRepresentative from "./Pages/AdminDashboard/Representation/MonthlyRepresentation/EditRepresentative";
 import SocialLinks from "./Pages/AdminDashboard/SocialLinks";
 import SubscriberList from "./Pages/AdminDashboard/SuscriberList";
+import Categories from "./Pages/AdminDashboard/gallery/Categories";
+import GalleryHeaderList from "./Pages/AdminDashboard/gallery/GalleryHeaderList";
+import EditGalleryHeader from "./Pages/AdminDashboard/gallery/EditGalleryHeader";
+import GalleryBodyList from "./Pages/AdminDashboard/gallery/GalleryBodyList";
+import EditGalleryItem from "./Pages/AdminDashboard/gallery/EditGalleryItem";
+import AddGalleryItem from "./Pages/AdminDashboard/gallery/AddGalleryItem";
 
 const ProtectedRoute = ({ element }) => {
   const [isAuth, setIsAuth] = useState(null);
@@ -226,7 +232,18 @@ const DashboardRoutes = () => (
 
         <Route path="/subscribers" element={<ProtectedRoute element={<SubscriberList />} />} />
 
+        {/* Categories  */}
 
+        <Route path="/categories" element={<ProtectedRoute element={<Categories />} />} />
+
+        {/* Gallery  */}
+
+        <Route path="/galleryheader" element={<ProtectedRoute element={<GalleryHeaderList />} />} />
+        <Route path="/galleryheader/editgalleryheader/:id" element={<ProtectedRoute element={<EditGalleryHeader />} />} />
+
+        <Route path="/gallerylist" element={<ProtectedRoute element={<GalleryBodyList />} />} />
+        <Route path="/gallerylist/addgalleryitem" element={<ProtectedRoute element={<AddGalleryItem />} />} />
+        <Route path="/gallerylist/editgalleryitem/:id" element={<ProtectedRoute element={<EditGalleryItem />} />} />
 
       </Routes>
     </Suspense>
