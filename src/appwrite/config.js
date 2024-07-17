@@ -1,8 +1,11 @@
 import { Client, Account, Databases, Storage } from "appwrite";
 
-const Endpoint = "https://cloud.appwrite.io/v1";
-export const projectID = "66887083002da69658f9";
-export const databaseId = "66887ffc0015cd538ebb";
+// Access environment variables
+const Endpoint = process.env.REACT_APP_APPWRITE_ENDPOINT;
+const projectID = process.env.REACT_APP_APPWRITE_PROJECT_ID;
+const databaseId = process.env.REACT_APP_APPWRITE_DATABASE_ID;
+
+
 
 const client = new Client();
 
@@ -13,3 +16,5 @@ client
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
+
+export { databaseId,projectID };
