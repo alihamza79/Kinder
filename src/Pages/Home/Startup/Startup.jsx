@@ -271,32 +271,32 @@ const HomeStartupPage = (props) => {
       </div>
 
 
-  <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
-  <Container>
-    <Row className="justify-content-center">
-      <m.div
-        className="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mb-24"
-        {...{ ...fadeIn, transition: { delay: 0.2 } }}
-      >
-        <h5 className="alt-font text-darkgray font-semibold mt-[30px] mb-[20px] font-serif text-center heading-6">
-          {scheduleData.header}
-        </h5>
-      </m.div>
-    </Row>
-    <Row className="justify-content-center">
-      <Col xl={10} lg={12}>
-        <IconWithText
-          grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
-          theme="icon-with-text-04"
-          data={scheduleData.body}
-          animation={fadeIn}
-          animationDelay={0.2}
-          highlightSecondCard={true}
-        />
-      </Col>
-    </Row>
-  </Container>
-</section>
+      <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+        <Container>
+          <Row className="justify-content-center">
+            <m.div
+              className="col-xl-8 col-lg-10 col-md-12 d-flex flex-column mb-24"
+              {...{ ...fadeIn, transition: { delay: 0.2 } }}
+            >
+              <h5 className="alt-font text-darkgray font-semibold mt-[30px] mb-[20px] font-serif text-center heading-6">
+                {scheduleData.header}
+              </h5>
+            </m.div>
+          </Row>
+          <Row className="justify-content-center">
+            <Col xl={10} lg={12}>
+              <IconWithText
+                grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
+                theme="icon-with-text-04"
+                data={scheduleData.body}
+                animation={fadeIn}
+                animationDelay={0.2}
+                highlightSecondCard={true}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </section>
 
 
       <section
@@ -313,7 +313,7 @@ const HomeStartupPage = (props) => {
               className="relative mb-[20px] md:mb-32 sm:mb-40 xs:mb-0"
             >
               <div className="relative">
-                <Parallax className="lg-no-parallax w-[70%] mb-16" speed={0}>
+                <Parallax className="lg-no-parallax w-[70%] sm:w-[100%] mb-16" speed={0}>
                   <img
                     alt=""
                     src={aboutUs.image}
@@ -331,10 +331,10 @@ const HomeStartupPage = (props) => {
                   <span className="text-basecolor uppercase">About Us</span>
                 </div>
               </div>
-              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[85%] mb-[35px] lg:w-full sm:mb-[25px]">
+              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[120%] mb-[35px] lg:w-full sm:mb-[25px]">
                 {aboutUs.title}
               </h1>
-              <p className="mb-[25px] w-[80%] lg:w-full">
+              <p className="mb-[25px] w-[100%] lg:w-full text-center">
                 {aboutUs.description}
               </p>
               <ScrollTo
@@ -509,16 +509,16 @@ const HomeStartupPage = (props) => {
                 {galleryData.header}
               </h6>
             </Col>
-            </Row>
-            <Row>
-              <ImageGallery 
-                theme="image-gallery-02" 
-                grid="grid grid-4col xl-grid-4col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-large" 
-                data={galleryData.body} 
-                overlay={["#36c1e1", "#28ccc0", "#74cf8e", "#bac962", "#feb95b"]} 
-                animation={fadeIn} 
-              />
-            </Row>
+          </Row>
+          <Row>
+            <ImageGallery
+              theme="image-gallery-02"
+              grid="grid grid-4col xl-grid-4col lg-grid-3col md-grid-2col sm-grid-2col xs-grid-1col gutter-large"
+              data={galleryData.body}
+              overlay={["#36c1e1", "#28ccc0", "#74cf8e", "#bac962", "#feb95b"]}
+              animation={fadeIn}
+            />
+          </Row>
         </Container>
       </section>
 
