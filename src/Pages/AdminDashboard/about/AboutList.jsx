@@ -9,7 +9,6 @@ import storageServices from "../../../appwrite/Services/storageServices";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
-import "tailwindcss/tailwind.css"; // Ensure Tailwind CSS is included in your project
 
 const AboutList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -101,7 +100,16 @@ const AboutList = () => {
       dataIndex: "description",
       key: "description",
       render: (text) => (
-        <div className="whitespace-pre-wrap break-words overflow-hidden line-clamp-3">
+        <div
+          style={{
+            whiteSpace: "pre-wrap",
+            wordWrap: "break-word",
+            overflow: "hidden",
+            display: "-webkit-box",
+            WebkitLineClamp: 3, // Number of lines to show
+            WebkitBoxOrient: "vertical",
+          }}
+        >
           {text}
         </div>
       ),

@@ -71,9 +71,18 @@ const ImportantInformationHeaderList = () => {
       key: "description",
       render: (text) => (
         <div
-          className="multiline-text"
-          dangerouslySetInnerHTML={{ __html: text }}
-        />
+        style={{
+          whiteSpace: "pre-wrap",
+          wordWrap: "break-word",
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitLineClamp: 3, // Number of lines to show
+          WebkitBoxOrient: "vertical",
+        }}
+      >
+        {text}
+      </div>
+        
       ),
     },
     {
