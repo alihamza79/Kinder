@@ -20,11 +20,11 @@ const AboutList = () => {
     const addSuccess = sessionStorage.getItem("addAboutItemSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateAboutItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateAboutItemSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addAboutItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addAboutItemSuccess");
     }
     fetchData();
   }, [location]);
@@ -32,8 +32,8 @@ const AboutList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.about.list(); // Fetch documents from Appwrite collection
-      const data = await Promise.all(
+      const querySnapshot = await db.about.list();
+      let data = await Promise.all(
         querySnapshot.documents.map(async (doc) => {
           const imageUrl = await storageServices.images.getFileView(doc.image);
           return {
@@ -45,6 +45,23 @@ const AboutList = () => {
           };
         })
       );
+
+      if (data.length === 0) {
+        const newDocument = await db.about.create({
+          title: "Dummy Title",
+          description: "Dummy Description",
+          image: "dummyImageId" // Assuming you have a default image ID or handle image creation here
+        });
+        const imageUrl = await storageServices.images.getFileView(newDocument.image);
+        data.push({
+          id: newDocument.$id,
+          title: newDocument.title,
+          description: newDocument.description,
+          imageId: newDocument.image,
+          imageUrl: imageUrl.href,
+        });
+      }
+
       setDataSource(data);
       setLoading(false);
     } catch (error) {
