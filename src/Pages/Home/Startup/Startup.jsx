@@ -284,19 +284,19 @@ const HomeStartupPage = (props) => {
             </m.div>
           </Row>
           <Container fluid>
-  <Row className="justify-content-center">
-    <Col>
-      <IconWithText
-        grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
-        theme="icon-with-text-04"
-        data={scheduleData.body}
-        animation={fadeIn}
-        animationDelay={0.2}
-        highlightSecondCard={true}
-      />
-    </Col>
-  </Row>
-</Container>
+            <Row className="justify-content-center">
+              <Col>
+                <IconWithText
+                  grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
+                  theme="icon-with-text-04"
+                  data={scheduleData.body}
+                  animation={fadeIn}
+                  animationDelay={0.2}
+                  highlightSecondCard={true}
+                />
+              </Col>
+            </Row>
+          </Container>
 
         </Container>
       </section>
@@ -439,7 +439,7 @@ const HomeStartupPage = (props) => {
         </Container>
       </section>
 
-      <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+      <section className="bg-lightgray py-[160px] lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px] ">
         <Container>
           <Row>
             <Col className="mb-[6%]">
@@ -448,19 +448,20 @@ const HomeStartupPage = (props) => {
               </h6>
             </Col>
           </Row>
-          <Row className="justify-center">
-            <Col xs={12} sm={8} md={12}>
-              <IconWithText
-                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-                theme="icon-with-text-08"
-                data={formData.body}
-                animation={fadeIn}
-                animationDelay={0.2}
-                highlightAllCard={true}
+          <Row className="justify-content-center pl-32 sm:pl-1">
+  <Col xs={12} sm={8} md={12}>
+    <IconWithText
+      grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+      theme="icon-with-text-08"
+      data={formData.body}
+      animation={fadeIn}
+      animationDelay={0.2}
+      highlightAllCard={true}
+    />
+  </Col>
+</Row>
 
-              />
-            </Col>
-          </Row>
+
         </Container>
       </section>
 

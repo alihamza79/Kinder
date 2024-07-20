@@ -4,6 +4,7 @@ import { PropTypes } from "prop-types";
 import { m } from "framer-motion";
 import Pagination from "./HelperComponents/Pagination";
 import Filter from "../Portfolio/Filter";
+import { hover } from "@testing-library/user-event/dist/cjs/setup/directApi.js";
 
 const BlogMasonry = (props) => {
   const blogWrapper = useRef();
@@ -78,7 +79,7 @@ const BlogMasonry = (props) => {
                 )}
                 {item.category && item.category[0] && (
                   <div className="font-serif absolute bg-white left-0 bottom-0 top-auto rounded-none py-[13px] px-[25px] text-sm leading-[13px] font-medium">
-                    <Link aria-label="link" to={`/blogs/category/${item.category[0].toString().split(" ").join("").toLowerCase()}`} className="category uppercase text-basecolor">
+                    <Link aria-label="link" to={`/blogs/category/${item.category[0].toString().split(" ").join("").toLowerCase()}`} className="category uppercase text-basecolor" style={{ color: '#028985' }}>
                       {item.category[0]}
                     </Link>
                   </div>
@@ -86,9 +87,17 @@ const BlogMasonry = (props) => {
               </div>
               <div className="px-[3rem] py-[2.5rem]">
                 {item.title && (
-                  <Link aria-label="link" to={`${props.link}${item.id}`} className="mb-[15px] font-medium text-darkgray text-xmd font-serif block">
-                    {item.title}
-                  </Link>
+                 <Link
+                 aria-label="link"
+                 to={`${props.link}${item.id}`}
+                 className="mb-[15px] font-medium text-[#1C1C1C] text-xmd font-serif block"
+                 style={{ color: '#1C1C1C' }}
+                 onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
+                 onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}
+               >
+                 {item.title}
+               </Link>
+               
                 )}
                 {item.content && (
                   <p className="mb-[5px]">

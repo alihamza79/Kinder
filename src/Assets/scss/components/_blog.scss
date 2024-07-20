@@ -50,7 +50,7 @@
       transition: var(--default-transition);
 
       &:hover {
-        color: var(--base-color, #0038e3);
+        color: var(--base-color, #028985);
         text-decoration: none;
         outline: 0;
         outline-offset: 0;
@@ -155,7 +155,7 @@
         box-shadow: 0 0 0 rgb(23 23 23 / 8%);
 
         &:hover {
-          @apply text-fastblue;
+          @apply #028985;
         }
       }
     }
@@ -186,7 +186,7 @@
     }
 
     .blog-title {
-      @apply mb-[15px] leading-[24px] font-medium text-darkgray text-lg hover:text-fastblue xs:mb-[10px];
+      @apply mb-[15px] leading-[24px] font-medium text-darkgray text-lg hover:#028985 xs:mb-[10px];
     }
 
     .blog-author {
@@ -267,14 +267,14 @@
     @apply px-[4.5rem] md:px-10 w-[45%] sm:w-full sm:px-0;
 
     .blog-post-date {
-      @apply font-medium text-sm text-fastblue font-serif uppercase inline-block mb-[15px] sm:mb-[10px];
+      @apply font-medium text-sm #028985 font-serif uppercase inline-block mb-[15px] sm:mb-[10px];
     }
 
     .blg-post-title {
       @apply font-serif font-medium text-darkgray leading-[28px] block mb-[20px] text-[20px] md:text-[18px] sm:mb-[10px] lg:text-[18px];
 
       &:hover {
-        @apply text-fastblue;
+        @apply #028985;
       }
     }
 
@@ -300,13 +300,13 @@
           }
 
           &:hover {
-            @apply text-fastblue;
+            @apply #028985;
           }
         }
 
         .blog-author-catagory {
           &:hover {
-            @apply text-fastblue;
+            @apply #028985;
           }
         }
       }
@@ -558,7 +558,7 @@
 
       a {
         &:hover {
-          color: var(--base-color, #0038e3);
+          color: var(--base-color, #028985);
         }
       }
 

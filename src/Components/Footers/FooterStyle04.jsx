@@ -172,8 +172,8 @@ const FooterStyle04 = (props) => {
                   <div className="relative mb-[25px] subscribe-style-09 mx-auto">
                     <Form className="relative">
                       <Input showErrorMsg={false} type="email" name="email" labelClass="w-full" className="border-[1px] border-solid border-mediumgray py-[13px] pl-[15px] pr-[60px] w-full small-input placeholder-[#A6A6A6]" placeholder="Enter your email address" />
-                      <button aria-label="subscribe" type="submit" className={`text-lg tracking-[1px] py-[12px] px-[28px] btn-gradient uppercase${isSubmitting ? " loading" : ""}`} >
-                        <i className="feather-mail text-lg m-0"></i>
+                      <button aria-label="subscribe" type="submit" className={`text-lg tracking-[1px] py-[12px] px-[28px] bg-[#028985] uppercase${isSubmitting ? " loading" : ""}`} >
+                        <i className="feather-mail text-white hover:text-gray-300 text-lg m-0"></i>
                       </button>
                     </Form>
                     <AnimatePresence>
