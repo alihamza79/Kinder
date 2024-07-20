@@ -69,13 +69,16 @@ const BlogSimple = (props) => {
                 <Link aria-label="link" to="#" className="blog-category">
                   {item.category[0]}
                 </Link>
-                <Link aria-label="link" to={`${props.link}${[item.id]}`} className="blog-title">
+                <Link aria-label="link" to={`${props.link}${[item.id]}`} className="blog-title"
+                  style={{ color: '#1C1C1C' }}
+                  onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
+                  onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}>
                   {item.title}
                 </Link>
                 <p className="mb-[25px] xl:mb-[25px] md:mb-[20px] xs:mb-[15px]">
                   {item.content && getSnippet(item.content, 10)}
                 </p>
-                <Link aria-label="link" to="#" className="blog-author">
+                <Link aria-label="link" to="#" className="text-[#028985]" >
                   {item.author}
                 </Link>
               </div>

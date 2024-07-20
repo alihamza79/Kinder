@@ -52,7 +52,7 @@ const BlogSimplePage = () => {
         <Container className="h-full relative">
           <Row className="justify-center h-[300px] sm:h-[250px]">
             <Col xl={6} lg={6} md={8} className="text-center flex justify-center flex-col font-serif">
-              <h1 className="text-gradient bg-gradient-to-r from-[#556fff] via-[#e05fc4] to-[#ff798e] mb-[15px] inline-block text-xmd leading-[20px]">Latest</h1>
+              <h1 className="text-[#028985] mb-[15px] inline-block text-xmd leading-[20px]" >Latest</h1>
               <h2 className="text-darkgray font-medium -tracking-[1px] mb-0">All News</h2>
             </Col>
           </Row>
@@ -67,7 +67,7 @@ const BlogSimplePage = () => {
               ) : (
                 <BlogSimple 
                   link="/blogdetail/" 
-                  overlay="#374162" 
+                  overlay="#028985" 
                   pagination={true} 
                   grid="grid grid-3col xl-grid-2col lg-grid-2col md-grid-1col sm-grid-1col xs-grid-1col gutter-double-extra-large" 
                   data={currentBlogs} 
