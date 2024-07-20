@@ -178,7 +178,7 @@ const fetchFormData = async () => {
     return {
       img: pdf,
       title: doc.title,
-      content: `<a href="${fileUrl.href}" target="_blank" download>Download File</a>`,
+      content: `<a href="${fileUrl.href}" target="_blank" download>Preview</a>`,
     };
   }));
   return { header, body };
@@ -283,18 +283,21 @@ const HomeStartupPage = (props) => {
               </h5>
             </m.div>
           </Row>
-          <Row className="justify-content-center">
-            <Col xl={10} lg={12}>
-              <IconWithText
-                grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
-                theme="icon-with-text-04"
-                data={scheduleData.body}
-                animation={fadeIn}
-                animationDelay={0.2}
-                highlightSecondCard={true}
-              />
-            </Col>
-          </Row>
+          <Container fluid>
+  <Row className="justify-content-center">
+    <Col>
+      <IconWithText
+        grid="row-cols-1 row-cols-lg-2 row-cols-md-2 gap-y-[40px]"
+        theme="icon-with-text-04"
+        data={scheduleData.body}
+        animation={fadeIn}
+        animationDelay={0.2}
+        highlightSecondCard={true}
+      />
+    </Col>
+  </Row>
+</Container>
+
         </Container>
       </section>
 
@@ -331,7 +334,7 @@ const HomeStartupPage = (props) => {
                   <span className="text-basecolor uppercase">About Us</span>
                 </div>
               </div>
-              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[120%] mb-[35px] lg:w-full sm:mb-[25px]">
+              <h1 className="heading-4 font-serif text-darkgray font-semibold w-[103%] mb-[35px] lg:w-full sm:mb-[25px]">
                 {aboutUs.title}
               </h1>
               <p className="mb-[25px] w-[100%] lg:w-full text-center">
