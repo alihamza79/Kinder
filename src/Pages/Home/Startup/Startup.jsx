@@ -331,7 +331,7 @@ const HomeStartupPage = (props) => {
               <div className="font-serif text-md font-medium mb-[30px] flex">
                 <span className="w-[40px] h-[1px] bg-basecolor opacity-70 self-center mr-[20px] shrink-0"></span>
                 <div className="grow-[1]">
-                  <span className="text-basecolor uppercase">About Us</span>
+                  <span className="text-basecolor uppercase text-[#028985]">About Us</span>
                 </div>
               </div>
               <h1 className="heading-4 font-serif text-darkgray font-semibold w-[103%] mb-[35px] lg:w-full sm:mb-[25px]">
@@ -370,7 +370,7 @@ const HomeStartupPage = (props) => {
                   className="flex items-center"
                   {...{ ...fadeIn, transition: { delay: index * 0.2 } }}
                 >
-                  <h6 className="mr-[25px] font-serif text-basecolor mb-0">
+                  <h6 className="mr-[25px] font-serif text-[#028985] mb-0">
                     {index + 1}
                   </h6>
                   <div className="flex-1 font-serif font-medium text-md text-spanishgray uppercase inline-block">
@@ -448,18 +448,18 @@ const HomeStartupPage = (props) => {
               </h6>
             </Col>
           </Row>
-          <Row className="justify-content-center pl-32 sm:pl-1">
-  <Col xs={12} sm={8} md={12}>
-    <IconWithText
-      grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
-      theme="icon-with-text-08"
-      data={formData.body}
-      animation={fadeIn}
-      animationDelay={0.2}
-      highlightAllCard={true}
-    />
-  </Col>
-</Row>
+          <Row className="justify-content-center pl-28 sm:pl-1">
+            <Col xs={12} sm={8} md={12}>
+              <IconWithText
+                grid="row-cols-1 row-cols-lg-4 row-cols-md-2 justify-center md:mb-[30px] gap-y-10"
+                theme="icon-with-text-08"
+                data={formData.body}
+                animation={fadeIn}
+                animationDelay={0.2}
+                highlightAllCard={true}
+              />
+            </Col>
+          </Row>
 
 
         </Container>
@@ -530,7 +530,7 @@ const HomeStartupPage = (props) => {
         <Container>
           <Row className="justify-center">
             <Col lg={4} sm={6} className="text-center mb-12 md:mb-8">
-              <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px]">
+              <span className="font-serif font-medium text-basecolor text-xmd block mb-[20px] sm:mb-[10px] text-[#028985]" >
                 News
               </span>
               <h2 className="heading-5 font-serif font-semibold text-darkgray inline-block tracking-[-1px]">

@@ -3,7 +3,7 @@ import React, { memo } from 'react';
 const TeamStyle04 = ({ item }) => {
     return (
         <figure className="flex flex-col items-center justify-center group relative overflow-hidden">
-            <div className="team-member-image w-[280px] h-[320px] flex flex-col items-center justify-center overflow-hidden">
+            <div className="team-member-image w-[280px] h-[370px] flex flex-col items-center justify-center overflow-hidden">
                 <img 
                     className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105" 
                     loading="lazy" 
