@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import Buttons from '../Button/Buttons';
 import "../../Assets/scss/components/_iconwithtext.scss";
-
+import './style.css'
 const HeroIconWithText = (props) => {
   return (
     <Row className={`${props.grid} md:justify-center`}>
@@ -28,8 +28,8 @@ const HeroIconWithText = (props) => {
                 <img height={42} width={51} className="inline-block items-center justify-center mr-4" src={item.img} alt="featurebox" />
               ) : item.icon ? (
                 props.theme === "icon-with-text-05"
-                  ? <Link aria-label="link for icon" to="#"><i className={item.icon}></i></Link>
-                  : <i className={item.icon}></i>
+                  ? <Link aria-label="link for icon" to="#"><i className={`${item.icon} hover-icon`}></i></Link>
+                  : <i className={`${item.icon} hover-icon`}></i>
               ) : item.textIcon ? (
                 <span className="text-basecolor inline-block icon-text mr-4">{item.textIcon}</span>
               ) : (
