@@ -82,6 +82,7 @@ import Vertretung from "./Pages/Vertretung/Vertretung";
 import WichtigeInfo from "./Pages/WichtigeInfo/WichtigeInfo";
 import ContactUsClassicPage from "./Pages/Contact/ContactUsClassicPage";
 import TeamDetail from "./Pages/TeamDetail";
+import Contactlist from "./Components/Contact/contactlist";
 
 const Privacy = lazy(() => import("./Pages/Privacy"));
 
@@ -277,6 +278,8 @@ const DashboardRoutes = () => (
 
         <Route path="/sociallinks" element={<ProtectedRoute element={<SocialLinks />} />} />
       
+        {/* Contacts  */}
+        <Route path="/contactlist" element={<ProtectedRoute element={<Contactlist />} />} />
          {/* Suscribers */}
 
         <Route path="/subscribers" element={<ProtectedRoute element={<SubscriberList />} />} />

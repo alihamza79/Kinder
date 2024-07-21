@@ -83,6 +83,7 @@ const LoadStyles = () => {
         "/importantinformationbody/editimportantinformation/:id",
         "/representationdates/editrepresentationdate/:id",
         "/sociallinks",
+        "/contactlist",
         "/subscribers",
         "/categories",
         "/galleryheader",

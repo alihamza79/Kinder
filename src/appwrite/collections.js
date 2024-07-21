@@ -111,6 +111,10 @@ export const collections = [
     id: "669636e30013763c79e7",
     name: "galleryBody",
   },
+  {
+    id: "669cd772003c90a9d7c2",
+    name: "contacts",
+  }
 
   
 ];

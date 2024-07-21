@@ -1,13 +1,13 @@
 import emailjs from 'emailjs-com';
+import React, { useEffect, useRef, useState } from 'react';
 import { Form, Formik } from 'formik';
 import { AnimatePresence, m } from 'framer-motion';
-import React, { useEffect, useRef, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
 import Buttons from '../../Components/Button/Buttons';
 import { Checkbox, Input, TextArea } from '../../Components/Form/Form';
-  
+
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
@@ -15,9 +15,7 @@ import { fadeIn } from '../../Functions/GlobalAnimations';
 import FooterSection from '../Footer/FooterSection';
 import HeaderSection from '../Header/HeaderSection';
 import db from '../../appwrite/Services/dbServices';
-import {
-  ContactFormStyle03Schema
-} from '../../Components/Form/FormSchema';
+import { ContactFormStyle03Schema } from '../../Components/Form/FormSchema';
 
 const sendEmail = async (values) => {
   try {
@@ -27,6 +25,17 @@ const sendEmail = async (values) => {
       values,
       process.env.REACT_APP_EMAILJS_USER_ID,
     );
+    return { status: 'success', result };
+  } catch (error) {
+    console.log(error);
+    return { status: 'error', error };
+  }
+};
+
+const saveContactInfo = async (values) => {
+  try {
+    const result = await db.contacts.create(values);
+    
     return { status: 'success', result };
   } catch (error) {
     console.log(error);
@@ -105,8 +114,12 @@ const ContactUsClassicPage = (props) => {
                 validationSchema={ContactFormStyle03Schema}
                 onSubmit={async (values, actions) => {
                   actions.setSubmitting(true);
-                  const response = await sendEmail(values);
-                  if (response.status === "success") {
+                  delete values.terms_condition;
+                  const emailResponse = await sendEmail(values);
+                  
+                  const saveResponse = await saveContactInfo(values);
+                  console.log(values);
+                  if (emailResponse.status === "success" && saveResponse.status === "success") {
                     resetForm(actions);
                     actions.setStatus({ success: true, error: false });
                     setTimeout(() => {
@@ -114,7 +127,6 @@ const ContactUsClassicPage = (props) => {
                     }, 3000);
                   } else {
                     actions.setStatus({ success: false, error: true });
-                    
                   }
                   actions.setSubmitting(false);
                 }}

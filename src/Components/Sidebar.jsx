@@ -335,6 +335,19 @@ const Sidebar = (props) => {
                   </Link>
                 </li>
 
+                <li className="submenu">
+                  <Link
+                    to="/contactlist"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={menuicon10} alt="" />
+                    </span>{" "}
+                    <span>Contacts</span> 
+                  </Link>
+                </li>
+                
                 {/* Subscriber  */}
 
                 <li className="submenu">
