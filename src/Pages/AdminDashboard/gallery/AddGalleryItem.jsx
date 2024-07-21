@@ -100,16 +100,10 @@ const AddGalleryItem = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/landingpage/gallery">Gallery</Link>
+                    <Link to="/gallerylist">Gallery</Link>
                   </li>
-                  <li className="breadcrumb-item">
-                    <i className="feather-chevron-right">
-                      <FeatherIcon icon="chevron-right" />
-                    </i>
-                  </li>
-                  <li className="breadcrumb-item active">
-                    <Link to="/landingpage/gallery">Gallery</Link>
-                  </li>
+               
+                 
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
                       <FeatherIcon icon="chevron-right" />

@@ -59,7 +59,7 @@ const EditLinkHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/linkheader">Landing Page </Link>
+                                        <Link to="#">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -67,7 +67,7 @@ const EditLinkHeader = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/linkheader">Link Header</Link>
+                                        <Link to="/linkheader">Link Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

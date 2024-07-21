@@ -65,7 +65,7 @@ const EditFormHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/formheader">Landing Page </Link>
+                                        <Link to="#">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -73,7 +73,7 @@ const EditFormHeader = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/formheader">Form Header</Link>
+                                        <Link to="/formheader">Form Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

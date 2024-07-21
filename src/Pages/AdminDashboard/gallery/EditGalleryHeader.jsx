@@ -61,7 +61,7 @@ const EditGalleryHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/galleryheader">Landing Page </Link>
+                                        <Link to="#">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -69,7 +69,7 @@ const EditGalleryHeader = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/galleryheader">Gallery Header</Link>
+                                        <Link to="/galleryheader">Gallery Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

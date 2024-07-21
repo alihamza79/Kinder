@@ -129,16 +129,9 @@ const EditFormBody = () => {
                         <div className="row">
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
-                                    <li className="breadcrumb-item">
-                                        <Link to="/landingpage/formbody">Landing Page</Link>
-                                    </li>
-                                    <li className="breadcrumb-item">
-                                        <i className="feather-chevron-right">
-                                            <FeatherIcon icon="chevron-right" />
-                                        </i>
-                                    </li>
+                                    
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/formbody">Form Body</Link>
+                                        <Link to="/formbody">Form Body</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

@@ -168,17 +168,7 @@ const ScheduleBodyList = () => {
                       <div className="col">
                         <div className="doctor-table-blk">
                           <h3>Schedule</h3>
-                          <div className="doctor-search-blk">
-                            <div className="add-group">
-                              <Link
-                                to="#"
-                                className="btn btn-primary doctor-refresh ms-2"
-                                onClick={handleRefresh}
-                              >
-                                <img src={refreshicon} alt="#" />
-                              </Link>
-                            </div>
-                          </div>
+                          
                         </div>
                       </div>
                     </div>

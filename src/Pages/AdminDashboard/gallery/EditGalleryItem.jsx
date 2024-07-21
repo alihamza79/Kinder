@@ -148,7 +148,7 @@ const EditGalleryItem = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/landingpage/gallery">Landing Page </Link>
+                    <Link to="#">Landing Page </Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
@@ -156,7 +156,7 @@ const EditGalleryItem = () => {
                     </i>
                   </li>
                   <li className="breadcrumb-item active">
-                    <Link to="/landingpage/gallery">Gallery</Link>
+                    <Link to="/gallerylist">Gallery</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">

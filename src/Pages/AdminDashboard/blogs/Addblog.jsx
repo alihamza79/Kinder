@@ -89,7 +89,7 @@ const AddBlog = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="#">Blog</Link>
+                                        <Link to="/blogview">Blog</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <FeatherIcon icon="chevron-right" />

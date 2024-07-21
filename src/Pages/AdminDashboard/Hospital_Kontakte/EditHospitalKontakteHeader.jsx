@@ -65,7 +65,7 @@ const EditHospitalKontakteHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/hospitalkontakteheader">Landing Page </Link>
+                                        <Link to="#">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -73,7 +73,7 @@ const EditHospitalKontakteHeader = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/hospitalkontakteheader">Hospital Kontakte Header</Link>
+                                        <Link to="/hospitalkontakteheader">Hospital Kontakte Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

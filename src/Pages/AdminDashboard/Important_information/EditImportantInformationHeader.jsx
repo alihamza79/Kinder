@@ -78,7 +78,7 @@ const EditImportantInformationHeader = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/landingpage/importantinformationheader">Landing Page </Link>
+                    <Link to="#">Landing Page </Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
@@ -86,7 +86,7 @@ const EditImportantInformationHeader = () => {
                     </i>
                   </li>
                   <li className="breadcrumb-item active">
-                    <Link to="/landingpage/importantinformationheader">Important Information Header</Link>
+                    <Link to="/importantinformationheader">Important Information Header</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">

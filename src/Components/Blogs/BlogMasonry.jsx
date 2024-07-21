@@ -4,7 +4,6 @@ import { PropTypes } from "prop-types";
 import { m } from "framer-motion";
 import Pagination from "./HelperComponents/Pagination";
 import Filter from "../Portfolio/Filter";
-import { hover } from "@testing-library/user-event/dist/cjs/setup/directApi.js";
 
 const BlogMasonry = (props) => {
   const blogWrapper = useRef();

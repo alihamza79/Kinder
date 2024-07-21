@@ -86,16 +86,9 @@ const AddTeamMember = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/team">Team</Link>
+                                        <Link to="/teamlist">Team</Link>
                                     </li>
-                                    <li className="breadcrumb-item">
-                                        <i className="feather-chevron-right">
-                                            <FeatherIcon icon="chevron-right" />
-                                        </i>
-                                    </li>
-                                    <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/team">Team</Link>
-                                    </li>
+                                    
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />

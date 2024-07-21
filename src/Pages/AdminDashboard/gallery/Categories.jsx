@@ -110,7 +110,7 @@ const Categories = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/">Home</Link>
+                    <Link to="#">Landing Page</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
