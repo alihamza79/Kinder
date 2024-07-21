@@ -87,14 +87,14 @@ const StartupPageBannerSlider = () => {
                       <m.h1 initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }} className="font-serif font-semibold  pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]"> 
                         <div className='flex justify-center items-center '>
                         <img
-                        className="default-logo w-[180px] h-[180px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                        className="default-logo w-[180px] h-[180px] md:w-[80px] md:h-[80px] sm:w-[90px] sm:h-[90px]"
 
                         src="/assets/img/webp/logo1.png"
                         data-rjs="/assets/img/webp/logo-cropped@2x.png"
                         alt="logo"
                       />
                         <img
-                          className="default-logo w-[400px] h-[285px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
+                          className="default-logo w-[400px] h-[285px] md:w-[160px] md:h-[110px] sm:w-[220px] sm:h-[130px]"
                           style={{ maxWidth: '400px' }}
                           src="/assets/img/webp/logo2.png"
                           data-rjs="/assets/img/webp/logo-cropped@2x.png"
