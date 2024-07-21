@@ -59,7 +59,7 @@ const EditWeeklyRepresentationHeader = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/landingpage/weeklyrepresentationheader">Landing Page </Link>
+                    <Link to="/weeklyrepresentationheader">Landing Page </Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
@@ -67,7 +67,7 @@ const EditWeeklyRepresentationHeader = () => {
                     </i>
                   </li>
                   <li className="breadcrumb-item active">
-                    <Link to="/landingpage/weeklyrepresentationheader">Weekly Representation Header</Link>
+                    <Link to="/weeklyrepresentationheader">Weekly Representation Header</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">

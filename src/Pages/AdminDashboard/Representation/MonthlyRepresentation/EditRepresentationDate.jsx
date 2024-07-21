@@ -101,7 +101,7 @@ const EditRepresentationDate = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/representationdates">Representation Dates</Link>
+                                        <Link to="/representationdates">Representation Dates</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -109,7 +109,7 @@ const EditRepresentationDate = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/representationdates">Dates</Link>
+                                        <Link to="/representationdates">Dates</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

@@ -129,7 +129,7 @@ const EditCarouselItem = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/carousel">Landing Page </Link>
+                                        <Link to="/carousel">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -137,7 +137,7 @@ const EditCarouselItem = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/carousel">Carousel</Link>
+                                        <Link to="/carousel">Carousel</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

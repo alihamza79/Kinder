@@ -126,7 +126,7 @@ const EditRepresentative = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/representationdates">Representation Dates</Link>
+                                        <Link to="/representationdates">Representation Dates</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
