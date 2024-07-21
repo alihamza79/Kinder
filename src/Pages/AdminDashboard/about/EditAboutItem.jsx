@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
 import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
 import ImageUpload from "../../../Components/ImageUpload"; // Import the ImageUpload component
+import TextEditor from "../InformationCard/TextEditor"; // Import TextEditor component
 
 const EditAboutItem = () => {
     const { id } = useParams(); // Retrieve the document ID from the URL
@@ -21,6 +22,7 @@ const EditAboutItem = () => {
         newImageId: "", // State to handle new image ID
         newImageURL: "", // State to handle new image URL
     });
+    const editorRef = useRef(null);
 
     useEffect(() => {
         const fetchDocumentData = async () => {
@@ -51,6 +53,7 @@ const EditAboutItem = () => {
                         newImageId: documentSnapshot.image,
                         newImageURL: imageUrl,
                     });
+                    editorRef.current.setEditorContent(documentSnapshot.description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -193,15 +196,13 @@ const EditAboutItem = () => {
                                                 </div>
                                             </div>
                                             {/* Description */}
-                                            <div className="col-12 col-md-6 col-xl-6">
+                                            <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
                                                     <label>Description <span className="login-danger">*</span></label>
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        name="description"
+                                                    <TextEditor 
+                                                        ref={editorRef} 
+                                                        onChange={(data) => setFormData((prevData) => ({ ...prevData, description: data }))}
                                                         value={formData.description}
-                                                        onChange={handleChange}
                                                         required
                                                     />
                                                 </div>

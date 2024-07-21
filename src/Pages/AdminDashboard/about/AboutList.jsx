@@ -109,9 +109,8 @@ const AboutList = () => {
             WebkitLineClamp: 3, // Number of lines to show
             WebkitBoxOrient: "vertical",
           }}
-        >
-          {text}
-        </div>
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
       ),
     },
     {

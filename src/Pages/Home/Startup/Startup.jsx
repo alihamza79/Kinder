@@ -337,9 +337,9 @@ const HomeStartupPage = (props) => {
               <h1 className="heading-4 font-serif text-darkgray font-semibold w-[103%] mb-[35px] lg:w-full sm:mb-[25px]">
                 {aboutUs.title}
               </h1>
-              <p className="mb-[25px] w-[100%] lg:w-full text-center">
-                {aboutUs.description}
-              </p>
+              <p className="mb-[25px] w-[100%] lg:w-full text-center"
+               dangerouslySetInnerHTML={{ __html: aboutUs.description }}>
+            </p>
               <ScrollTo
                 href="#"
                 to="specialization"
