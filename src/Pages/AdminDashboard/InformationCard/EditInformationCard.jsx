@@ -93,7 +93,7 @@ const EditInformationCard = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/informationcard">Landing Page </Link>
+                                        <Link to="/informationcard">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -101,7 +101,7 @@ const EditInformationCard = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/informationcard">Information Card</Link>
+                                        <Link to="/informationcard">Information Card</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

@@ -64,7 +64,7 @@ const EditService = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/services">Landing Page </Link>
+                                        <Link to="/serviceslist">Landing Page </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -72,7 +72,7 @@ const EditService = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/services">Services</Link>
+                                        <Link to="/serviceslist">Services</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
