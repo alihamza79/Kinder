@@ -64,20 +64,7 @@ const HeaderSection = (props) => {
       >
         <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" style={{marginRight:"30px"}}>
           <Link aria-label="header logo" className="flex items-center" to="/" >
-            <img
-              className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
-              
-              src="/assets/img/webp/logo1.png"
-              data-rjs="/assets/img/webp/logo-cropped@2x.png"
-              alt="logo"
-            />
-            <img
-              className="default-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
-              style={{ maxWidth: '400px' }}
-              src="/assets/img/webp/logo2.png"
-              data-rjs="/assets/img/webp/logo-cropped@2x.png"
-              alt="logo"
-            />
+           
             <img
               className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
               src="/assets/img/webp/logo1.png"

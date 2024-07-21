@@ -54,7 +54,7 @@ const StartupPageBannerSlider = () => {
   };
 
   if (isLoading) {
-    return <Preloader/>; // Optionally, you can add a loading spinner here
+    return <Preloader />; // Optionally, you can add a loading spinner here
   }
 
   return (
@@ -84,7 +84,24 @@ const StartupPageBannerSlider = () => {
                 <Container className="text-center">
                   <Row className="full-screen items-center justify-center md:landscape:h-[500px]">
                     <Col xs={12} lg={7} md={10} className="justify-center items-center my-0 mx-auto relative flex flex-col">
-                      <m.h1 initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }} className="font-serif font-semibold  pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]">{item.title}</m.h1>
+                      <m.h1 initial={{ clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} animate={{ clipPath: activeSlide === i ? 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)' : 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)' }} transition={{ duration: 0.5, delay: 0.5, ease: "easeIn" }} className="font-serif font-semibold  pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]"> 
+                        <div className='flex justify-center items-center '>
+                        <img
+                        className="default-logo w-[180px] h-[180px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+
+                        src="/assets/img/webp/logo1.png"
+                        data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                        alt="logo"
+                      />
+                        <img
+                          className="default-logo w-[400px] h-[285px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
+                          style={{ maxWidth: '400px' }}
+                          src="/assets/img/webp/logo2.png"
+                          data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                          alt="logo"
+                        />
+                        </div>
+                        </m.h1>
                     </Col>
                   </Row>
                 </Container>
