@@ -60,7 +60,7 @@ const LoadStyles = () => {
         "/hospitalkontakteheader/edithospitalkontakteheader/:id",
         "/hospitalkontakteliste",
         "/hospitalkontakteliste/addhospitalkontakte",
-        "/hospitalkontakteliste/edithospitalkontakte/:id" ,
+        "/hospitalkontakteliste/edithospitalkontakte/:id",
         "/formbody",
         "/formbody/addformbody",
         "/formbody/editformbody/:id",
@@ -90,25 +90,28 @@ const LoadStyles = () => {
         "/galleryheader/editgalleryheader/:id",
         "/gallerylist",
         "/gallerylist/addgalleryitem",
-        "/gallerylist/editgalleryitem/:id"
+        "/gallerylist/editgalleryitem/:id",
       ];
 
+      const isDashboardPath = dashboardPaths.some((dashboardPath) =>
+        new RegExp(`^${dashboardPath.replace(/:[^\s/]+/g, '([\\w-]+)')}$`).test(path)
+      );
+
       try {
-        if (
-          dashboardPaths.some((dashboardPath) => path.includes(dashboardPath))
-        ) {
+        if (!isDashboardPath) {
+          // Load global styles for non-dashboard (including 404) pages
+          await import("./Assets/css/global.css");
+          await import("./index.scss");
+          await import("./Assets/css/icons.css");
+          await import("./Assets/css/global.css");
+          await import("./Assets/css/pages.css");
+        } else {
           await import("bootstrap/dist/css/bootstrap.min.css");
           await import("./Assets/css/bootstrap.min.css");
           await import("./Assets/css/style.css");
           await import("./Assets/css/select2.min.css");
           await import("../node_modules/bootstrap/dist/css/bootstrap.min.css");
           await import("../node_modules/bootstrap/dist/js/bootstrap.bundle.js");
-        } else {
-          await import("./Assets/css/global.css");
-          await import("./index.scss");
-          await import("./Assets/css/icons.css");
-          await import("./Assets/css/global.css");
-          await import("./Assets/css/pages.css");
         }
         console.log(`Styles loaded for path: ${path}`);
       } catch (error) {
@@ -121,6 +124,7 @@ const LoadStyles = () => {
 
   return null;
 };
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 const queryClient = new QueryClient();

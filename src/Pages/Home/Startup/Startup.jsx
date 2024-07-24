@@ -18,7 +18,6 @@ import TextBox from "../../../Components/TextBox/TextBox";
 import FooterSection from "../../Footer/FooterSection";
 import HeaderSection from "../../Header/HeaderSection";
 import ImageGallery from "../../ImageGallery/ImageGallery";
-import { imageGalleryData02 } from "../../ImageGallery/ImageGalleryData";
 // Icons 
 import ambulance from "../../../Assets/img/icons/ambulance.svg";
 import contact_info from "../../../Assets/img/icons/contact_info.svg";

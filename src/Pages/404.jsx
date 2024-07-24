@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { useEffect } from "react";
 
 // Libraries
 import { m } from "framer-motion";
@@ -11,6 +11,9 @@ import FooterSection from "./Footer/FooterSection";
 import HeaderSection from "./Header/HeaderSection";
 
 const NotFoundPage = (props) => {
+  
+  
+
   return (
     <div style={props.style}>
       {/* Header Start */}
