@@ -54,10 +54,18 @@ const AddImportantInformation = () => {
                 <div className="content">
                     <div className="page-header">
                         <div className="row">
-                            <div className="col-sm-12">
+                        <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/importantinformationbody">Important Information</Link>
+                                        <Link to="/importantinformationheader">Important Information </Link>
+                                    </li>
+                                    <li className="breadcrumb-item">
+                                        <i className="feather-chevron-right">
+                                            <FeatherIcon icon="chevron-right" />
+                                        </i>
+                                    </li>
+                                    <li className="breadcrumb-item active">
+                                        <Link to="/importantinformationbody">Important Information Body</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

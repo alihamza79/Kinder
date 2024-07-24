@@ -56,10 +56,12 @@ const AddBlog = () => {
                 throw error;
             }
 
+            const cleanedTags = tags.split(",").map(tag => tag.trim());
+
             const blogData = {
                 title,
                 author,
-                tags: tags.split(","),
+                tags: cleanedTags,
                 content,
                 imageUrl: uploadedImageId,
                 publicationDate: new Date(),

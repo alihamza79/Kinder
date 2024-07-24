@@ -13,11 +13,22 @@ const BlogSimple = (props) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    import("../../Functions/Utilities").then((module) => {
+    const initializeGrid = async () => {
+      const module = await import("../../Functions/Utilities");
       const grid = module.initializeIsotop(blogWrapper.current);
       grid.on("arrangeComplete", () => setLoading(false));
-    });
+    };
+    initializeGrid();
   }, []);
+
+  useEffect(() => {
+    const initializeGrid = async () => {
+      const module = await import("../../Functions/Utilities");
+      const grid = module.initializeIsotop(blogWrapper.current);
+      grid.arrange();
+    };
+    initializeGrid();
+  }, [props.currentPage]);
 
   const style = {
     "--overlay-color":

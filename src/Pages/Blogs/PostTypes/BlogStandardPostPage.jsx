@@ -79,10 +79,20 @@ const BlogStandardPostPage = (props) => {
 
     const fetchRecentPosts = async () => {
       try {
+        // Fetch all blog posts
         const querySnapshot = await db.blogs.list();
         const allPosts = querySnapshot.documents || [];
+    
+        // Sort posts by publication date in descending order
+        const sortedPosts = allPosts.sort((a, b) => {
+          const dateA = new Date(a.publicationDate);
+          const dateB = new Date(b.publicationDate);
+          return dateB - dateA; // Descending order
+        });
+    
+        // Select the top 5 most recent posts
         const recentData = await Promise.all(
-          allPosts.slice(0, 5).map(async (post) => {
+          sortedPosts.slice(0, 5).map(async (post) => {
             const imageUrl = await storageServices.images.getFileView(post.imageUrl);
             return {
               id: post.$id,
@@ -94,11 +104,13 @@ const BlogStandardPostPage = (props) => {
             };
           })
         );
+    
         setRecentPosts(recentData);
       } catch (error) {
         console.error("Error fetching recent posts:", error);
       }
     };
+    
 
     const fetchTags = async () => {
       try {

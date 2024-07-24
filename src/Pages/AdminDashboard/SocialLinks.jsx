@@ -75,12 +75,7 @@ const SocialLinks = () => {
                   <li className="breadcrumb-item">
                     <Link to="#">Social Links</Link>
                   </li>
-                  <li className="breadcrumb-item">
-                    <i className="feather-chevron-right">
-                      <FeatherIcon icon="chevron-right" />
-                    </i>
-                  </li>
-                  <li className="breadcrumb-item active">Settings</li>
+                  
                 </ul>
               </div>
             </div>

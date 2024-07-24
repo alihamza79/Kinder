@@ -1,10 +1,9 @@
-import { useQueries } from "@tanstack/react-query";
-import { m } from "framer-motion";
-import React, { lazy } from "react";
+import React, { lazy, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
+import { m } from "framer-motion";
 import { fadeIn } from "../../../Functions/GlobalAnimations";
 
 import { buckets } from "../../../appwrite/buckets";
@@ -25,6 +24,7 @@ import emergency_services from "../../../Assets/img/icons/emergency_services.svg
 import opening from "../../../Assets/img/icons/opening.svg";
 import opening_hour from "../../../Assets/img/icons/opening_hour.svg";
 import pdf from "../../../Assets/img/icons/pdf.svg";
+import { useQueries } from "@tanstack/react-query";
 
 const IconWithText = lazy(() =>
   import("../../../Components/IconWithText/IconWithText")
@@ -37,7 +37,6 @@ const MessageBox = lazy(() =>
   import("../../../Components/MessageBox/MessageBox")
 );
 const StartupPageBannerSlider = lazy(() => import("./StartupBanner"));
-
 
 const fallbackScheduleBody = [
   {
@@ -215,6 +214,24 @@ const fetchGalleryData = async () => {
 };
 
 const HomeStartupPage = (props) => {
+  const [blogs, setBlogs] = useState([]);
+  const [isLoadingBlogs, setIsLoadingBlogs] = useState(true);
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const blogData = await fetchBlogData();
+        setBlogs(blogData);
+      } catch (error) {
+        console.error("Error fetching blog data:", error);
+      } finally {
+        setIsLoadingBlogs(false);
+      }
+    };
+
+    fetchBlogs();
+  }, []);
+
   const results = useQueries({
     queries: [
       { queryKey: ["informationCards"], queryFn: fetchInformationCards },
@@ -222,7 +239,6 @@ const HomeStartupPage = (props) => {
       { queryKey: ["serviceData"], queryFn: fetchServiceData },
       { queryKey: ["teamData"], queryFn: fetchTeamData },
       { queryKey: ["linksData"], queryFn: fetchLinksData },
-      { queryKey: ["blogs"], queryFn: fetchBlogData },
       { queryKey: ["hospitalKontakte"], queryFn: fetchHospitalKontakteData },
       { queryKey: ["formData"], queryFn: fetchFormData },
       { queryKey: ["scheduleData"], queryFn: fetchScheduleData },
@@ -230,7 +246,7 @@ const HomeStartupPage = (props) => {
     ],
   });
 
-  const isLoading = results.some((result) => result.isLoading);
+  const isLoading = results.some((result) => result.isLoading) || isLoadingBlogs;
 
   if (isLoading) {
     return <Preloader />;
@@ -242,7 +258,6 @@ const HomeStartupPage = (props) => {
     { data: serviceData },
     { data: teamData },
     { data: linksData },
-    { data: blogs },
     { data: hospitalKontakte },
     { data: formData },
     { data: scheduleData },
@@ -251,7 +266,11 @@ const HomeStartupPage = (props) => {
 
   return (
     <div style={props.style}>
+
+      
       <HeaderSection {...props} logoInvisible={true} />
+
+
       <StartupPageBannerSlider />
 
       <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">

@@ -175,7 +175,7 @@ const ImportantInformationList = () => {
                       <FeatherIcon icon="chevron-right" />
                     </i>
                   </li>
-                  <li className="breadcrumb-item active">Important Information</li>
+                  <li className="breadcrumb-item active">Important Information Body</li>
                 </ul>
               </div>
             </div>

@@ -126,11 +126,11 @@ const EditBlog = () => {
         if (!validateForm()) {
             return;
         }
-
+    
         setLoading(true);
         try {
             let newImageId = formData.imageId;
-
+    
             if (formData.newImageFile) {
                 try {
                     const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
@@ -139,19 +139,21 @@ const EditBlog = () => {
                     throw error;
                 }
             }
-
+    
             if (formData.newImageFile && formData.imageId !== newImageId) {
                 await storageServices.images.deleteFile(formData.imageId);
             }
-
+    
+            const cleanedTags = formData.tags.split(",").map(tag => tag.trim());
+    
             await db.blogs.update(id, {
                 title: formData.title,
                 author: formData.author,
-                tags: formData.tags.split(","),
+                tags: cleanedTags,
                 content: formData.content,
                 imageUrl: newImageId,
             });
-
+    
             toast.success("Blog updated successfully");
             navigate("/blogview");
         } catch (error) {
@@ -160,6 +162,7 @@ const EditBlog = () => {
             setLoading(false);
         }
     };
+    
 
     return (
         <div>

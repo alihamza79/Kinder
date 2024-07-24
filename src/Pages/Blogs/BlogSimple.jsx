@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Parallax } from "react-scroll-parallax";
 import BlogSimple from '../../Components/Blogs/BlogSimple';
@@ -10,36 +9,51 @@ import FooterSection from '../Footer/FooterSection';
 
 const BlogSimplePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [blogs, setBlogs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const blogsPerPage = 6;
 
-  const fetchBlogData = async () => {
-    const querySnapshot = await db.blogs.list();
-    const data = await Promise.all(
-      querySnapshot.documents.map(async (doc) => {
-        const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
-        return {
-          id: doc.$id,
-          title: doc.title,
-          date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
-          content: doc.content,
-          img: imageUrl.href,
-          category: doc.tags,
-          author: doc.author,
-        };
-      })
-    );
-    return data;
-  };
+  // useEffect(() => {
+  //   const hasReloaded = sessionStorage.getItem('hasReloaded');
+  //   if (!hasReloaded) {
+  //     sessionStorage.setItem('hasReloaded', 'true');
+  //     window.location.reload();
+  //   }
+  // }, []);
 
-  const { data: blogs = [], isLoading } = useQuery({
-    queryKey: ['blogs'],
-    queryFn: fetchBlogData,
-  });
+  useEffect(() => {
+    const fetchBlogData = async () => {
+      try {
+        const querySnapshot = await db.blogs.list();
+        const data = await Promise.all(
+          querySnapshot.documents.map(async (doc) => {
+            const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+            return {
+              id: doc.$id,
+              title: doc.title,
+              date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
+              content: doc.content,
+              img: imageUrl.href,
+              category: doc.tags,
+              author: doc.author,
+            };
+          })
+        );
+        setBlogs(data);
+      } catch (error) {
+        console.error('Error fetching blog data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchBlogData();
+  }, []);
 
   // Get current blogs
   const indexOfLastBlog = currentPage * blogsPerPage;
   const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfFirstBlog + blogsPerPage);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -63,7 +77,7 @@ const BlogSimplePage = () => {
           <Row className="justify-center">
             <Col xl={12} lg={12} sm={10} className="lg:px-0">
               {isLoading ? (
-                <div>Loading...</div>
+                <div></div>
               ) : (
                 <BlogSimple 
                   link="/blogdetail/" 
