@@ -14,7 +14,7 @@ const BlogMasonry = (props) => {
       const grid = module.initializeIsotop(blogWrapper.current);
       grid.on("arrangeComplete", () => setLoading(false));
     });
-  }, []);  
+  }, []);
 
   const handleFilterChange = () => {
     blogWrapper.current
@@ -23,7 +23,7 @@ const BlogMasonry = (props) => {
   };
 
   const getSnippet = (content, wordCount) => {
-    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); 
+    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, "");
     return plainTextContent.split(" ").slice(0, wordCount).join(" ") + "...";
   };
 
@@ -73,7 +73,10 @@ const BlogMasonry = (props) => {
               <div className="overflow-hidden relative">
                 {item.img && (
                   <Link aria-label="link" to={`${props.link}${item.id}`}>
-                    <img height="246" width="340" src={item.img} alt="blog post images" />
+                    <div className="h-[340px] w-[340px] overflow-hidden">
+                      <img className="object-cover h-full w-full" src={item.img} alt="blog post images" />
+                    </div>
+
                   </Link>
                 )}
                 {item.category && item.category[0] && (
@@ -86,17 +89,17 @@ const BlogMasonry = (props) => {
               </div>
               <div className="px-[3rem] py-[2.5rem]">
                 {item.title && (
-                 <Link
-                 aria-label="link"
-                 to={`${props.link}${item.id}`}
-                 className="mb-[15px] font-medium text-[#1C1C1C] text-xmd font-serif block"
-                 style={{ color: '#1C1C1C' }}
-                 onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
-                 onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}
-               >
-                 {item.title}
-               </Link>
-               
+                  <Link
+                    aria-label="link"
+                    to={`${props.link}${item.id}`}
+                    className="mb-[15px] font-medium text-[#1C1C1C] text-xmd font-serif block"
+                    style={{ color: '#1C1C1C' }}
+                    onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
+                    onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}
+                  >
+                    {item.title}
+                  </Link>
+
                 )}
                 {item.content && (
                   <p className="mb-[5px]">

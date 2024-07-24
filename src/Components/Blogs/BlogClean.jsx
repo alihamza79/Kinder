@@ -44,8 +44,12 @@ const BlogClean = (props) => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut" }} >
                 <div className="blog-post-img relative overflow-hidden" style={style}>
+                  
                   <Link aria-label="link" to={`${props.link}${item.id}`} className="">
-                    <img className="w-full" height={280} width={350} src={item.img} alt="blog-clean" />
+                  <div className="h-[340px] w-[350px] overflow-hidden">
+
+                    <img className="object-cover h-full w-full" height={280} width={350} src={item.img} alt="blog-clean" />
+                  </div>
                     <div className="blog-rounded-icon bg-white">
                       <i className="feather-arrow-right text-darkgray text-lg"></i>
                     </div>
