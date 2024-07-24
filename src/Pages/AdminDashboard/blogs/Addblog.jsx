@@ -89,12 +89,12 @@ const AddBlog = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/blogview">Blog</Link>
+                                        <Link to="/blogview">News</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <FeatherIcon icon="chevron-right" />
                                     </li>
-                                    <li className="breadcrumb-item active">Add Blogs</li>
+                                    <li className="breadcrumb-item active">Add News</li>
                                 </ul>
                             </div>
                         </div>
@@ -107,12 +107,12 @@ const AddBlog = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Blog Details</h4>
+                                                    <h4>News Details</h4>
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
-                                                    <label>Blog Title <span className="login-danger">*</span></label>
+                                                    <label>News Title <span className="login-danger">*</span></label>
                                                     <input
                                                         className="form-control"
                                                         type="text"
@@ -161,7 +161,7 @@ const AddBlog = () => {
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-top-form">
-                                                    <ImageUpload id="image" src={imageUrl} loadFile={handleImageLoad} imageName="Avatar" />
+                                                    <ImageUpload id="image" src={imageUrl} loadFile={handleImageLoad} imageName="Image" />
                                                     {imageError && <div className="text-danger">{imageError}</div>}
                                                 </div>
                                             </div>

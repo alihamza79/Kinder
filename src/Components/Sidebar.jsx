@@ -243,17 +243,17 @@ const Sidebar = (props) => {
                     <span className="menu-side">
                       <img src={blog} alt="" />
                     </span>{" "}
-                    <span> Blog</span> <span className="menu-arrow" />
+                    <span> News</span> <span className="menu-arrow" />
                   </Link>
                   <ul style={{ display: "none" }} className="menu-items11">
                     
                     <li>
                       <Link className={props?.activeClassName === 'blog-details' ? 'active' : ''} to="/blogview">
-                        Blog View
+                        News View
                       </Link>
                     </li>
                     <li>
-                      <Link className={props?.activeClassName === 'add-blog' ? 'active' : ''} to="/blogview/addblog">Add Blog</Link>
+                      <Link className={props?.activeClassName === 'add-blog' ? 'active' : ''} to="/blogview/addblog">Add News</Link>
                     </li>
                     
                   </ul>

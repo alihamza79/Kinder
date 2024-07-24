@@ -251,7 +251,7 @@ const HomeStartupPage = (props) => {
 
   return (
     <div style={props.style}>
-      <HeaderSection {...props} />
+      <HeaderSection {...props} logoInvisible={true} />
       <StartupPageBannerSlider />
 
       <div className="mb-[105px] md:mb-[70px] sm:mb-[50px] m-10">

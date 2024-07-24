@@ -147,7 +147,7 @@ const EditTeamMember = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="#">Landing Page </Link>
+                                        <Link to="#">Team </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

@@ -59,7 +59,7 @@ const EditServiceHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="#">Landing Page </Link>
+                                        <Link to="#">Services </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

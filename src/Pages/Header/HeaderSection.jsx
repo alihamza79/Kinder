@@ -38,7 +38,7 @@ const SocialIconsData = [
 ];
 
 const HeaderSection = (props) => {
-  const { theme } = props;
+  const { theme, logoInvisible = false } = props;
   const [scrollUp, setScrollUp] = useState(false);
 
   useEffect(() => {
@@ -62,9 +62,26 @@ const HeaderSection = (props) => {
         expand="lg"
         className={`py-[0px] px-[35px] md:px-[15px] md:py-[20px] sm:px-0 ${theme === 'dark' ? 'navbar-dark' : 'navbar-light'}`}
       >
-        <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" style={{marginRight:"30px"}}>
+        <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" style={{ marginRight: "30px" }}>
           <Link aria-label="header logo" className="flex items-center" to="/" >
-           
+            {!logoInvisible ? (
+              <>
+                <img
+                  className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                  src="/assets/img/webp/logo1.png"
+                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                  alt="logo"
+                />
+                <img
+                  className="default-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
+                  style={{ maxWidth: '400px' }}
+                  src="/assets/img/webp/logo2.png"
+                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                  alt="logo"
+                />
+              </>
+            ) : null}
+
             <img
               className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
               src="/assets/img/webp/logo1.png"
@@ -74,11 +91,11 @@ const HeaderSection = (props) => {
             />
             <img
               className="alt-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
-             
+
               src="/assets/img/webp/logo2.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
               alt="logo"
-              style={{ display: scrollUp ? 'block' : 'none',maxWidth: '400px' }}
+              style={{ display: scrollUp ? 'block' : 'none', maxWidth: '400px' }}
             />
           </Link>
         </Col>
@@ -99,7 +116,7 @@ const HeaderSection = (props) => {
                 <div>
                   <h1 className="mb-0 font-bold tracking-[-3px] text-darkgray font-serif uppercase">Hello</h1>
                   <p className="text-lg text-[#27ae60] font-serif uppercase block">Let's be friends.</p>
-                 
+
                   <p className="w-[70%] mb-12 text-darkgray leading-[26px] text-lg font-serif mx-auto inline-block">
                     Get latest update for our trusted applications
                   </p>
