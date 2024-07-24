@@ -94,7 +94,7 @@ const StartupPageBannerSlider = () => {
                         alt="logo"
                       />
                         <img
-                          className="default-logo w-[400px] h-[285px] md:w-[160px] md:h-[110px] sm:w-[220px] sm:h-[130px]"
+                          className="default-logo w-[400px] h-[175px] md:w-[160px] md:h-[110px] sm:w-[220px] sm:h-[130px]"
                           style={{ maxWidth: '400px' }}
                           src="/assets/img/webp/logo2.png"
                           data-rjs="/assets/img/webp/logo-cropped@2x.png"

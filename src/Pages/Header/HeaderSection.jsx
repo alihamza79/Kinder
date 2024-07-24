@@ -73,7 +73,7 @@ const HeaderSection = (props) => {
                   alt="logo"
                 />
                 <img
-                  className="default-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
+                  className="default-logo w-[270px] h-[70px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
                   style={{ maxWidth: '400px' }}
                   src="/assets/img/webp/logo2.png"
                   data-rjs="/assets/img/webp/logo-cropped@2x.png"
@@ -90,7 +90,7 @@ const HeaderSection = (props) => {
               style={{ display: scrollUp ? 'block' : 'none' }}
             />
             <img
-              className="alt-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
+              className="alt-logo w-[210px] h-[63px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
 
               src="/assets/img/webp/logo2.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"

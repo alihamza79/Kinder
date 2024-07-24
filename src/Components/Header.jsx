@@ -67,7 +67,7 @@ const Header = () => {
                 <>
                   <img
                     width={190}
-                    height={105}
+                    height={63}
                     src="/assets/img/webp/logo2.png"
                     data-rjs="/assets/img/webp/logo-cropped@2x.png"
                     alt="logo"

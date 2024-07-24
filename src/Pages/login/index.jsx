@@ -83,6 +83,7 @@ const Login = () => {
                       <Link to="/">
                         <div className="flex items-center">
                           <img
+                          
                             width={80}
                             height={80}
                             src="/assets/img/webp/logo1.png"
@@ -91,7 +92,7 @@ const Login = () => {
                           />
                           <img
                             width={230}
-                            height={120}
+                            height={70}
                             src="/assets/img/webp/logo2.png"
                             data-rjs="/assets/img/webp/logo-cropped@2x.png"
                             alt="logo"
