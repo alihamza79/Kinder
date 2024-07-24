@@ -28,7 +28,7 @@ const BlogMasonry = (props) => {
   };
 
   return (
-    <div className="grid-wrapper">
+    <div className="grid-wrapper h-screen">
       {/* Filter Start */}
       <Filter title={props.title} filterData={props.filterData} onFilterChange={handleFilterChange} />
       {/* Filter End */}
@@ -45,7 +45,7 @@ const BlogMasonry = (props) => {
             className={`grid-item${item.double_col ? " grid-item-double" : ""} ${item.category.toString().split(",").join(" ").toLowerCase()}`}
           >
             <m.div
-              className="blog-masonry bg-white relative overflow-hidden rounded-[5px]"
+              className="blog-masonry bg-white relative overflow-hidden rounded-[5px] h-[600px]" // Fixed height class added
               initial={{ opacity: 0 }}
               whileInView={!loading && { opacity: 1 }}
               viewport={{ once: true }}
@@ -76,7 +76,6 @@ const BlogMasonry = (props) => {
                     <div className="h-[340px] w-[340px] overflow-hidden">
                       <img className="object-cover h-full w-full" src={item.img} alt="blog post images" />
                     </div>
-
                   </Link>
                 )}
                 {item.category && item.category[0] && (
@@ -87,7 +86,7 @@ const BlogMasonry = (props) => {
                   </div>
                 )}
               </div>
-              <div className="px-[3rem] py-[2.5rem]">
+              <div className="px-[3rem] py-[2.5rem] overflow-hidden">
                 {item.title && (
                   <Link
                     aria-label="link"
@@ -99,7 +98,6 @@ const BlogMasonry = (props) => {
                   >
                     {item.title}
                   </Link>
-
                 )}
                 {item.content && (
                   <p className="mb-[5px]">
