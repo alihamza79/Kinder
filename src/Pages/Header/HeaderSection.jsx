@@ -109,7 +109,7 @@ const HeaderSection = (props) => {
           <Menu {...props} />
         </Navbar.Collapse>
         <Col lg={2} xs={"auto"} className="justify-end pe-0 flex items-center">
-          <SearchBar />
+          
           <div className="md:hidden pl-[17px]">
             <HamburgerMenu className="" theme={theme}>
               <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_2x0px_rgba(0,0,0,0.3)] right-0 text-center bg-white">
