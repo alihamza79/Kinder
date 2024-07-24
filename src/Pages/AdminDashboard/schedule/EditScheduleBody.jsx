@@ -83,7 +83,7 @@ const EditScheduleBody = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/schedulebody">Schedule </Link>
+                                        <Link to="/schedulebody">Business Details </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -91,14 +91,14 @@ const EditScheduleBody = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/schedulebody">Schedule</Link>
+                                        <Link to="/schedulebody">Business Details</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Edit Schedule</li>
+                                    <li className="breadcrumb-item active">Edit Business Details</li>
                                 </ul>
                             </div>
                         </div>
@@ -111,7 +111,7 @@ const EditScheduleBody = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Edit Schedule</h4>
+                                                    <h4>Edit Business Details</h4>
                                                 </div>
                                             </div>
                                             {/* Title */}

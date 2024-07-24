@@ -142,7 +142,7 @@ const Sidebar = (props) => {
                     <span className="menu-side">
                       <img src={doctorschedule} alt="" />
                     </span>{" "}
-                    <span>Schedule</span> 
+                    <span>Business details</span> 
                   </Link>
                 </li>
                 

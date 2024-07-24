@@ -68,7 +68,7 @@ const EditScheduleHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/scheduleheader">Schedule </Link>
+                                        <Link to="/scheduleheader">Business Details </Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -76,14 +76,14 @@ const EditScheduleHeader = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/scheduleheader">Schedule Header</Link>
+                                        <Link to="/scheduleheader">Business Details Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
                                             <FeatherIcon icon="chevron-right" />
                                         </i>
                                     </li>
-                                    <li className="breadcrumb-item active">Edit Schedule Header</li>
+                                    <li className="breadcrumb-item active">Edit Business Details Header</li>
                                 </ul>
                             </div>
                         </div>

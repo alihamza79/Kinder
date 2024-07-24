@@ -108,12 +108,12 @@ const ScheduleHeaderList = () => {
               <ul className="nav nav-tabs menu-tabs">
                 <li className="nav-item active">
                   <Link className="nav-link" to="/scheduleheader">
-                    Schedule Header
+                  Business Details Header
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="/schedulebody">
-                    Schedule Body
+                  Business Details Body
                   </Link>
                 </li>
               </ul>
@@ -123,14 +123,14 @@ const ScheduleHeaderList = () => {
                 <div className="col-sm-12">
                   <ul className="breadcrumb">
                     <li className="breadcrumb-item">
-                      <Link to="#">Schedule </Link>
+                      <Link to="#">Business Details </Link>
                     </li>
                     <li className="breadcrumb-item">
                       <i className="feather-chevron-right">
                         <FeatherIcon icon="chevron-right" />
                       </i>
                     </li>
-                    <li className="breadcrumb-item active">Schedule Header</li>
+                    <li className="breadcrumb-item active">Business Details Header</li>
                   </ul>
                 </div>
               </div>
@@ -143,7 +143,7 @@ const ScheduleHeaderList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>Schedule Headers</h3>
+                            <h3>Business Details Headers</h3>
                           </div>
                         </div>
                       </div>

@@ -137,7 +137,7 @@ const ScheduleBodyList = () => {
               </li>
               <li className="nav-item active">
                 <Link className="nav-link" to="/schedulebody">
-                  Schedule Body
+                Business Details Body
                 </Link>
               </li>
             </ul>
@@ -147,14 +147,14 @@ const ScheduleBodyList = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="#">Schedule</Link>
+                    <Link to="#">Business Details</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">
                       <FeatherIcon icon="chevron-right" />
                     </i>
                   </li>
-                  <li className="breadcrumb-item active">Schedule Body</li>
+                  <li className="breadcrumb-item active">Business Details Body</li>
                 </ul>
               </div>
             </div>
@@ -167,7 +167,7 @@ const ScheduleBodyList = () => {
                     <div className="row align-items-center">
                       <div className="col">
                         <div className="doctor-table-blk">
-                          <h3>Schedule</h3>
+                          <h3>Business Details</h3>
                           
                         </div>
                       </div>
