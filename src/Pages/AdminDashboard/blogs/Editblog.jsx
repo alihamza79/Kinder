@@ -176,13 +176,13 @@ const EditBlog = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/blogview">Blog</Link>
+                                        <Link to="/blogview">News</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <FeatherIcon icon="chevron-right" />
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        Edit Blog
+                                        Edit News
                                     </li>
                                 </ul>
                             </div>
@@ -196,12 +196,12 @@ const EditBlog = () => {
                                         <div className="row">
                                             <div className="col-12">
                                                 <div className="form-heading">
-                                                    <h4>Edit Blog</h4>
+                                                    <h4>Edit News</h4>
                                                 </div>
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
-                                                    <label>Blog Title <span className="login-danger">*</span></label>
+                                                    <label>News Title <span className="login-danger">*</span></label>
                                                     <input
                                                         className="form-control"
                                                         type="text"

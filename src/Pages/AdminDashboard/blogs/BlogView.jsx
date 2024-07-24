@@ -171,12 +171,12 @@ const BlogView = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="#">Blog</Link>
+                    <Link to="#">News</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <FeatherIcon icon="chevron-right" />
                   </li>
-                  <li className="breadcrumb-item active">Blogs</li>
+                  <li className="breadcrumb-item active">News</li>
                 </ul>
               </div>
             </div>
@@ -189,7 +189,7 @@ const BlogView = () => {
                     <div className="row align-items-center">
                       <div className="col">
                         <div className="doctor-table-blk">
-                          <h3>Blogs</h3>
+                          <h3>News</h3>
                           <div className="doctor-search-blk">
                             <div className="add-group">
                               <Link
@@ -248,7 +248,7 @@ const BlogView = () => {
           <div className="modal-dialog modal-dialog-centered">
             <div className="modal-content">
               <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this blog?</h3>
+                <h3>Are you sure you want to delete this News?</h3>
                 <div className="m-t-20">
                   <Button
                     onClick={hideDeleteModal}

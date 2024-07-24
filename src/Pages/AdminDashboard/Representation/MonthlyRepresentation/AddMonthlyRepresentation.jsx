@@ -93,7 +93,7 @@ const AddMonthlyRepresentation = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/monthlyrepresentation">Landing Page</Link>
+                                        <Link to="/monthlyrepresentation">Representation</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
@@ -101,7 +101,7 @@ const AddMonthlyRepresentation = () => {
                                         </i>
                                     </li>
                                     <li className="breadcrumb-item active">
-                                        <Link to="/landingpage/monthlyrepresentation">Monthly Representation</Link>
+                                        <Link to="/monthlyrepresentation">Monthly Representation</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">

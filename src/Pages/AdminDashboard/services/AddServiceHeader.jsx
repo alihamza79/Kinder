@@ -49,7 +49,7 @@ const AddServiceHeader = () => {
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
                                     <li className="breadcrumb-item">
-                                        <Link to="/landingpage/serviceheader">Service Header</Link>
+                                        <Link to="/serviceheader">Service Header</Link>
                                     </li>
                                     <li className="breadcrumb-item">
                                         <i className="feather-chevron-right">
