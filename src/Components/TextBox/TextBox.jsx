@@ -17,9 +17,8 @@ const TextBox = (props) => {
         {props.data.map((item, i) => {
           return (
             <Col
-              className={`feature-box ${
-                props.className ? ` ${props.className} ` : ""
-              }`}
+              className={`feature-box ${props.className ? ` ${props.className} ` : ""
+                }`}
               key={i}
             >
               <m.div
@@ -36,7 +35,11 @@ const TextBox = (props) => {
                   </>
                 ) : (
                   <>
-                    <span>{item.title}</span>
+
+                    <div className="text-black font-medium text-xlg tracking-wide">
+                      {item.title}
+                    </div>
+
 
                     <div className="feature-box-number">
                       <span></span>
