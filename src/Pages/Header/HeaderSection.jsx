@@ -73,7 +73,7 @@ const HeaderSection = (props) => {
                   alt="logo"
                 />
                 <img
-                  className="default-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
+                  className="default-logo w-[270px] h-[70px] md:w-[160px] md:h-[110px] sm:w-[180px] sm:h-[100px]"
                   style={{ maxWidth: '400px' }}
                   src="/assets/img/webp/logo2.png"
                   data-rjs="/assets/img/webp/logo-cropped@2x.png"
@@ -90,7 +90,7 @@ const HeaderSection = (props) => {
               style={{ display: scrollUp ? 'block' : 'none' }}
             />
             <img
-              className="alt-logo w-[300px] h-[140px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
+              className="alt-logo w-[210px] h-[63px] md:w-[160px] md:h-[110px] sm:w-[70px] sm:h-[95px]"
 
               src="/assets/img/webp/logo2.png"
               data-rjs="/assets/img/webp/logo-cropped@2x.png"
@@ -109,7 +109,7 @@ const HeaderSection = (props) => {
           <Menu {...props} />
         </Navbar.Collapse>
         <Col lg={2} xs={"auto"} className="justify-end pe-0 flex items-center">
-          <SearchBar />
+          
           <div className="md:hidden pl-[17px]">
             <HamburgerMenu className="" theme={theme}>
               <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_2x0px_rgba(0,0,0,0.3)] right-0 text-center bg-white">

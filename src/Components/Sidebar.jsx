@@ -131,8 +131,159 @@ const Sidebar = (props) => {
                     </li>
                   </ul>
                 </li>
+                 {/* Schedule  */}
 
-{/* Representation */}
+                <li className="submenu">
+                  <Link
+                    to="/scheduleheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={doctorschedule} alt="" />
+                    </span>{" "}
+                    <span>Business details</span> 
+                  </Link>
+                </li>
+                
+
+
+                
+                {/* About Us */}
+
+                <li className="submenu">
+                  <Link
+                    to="/aboutlist"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={menuicon15} alt="" />
+                    </span>{" "}
+                    <span>About Us</span> 
+                  </Link>
+                </li>
+               {/* Services */}
+
+              <li className="submenu">
+                  <Link
+                    to="/serviceheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={menuicon16} alt="" />
+                    </span>{" "}
+                    <span>Services</span> 
+                  </Link>
+                </li>
+                 {/* Team */}
+
+              <li className="submenu">
+                  <Link
+                    to="/teamheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={patients} alt="" />
+                    </span>{" "}
+                    <span>Team</span> 
+                  </Link>
+                </li>
+
+                {/* Form  */}
+                <li className="submenu">
+                  <Link
+                    to="/formheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span>Form</span> 
+                  </Link>
+                </li>
+
+                {/* Hospital Kontakte */}
+
+              <li className="submenu">
+                  <Link
+                    to="/hospitalkontakteheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={doctor} alt="" />
+                    </span>{" "}
+                    <span>Hospital Kontakte</span> 
+                  </Link>
+                </li>
+
+                 {/* Links */}
+              
+               <li className="submenu">
+                  <Link
+                    to="/linkheader"
+                    id="menu-item4"
+                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
+                  >
+                    <span className="menu-side">
+                      <img src={sidemenu} alt="" />
+                    </span>{" "}
+                    <span>Links</span> 
+                  </Link>
+                </li>
+
+                {/* Gallery  */}
+
+                <li className="submenu">
+                  <Link to="#" id="menu-item13" onClick={(e) => handleClick(e, "menu-item13", "menu-items13")}>
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span> Gallery</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="menu-items13">
+                    
+                    <li>
+                      <Link className={props?.activeClassName === 'galleryheader' ? 'active' : ''} to="/galleryheader">
+                        Gallery View
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className={props?.activeClassName === 'categories' ? 'active' : ''} to="/categories">Edit Categories</Link>
+                    </li>
+                    
+                  </ul>
+                </li>
+
+                {/* Blog */}
+
+              <li className="submenu">
+                  <Link to="#" id="menu-item11" onClick={(e) => handleClick(e, "menu-item11", "menu-items11")}>
+                    <span className="menu-side">
+                      <img src={blog} alt="" />
+                    </span>{" "}
+                    <span> News</span> <span className="menu-arrow" />
+                  </Link>
+                  <ul style={{ display: "none" }} className="menu-items11">
+                    
+                    <li>
+                      <Link className={props?.activeClassName === 'blog-details' ? 'active' : ''} to="/blogview">
+                        News View
+                      </Link>
+                    </li>
+                    <li>
+                      <Link className={props?.activeClassName === 'add-blog' ? 'active' : ''} to="/blogview/addblog">Add News</Link>
+                    </li>
+                    
+                  </ul>
+                </li>
+
+
+                {/* Representation */}
                 <li className="submenu">
                   <Link
                     to="#"
@@ -176,133 +327,20 @@ const Sidebar = (props) => {
                   </ul>
                 </li>
 
-                {/* About Us */}
+                
 
-                <li className="submenu">
-                  <Link
-                    to="/aboutlist"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={menuicon15} alt="" />
-                    </span>{" "}
-                    <span>About Us</span> 
-                  </Link>
-                </li>
+             
 
-                {/* Services */}
-
-              <li className="submenu">
-                  <Link
-                    to="/serviceheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={menuicon16} alt="" />
-                    </span>{" "}
-                    <span>Services</span> 
-                  </Link>
-                </li>
-
-              {/* Team */}
-
-              <li className="submenu">
-                  <Link
-                    to="/teamheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={patients} alt="" />
-                    </span>{" "}
-                    <span>Team</span> 
-                  </Link>
-                </li>
-
-               {/* Links */}
               
-               <li className="submenu">
-                  <Link
-                    to="/linkheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={sidemenu} alt="" />
-                    </span>{" "}
-                    <span>Links</span> 
-                  </Link>
-                </li>
               
-              {/* Blog */}
-
-              <li className="submenu">
-                  <Link to="#" id="menu-item11" onClick={(e) => handleClick(e, "menu-item11", "menu-items11")}>
-                    <span className="menu-side">
-                      <img src={blog} alt="" />
-                    </span>{" "}
-                    <span> News</span> <span className="menu-arrow" />
-                  </Link>
-                  <ul style={{ display: "none" }} className="menu-items11">
-                    
-                    <li>
-                      <Link className={props?.activeClassName === 'blog-details' ? 'active' : ''} to="/blogview">
-                        News View
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={props?.activeClassName === 'add-blog' ? 'active' : ''} to="/blogview/addblog">Add News</Link>
-                    </li>
-                    
-                  </ul>
-                </li>
+              
 
 
-              {/* Hospital Kontakte */}
+              
 
-              <li className="submenu">
-                  <Link
-                    to="/hospitalkontakteheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={doctor} alt="" />
-                    </span>{" "}
-                    <span>Hospital Kontakte</span> 
-                  </Link>
-                </li>
+                
 
-                {/* Form  */}
-                <li className="submenu">
-                  <Link
-                    to="/formheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={blog} alt="" />
-                    </span>{" "}
-                    <span>Form</span> 
-                  </Link>
-                </li>
-
-                {/* Schedule  */}
-
-                <li className="submenu">
-                  <Link
-                    to="/scheduleheader"
-                    id="menu-item4"
-                    onClick={(e) => handleClick(e, "menu-item4", "menu-items4")}
-                  >
-                    <span className="menu-side">
-                      <img src={doctorschedule} alt="" />
-                    </span>{" "}
-                    <span>Schedule</span> 
-                  </Link>
-                </li>
+                
 
 
                 {/* Important information  */}
@@ -364,29 +402,7 @@ const Sidebar = (props) => {
                 </li>
 
 
-                {/* Gallery  */}
-
-                <li className="submenu">
-                  <Link to="#" id="menu-item13" onClick={(e) => handleClick(e, "menu-item13", "menu-items13")}>
-                    <span className="menu-side">
-                      <img src={blog} alt="" />
-                    </span>{" "}
-                    <span> Gallery</span> <span className="menu-arrow" />
-                  </Link>
-                  <ul style={{ display: "none" }} className="menu-items13">
-                    
-                    <li>
-                      <Link className={props?.activeClassName === 'galleryheader' ? 'active' : ''} to="/galleryheader">
-                        Gallery View
-                      </Link>
-                    </li>
-                    <li>
-                      <Link className={props?.activeClassName === 'categories' ? 'active' : ''} to="/categories">Edit Categories</Link>
-                    </li>
-                    
-                  </ul>
-                </li>
-
+                
 
               </ul>
               <div className="logout-btn">

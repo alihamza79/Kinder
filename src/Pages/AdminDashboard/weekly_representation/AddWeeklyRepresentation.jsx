@@ -62,7 +62,7 @@ const AddWeeklyRepresentation = () => {
               <div className="col-sm-12">
                 <ul className="breadcrumb">
                   <li className="breadcrumb-item">
-                    <Link to="/landingpage/weeklyrepresentationbody">Weekly Representation</Link>
+                    <Link to="/weeklyrepresentationbody">Weekly Representation</Link>
                   </li>
                   <li className="breadcrumb-item">
                     <i className="feather-chevron-right">

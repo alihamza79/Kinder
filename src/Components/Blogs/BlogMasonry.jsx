@@ -14,7 +14,7 @@ const BlogMasonry = (props) => {
       const grid = module.initializeIsotop(blogWrapper.current);
       grid.on("arrangeComplete", () => setLoading(false));
     });
-  }, []);  
+  }, []);
 
   const handleFilterChange = () => {
     blogWrapper.current
@@ -23,12 +23,12 @@ const BlogMasonry = (props) => {
   };
 
   const getSnippet = (content, wordCount) => {
-    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, ""); 
+    const plainTextContent = content.replace(/<\/?[^>]+(>|$)/g, "");
     return plainTextContent.split(" ").slice(0, wordCount).join(" ") + "...";
   };
 
   return (
-    <div className="grid-wrapper">
+    <div className="grid-wrapper h-screen">
       {/* Filter Start */}
       <Filter title={props.title} filterData={props.filterData} onFilterChange={handleFilterChange} />
       {/* Filter End */}
@@ -45,7 +45,7 @@ const BlogMasonry = (props) => {
             className={`grid-item${item.double_col ? " grid-item-double" : ""} ${item.category.toString().split(",").join(" ").toLowerCase()}`}
           >
             <m.div
-              className="blog-masonry bg-white relative overflow-hidden rounded-[5px]"
+              className="blog-masonry bg-white relative overflow-hidden rounded-[5px] h-[600px]" // Fixed height class added
               initial={{ opacity: 0 }}
               whileInView={!loading && { opacity: 1 }}
               viewport={{ once: true }}
@@ -73,7 +73,9 @@ const BlogMasonry = (props) => {
               <div className="overflow-hidden relative">
                 {item.img && (
                   <Link aria-label="link" to={`${props.link}${item.id}`}>
-                    <img height="246" width="340" src={item.img} alt="blog post images" />
+                    <div className="h-[340px] w-[340px] overflow-hidden">
+                      <img className="object-cover h-full w-full" src={item.img} alt="blog post images" />
+                    </div>
                   </Link>
                 )}
                 {item.category && item.category[0] && (
@@ -84,19 +86,18 @@ const BlogMasonry = (props) => {
                   </div>
                 )}
               </div>
-              <div className="px-[3rem] py-[2.5rem]">
+              <div className="px-[3rem] py-[2.5rem] overflow-hidden">
                 {item.title && (
-                 <Link
-                 aria-label="link"
-                 to={`${props.link}${item.id}`}
-                 className="mb-[15px] font-medium text-[#1C1C1C] text-xmd font-serif block"
-                 style={{ color: '#1C1C1C' }}
-                 onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
-                 onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}
-               >
-                 {item.title}
-               </Link>
-               
+                  <Link
+                    aria-label="link"
+                    to={`${props.link}${item.id}`}
+                    className="mb-[15px] font-medium text-[#1C1C1C] text-xmd font-serif block"
+                    style={{ color: '#1C1C1C' }}
+                    onMouseOver={(e) => e.currentTarget.style.color = '#028985'}
+                    onMouseOut={(e) => e.currentTarget.style.color = '#1C1C1C'}
+                  >
+                    {item.title}
+                  </Link>
                 )}
                 {item.content && (
                   <p className="mb-[5px]">
