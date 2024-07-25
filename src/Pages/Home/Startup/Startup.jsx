@@ -73,6 +73,11 @@ const fetchInformationCards = async () => {
         title: fetchedData[2]?.Title || "OPENING HOURS",
         content: fetchedData[2]?.Description || "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
       },
+      {
+        img: contact_info,
+        title: fetchedData[3]?.Title || "Contact Information",
+        content: fetchedData[3]?.Description || "Email an: praxis@kjk-wn.de \nTelefonnummer: 07151 - 21080.",
+      },
     ];
   }
 
@@ -92,6 +97,11 @@ const fetchInformationCards = async () => {
       title: "OPENING HOURS",
       content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
     },
+    {
+      img: contact_info,
+      title: "Contact Information",
+      content:"Email an: praxis@kjk-wn.de \nTelefonnummer: 07151 - 21080.",
+    }
   ];
 };
 
@@ -278,7 +288,7 @@ const HomeStartupPage = (props) => {
           <Row className="justify-center">
             <Col xs={12} sm={9} lg={12} md={12}>
               <HeroIconWithText
-                grid="row-cols-1 row-cols-lg-3 row-cols-md-2 justify-center gap-y-10 z-10 relative"
+                grid="row-cols-1 row-cols-lg-4 row-cols-md-2 justify-center gap-y-10 z-10 relative"
                 className="rounded-[4px] flex"
                 theme="icon-with-text-11"
                 data={informationCards}

@@ -43,6 +43,7 @@ const InformationCardList = () => {
           { Title: "Dummy Title 1", Description: "<p>Dummy Description 1</p>" },
           { Title: "Dummy Title 2", Description: "<p>Dummy Description 2</p>" },
           { Title: "Dummy Title 3", Description: "<p>Dummy Description 3</p>" },
+          { Title: "Dummy Title 4", Description: "<p>Dummy Description 4</p>" },
         ];
 
         for (const dummy of dummyData) {
