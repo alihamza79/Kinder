@@ -86,10 +86,6 @@ const RepresentationDatesList = () => {
       setDeleting(false);
     }
   };
-  
-  
-  
-  
 
   const showDeleteModal = (id) => {
     setSelectedRecordId(id);
@@ -108,24 +104,24 @@ const RepresentationDatesList = () => {
       render: (text, record, index) => index + 1,
     },
     {
-        title: "Date",
-        dataIndex: "date",
-        key: "date",
-        render: (text, record) => {
-            const { fromDate, toDate } = record;
-            if (fromDate === toDate) {
-                return new Date(fromDate).toLocaleDateString();
-            } else {
-                return `${new Date(fromDate).toLocaleDateString()} - ${new Date(toDate).toLocaleDateString()}`;
-            }
-        },
+      title: "Date",
+      dataIndex: "date",
+      key: "date",
+      render: (text, record) => {
+        const { fromDate, toDate } = record;
+        const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+        if (fromDate === toDate) {
+          return new Date(fromDate).toLocaleDateString('de-DE', options);
+        } else {
+          return `${new Date(fromDate).toLocaleDateString('de-DE', options)} - ${new Date(toDate).toLocaleDateString('de-DE', options)}`;
+        }
+      },
     },
     {
       title: 'Representatives View',
       dataIndex: 'view',
       render: (text, record) => (
-        <Link          to={`/representationdates/${record.id}/representatives`}
-        >
+        <Link to={`/representationdates/${record.id}/representatives`}>
           <span className="custom-badge status-green">
             View Representatives
           </span>
@@ -133,42 +129,40 @@ const RepresentationDatesList = () => {
       ),
     },
     {
-        title: "",
-        dataIndex: "actions",
-        render: (text, record) => (
-            <div className="text-end">
-                <div className="dropdown dropdown-action">
-                    <Link
-                        to="#"
-                        className="action-icon dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                    >
-                        <i className="fas fa-ellipsis-v" />
-                    </Link>
-                    <div className="dropdown-menu dropdown-menu-end">
-                        
-                        <Link
-                            className="dropdown-item"
-                            to={`/representationdates/editrepresentationdate/${record.id}`}
-                        >
-                            <i className="far fa-edit me-2" />
-                            Edit
-                        </Link>
-                        <Link
-                            className="dropdown-item"
-                            to="#"
-                            onClick={() => showDeleteModal(record.id)}
-                        >
-                            <i className="fa fa-trash-alt m-r-5"></i> Delete
-                        </Link>
-                    </div>
-                </div>
+      title: "",
+      dataIndex: "actions",
+      render: (text, record) => (
+        <div className="text-end">
+          <div className="dropdown dropdown-action">
+            <Link
+              to="#"
+              className="action-icon dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i className="fas fa-ellipsis-v" />
+            </Link>
+            <div className="dropdown-menu dropdown-menu-end">
+              <Link
+                className="dropdown-item"
+                to={`/representationdates/editrepresentationdate/${record.id}`}
+              >
+                <i className="far fa-edit me-2" />
+                Edit
+              </Link>
+              <Link
+                className="dropdown-item"
+                to="#"
+                onClick={() => showDeleteModal(record.id)}
+              >
+                <i className="fa fa-trash-alt m-r-5"></i> Delete
+              </Link>
             </div>
-        ),
+          </div>
+        </div>
+      ),
     },
   ];
-
 
   const handleRefresh = () => {
     fetchData(); // Refresh data from Appwrite

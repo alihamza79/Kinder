@@ -41,18 +41,22 @@ const RepresentativeList = () => {
       // Fetch the representation date document
       const representationDateDoc = await db.representationDates.get(id);
       const representativeIds = representationDateDoc.representativesCollection;
-
+  
+      const formatDate = (date) => {
+        const d = new Date(date);
+        return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
+      };
+  
       setRepresentationDate(
         representationDateDoc.fromDate === representationDateDoc.toDate
-          ? new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')
-          : `${new Date(representationDateDoc.fromDate).toLocaleDateString().replace(/\//g, '.')}`
-          + ` - ${new Date(representationDateDoc.toDate).toLocaleDateString().replace(/\//g, '.')}`
+          ? formatDate(representationDateDoc.fromDate)
+          : `${formatDate(representationDateDoc.fromDate)} - ${formatDate(representationDateDoc.toDate)}`
       );
-
+  
       // Fetch the representative documents
       const representativePromises = representativeIds.map((repId) => db.representatives.get(repId));
       const representatives = await Promise.all(representativePromises);
-
+  
       const data = representatives.map((rep) => ({
         id: rep.$id,
         hospital: rep.hospital,
@@ -60,7 +64,7 @@ const RepresentativeList = () => {
         telephoneNumber: rep.telephoneNumber,
         doctors: rep.doctors,
       }));
-
+  
       setDataSource(data);
       setLoading(false);
     } catch (error) {
@@ -68,6 +72,7 @@ const RepresentativeList = () => {
       setLoading(false);
     }
   };
+  
 
   const handleDelete = async () => {
     try {

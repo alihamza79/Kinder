@@ -65,7 +65,7 @@ const StartupPageBannerSlider = () => {
           slidesPerView={1}
           spaceBetween={0}
           loop={true}
-          navigation={true}
+          navigation={false}
           pagination={true}
           autoplay={{ delay: 5000, disableOnInteraction: false }}
           fadeEffect={{ crossFade: true }}

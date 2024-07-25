@@ -4,28 +4,28 @@ import { m } from 'framer-motion';
 import PropTypes from "prop-types";
 import { Link } from 'react-router-dom';
 import Buttons from '../Button/Buttons';
+import htmlTruncate from 'html-truncate';
 import "../../Assets/scss/components/_iconwithtext.scss";
 import './style.css';
 
 const HeroIconWithText = (props) => {
+  const [hoverIndex, setHoverIndex] = useState(null);
+
   return (
     <Row className={`${props.grid} md:justify-center`}>
       {props.data.map((item, i) => {
-        const charCount = item.content.length;
-        const isTruncated = charCount > 200;
-        const truncatedContent = isTruncated ? item.content.slice(0, 200) + "... Read More" : item.content;
-
-        const [isHovered, setIsHovered] = useState(false);
+        const isHovered = hoverIndex === i;
+        const truncatedContent = htmlTruncate(item.content, 200) + (item.content.length > 200 ? "<strong>... Read More</strong>" : "");
 
         return (
           <m.div
             key={i}
-            className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}  ` : ""}`}
+            className={`col${props.theme ? ` ${props.theme}` : ""}${props.className ? ` ${props.className}  px-2` : ""}`}
             {...{ ...props.animation, transition: { delay: i * props.animationDelay, ease: props.animationTransition, duration: props.animationDuration } }}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseEnter={() => setHoverIndex(i)}
+            onMouseLeave={() => setHoverIndex(null)}
           >
-            <div className="rounded-md w-full"
+            <div className="rounded-md w-full "
               style={{
                 transition: 'background-color 0.3s',
               }}
@@ -48,7 +48,7 @@ const HeroIconWithText = (props) => {
               </div>
               <div className='feature-box-content'>
                 {item.content && (
-                  <div dangerouslySetInnerHTML={{ __html: (isHovered || i === 2) ? item.content : truncatedContent }} />
+                  <div dangerouslySetInnerHTML={{ __html: (isHovered || i === 2|| i === 3) ? item.content : truncatedContent }} />
                 )}
               </div>
               {(item.linkTitle || item.link) && <Buttons ariaLabel="iconwithtext" className="font-medium font-serif uppercase btn-link after:h-[1px] md:text-md md:mb-[15px] after:bg-basecolor hover:text-basecolor" to={item.link} title={item.linkTitle} />}
