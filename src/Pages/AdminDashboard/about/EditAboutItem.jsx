@@ -21,6 +21,8 @@ const EditAboutItem = () => {
         newImageFile: null, // State to handle new image file
         newImageId: "", // State to handle new image ID
         newImageURL: "", // State to handle new image URL
+        imageTitle: "", // State to handle image title
+        imageSubtitle: "", // State to handle image subtitle
     });
     const editorRef = useRef(null);
 
@@ -52,6 +54,8 @@ const EditAboutItem = () => {
                         imageId: documentSnapshot.image,
                         newImageId: documentSnapshot.image,
                         newImageURL: imageUrl,
+                        imageTitle: documentSnapshot.imageTitle, // Fetch image title
+                        imageSubtitle: documentSnapshot.imageSubtitle, // Fetch image subtitle
                     });
                     editorRef.current.setEditorContent(documentSnapshot.description);
                 } else {
@@ -87,7 +91,7 @@ const EditAboutItem = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.title || !formData.description || !formData.newImageURL) {
+        if (!formData.title || !formData.description || !formData.newImageURL || !formData.imageTitle || !formData.imageSubtitle) {
             toast.error("All fields are required, including the image.");
             return;
         }
@@ -123,6 +127,8 @@ const EditAboutItem = () => {
                 title: formData.title,
                 description: formData.description,
                 image: newImageId,
+                imageTitle: formData.imageTitle,
+                imageSubtitle: formData.imageSubtitle,
             });
 
             sessionStorage.setItem('updateAboutItemSuccess', 'true'); // Set update flag
@@ -193,6 +199,7 @@ const EditAboutItem = () => {
                                                     />
                                                 </div>
                                             </div>
+                                         
                                             {/* Description */}
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-forms">
@@ -205,6 +212,36 @@ const EditAboutItem = () => {
                                                     />
                                                 </div>
                                             </div>
+
+   {/* Image Title */}
+   <div className="col-12 col-md-6 col-xl-6">
+                                                <div className="form-group local-forms">
+                                                    <label>Image Title <span className="login-danger">*</span></label>
+                                                    <input
+                                                        className="form-control"
+                                                        type="text"
+                                                        name="imageTitle"
+                                                        value={formData.imageTitle}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                            {/* Image Subtitle */}
+                                            <div className="col-12 col-md-6 col-xl-6">
+                                                <div className="form-group local-forms">
+                                                    <label>Image Subtitle <span className="login-danger">*</span></label>
+                                                    <input
+                                                        className="form-control"
+                                                        type="text"
+                                                        name="imageSubtitle"
+                                                        value={formData.imageSubtitle}
+                                                        onChange={handleChange}
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+
                                             {/* Image Upload Component */}
                                             <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
                                             {/* Submit/Cancel Button */}

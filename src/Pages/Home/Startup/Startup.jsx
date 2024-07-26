@@ -4,7 +4,7 @@ import { Link as ScrollTo } from "react-scroll";
 import { Parallax } from "react-scroll-parallax";
 import Accordions from "../../../Components/Accordion/Accordion";
 import { m } from "framer-motion";
-import { fadeIn } from "../../../Functions/GlobalAnimations";
+import { fadeIn,fadeInLeft } from "../../../Functions/GlobalAnimations";
 
 import { buckets } from "../../../appwrite/buckets";
 import { storage } from "../../../appwrite/config";
@@ -59,12 +59,12 @@ const fetchInformationCards = async () => {
   if (fetchedData.length > 0) {
     return [
       {
-        img: ambulance,
+        img: emergency_services,
         title: fetchedData[0]?.Title || "NOTFALL",
         content: fetchedData[0]?.Description || "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
       },
       {
-        img: emergency_services,
+        img: ambulance,
         title: fetchedData[1]?.Title || "NOTDIENST",
         content: fetchedData[1]?.Description || "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
       },
@@ -114,6 +114,8 @@ const fetchAboutUs = async () => {
       title: aboutData.title,
       description: aboutData.description,
       image: image,
+      imageTitle: aboutData.imageTitle,
+      imageSubtitle: aboutData.imageSubtitle,
     };
   }
   return {
@@ -121,6 +123,8 @@ const fetchAboutUs = async () => {
     description:
       "Wir freuen uns, Sie auf der Internetseite der Kinderarztpraxis kunterbunt Waiblingen zu begrüßen. Für uns als Fachärzte für Kinder- und Jugendmedizin steht die körperliche und geistige Entwicklung Ihres Kindes vom Säugling bis zum Jugendlichen im Mittelpunkt unserer Arbeit. Dabei ist uns der einfühlsame und verantwortungsbewusste Umgang mit unseren kleinen und großen Patienten besonders wichtig. Schwerpunkt unserer Praxis ist die hausärztliche Versorgung und ganzheitliche Begleitung von Kindern. Wir versorgen alle akuten und chronischen Erkrankungen, wie z.B. Asthma, Allergien oder ADHS und haben dabei auch psychosomatische Beschwerden im Blick. Wir sind eng vernetzt mit den Kliniken und Spezialisten in der Region und stimmen mit Ihnen die Behandlung und Versorgung im Sinne Ihres Kindes ab. Wir freuen uns, Sie und Ihre Familie kennen zu lernen!",
     image: "https://via.placeholder.com/700x1027",
+    imageTitle: "Dr. med. Sybille Walker",
+    imageSubtitle: "Fachärztin für Kinder- und Jugendmedizin / Deutschland",
   };
 };
 
@@ -299,7 +303,7 @@ const HomeStartupPage = (props) => {
       </div>
 
 
-      <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
+      {/* <section className="py-[160px] overflow-hidden lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
         <Container>
           <Row className="justify-content-center">
             <m.div
@@ -327,10 +331,103 @@ const HomeStartupPage = (props) => {
           </Container>
 
         </Container>
-      </section>
+      </section> */}
 
+{/* New About Us */}
+        {/* Section Start */}
+        <m.section
+          className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px] bg-lightgray overflow-hidden"
+          {...fadeIn}
+        >
+          <Container>
+            <Row className="items-center justify-center">
+              <Col lg={6} md={9} className="p-0 md:mb-[30px]">
+                <m.div className="relative" {...fadeIn}>
+                  {/* <div
+                    onClick={() => swiperRef.current.swiper.slidePrev()}
+                    className="btn-slider-prev bg-darkgray z-[11] text-[#fff] w-[50px] h-[50px] left-[15px] transition-default leading-[40px] m-0 right-auto absolute top-[47%] flex item-center justify-center hover:bg-white hover:text-darkgray  cursor-pointer"
+                  >
+                    <button className="text-xmd" aria-label="prev btn">
+                      <i className="feather-arrow-left"></i>
+                    </button>
+                  </div>
 
-      <section
+                  <div
+                    onClick={() => swiperRef.current.swiper.slideNext()}
+                    className="btn-slider-next btn-slider-next bg-darkgray z-[11] text-[#fff] w-[50px] transition-default h-[50px] right-[15px] leading-[40px] m-0 left-auto absolute top-[47%] flex item-center justify-center hover:bg-white hover:text-darkgray  cursor-pointer"
+                  >
+                    <button className="text-xmd" aria-label="next btn">
+                      <i className="feather-arrow-right"></i>
+                    </button>
+                  </div> */}
+                  {/* <Swiper
+                    className="black-move swiper-pagination-medium h-full"
+                    ref={swiperRef}
+                    spaceBetween={30}
+                    slidesPerView={1}
+                    loop={true}
+                    autoplay={{
+                      delay: 3000,
+                      disableOnInteraction: false,
+                    }}
+                  > */}
+                    {/* {TestimonialsCarouselData.map((item, i) => {
+                      return (
+                        <SwiperSlide key={i} className="p-[15px]"> */}
+                          <div className="h-full bg-[#fff] box-shadow">
+                            <img className="w-full" src={aboutUs.image} alt="TestimonialsCarousel" width={555} height={432} />
+                            <div className="items-center justify-center text-center flex px-[4.5rem] py-14 flex-row	xs:p-8">
+                              {/* <div className="grow-0 shrink-0 basis-auto flex-initial pr-[40px] xs:pr-[15px]">
+                                <h2 className="heading-4 font-semibold text-darkgray font-serif mb-0">
+                                  {item.number}
+                                </h2>
+                              </div> */}
+                              <div className="overflow-hidden max-w-full pl-[40px] border-basecolor border-l-[2px] text-left xs:pl-[15px]">
+                                <span className="mb-[5px] font-medium text-darkgray text-xmd font-serif block">
+                                {aboutUs.imageTitle}
+                                 </span>
+                                <p className="mb-0">{aboutUs.imageSubtitle}</p>
+                              </div>
+                            </div>
+                          </div>
+                        {/* </SwiperSlide>
+                      ); */}
+                    {/* })} */}
+                  {/* </Swiper> */}
+                </m.div>
+              </Col>
+              <m.div
+                className="col-lg-5 col-md-9 offset-lg-1"
+                {...fadeInLeft}
+              >
+                <h2 className="heading-4 mb-[40px] leading-[40px] font-semibold tracking-[-1px] text-darkgray font-serif xs:mb-[20px]">
+                  <span className="p-0 block">{aboutUs.title}</span>
+                  {/* <TextAnime
+                    duration={3000}
+                    color="#232323"
+                    className="font-semibold animated-text-black"
+                    animation="slide"
+                    data={["perfect design", "perfect layout", "perfect color"]}
+                  /> */}
+                </h2>
+                <p className="w-[110%] mb-[30px] xs:w-full" dangerouslySetInnerHTML={{ __html: aboutUs.description }}>
+                  {/* {aboutUs.description} */}
+                </p>
+                <m.div className="col w-[85%] xs:w-full">
+                  {/* <Lists
+                    className="font-medium"
+                    theme="list-style-01"
+                    data={ListData01}
+                  /> */}
+                </m.div>
+              </m.div>
+            </Row>
+          </Container>
+        </m.section>
+        {/* Section End */}
+
+{/* About Us  */}
+      {/* <section
         className="py-[130px] lg:py-[90px] md:py-[75px] sm:py-[50px]"
         style={{
           backgroundImage: "url(/assets/img/webp/home-decor-bg-img-02.webp)",
@@ -380,7 +477,7 @@ const HomeStartupPage = (props) => {
             </Col>
           </Row>
         </Container>
-      </section>
+      </section> */}
 
       <section className="bg-white py-[160px] border-t lg:py-[120px] md:py-[95px] sm:py-[80px] xs:py-[50px]">
         <Container>

@@ -42,6 +42,8 @@ const AboutList = () => {
             description: doc.description,
             imageId: doc.image,
             imageUrl: imageUrl.href,
+            imageTitle: doc.imageTitle,  // Fetch image title
+            imageSubtitle: doc.imageSubtitle,  // Fetch image subtitle
           };
         })
       );
@@ -50,7 +52,9 @@ const AboutList = () => {
         const newDocument = await db.about.create({
           title: "Dummy Title",
           description: "Dummy Description",
-          image: "dummyImageId" // Assuming you have a default image ID or handle image creation here
+          image: "dummyImageId",  // Assuming you have a default image ID or handle image creation here
+          imageTitle: "Dummy Image Title",
+          imageSubtitle: "Dummy Image Subtitle",
         });
         const imageUrl = await storageServices.images.getFileView(newDocument.image);
         data.push({
@@ -59,6 +63,8 @@ const AboutList = () => {
           description: newDocument.description,
           imageId: newDocument.image,
           imageUrl: imageUrl.href,
+          imageTitle: newDocument.imageTitle,
+          imageSubtitle: newDocument.imageSubtitle,
         });
       }
 
@@ -91,9 +97,28 @@ const AboutList = () => {
       ),
     },
     {
+      title: "Image Title",
+      dataIndex: "imageTitle",
+      key: "imageTitle",
+      render: (text) => (
+        <div className={text.length > 20 ? "multiline-text" : ""}>{text}</div>
+      ),
+    },
+    {
+      title: "Image Subtitle",
+      dataIndex: "imageSubtitle",
+      key: "imageSubtitle",
+      render: (text) => (
+        <div className={text.length > 20 ? "multiline-text" : ""}>{text}</div>
+      ),
+    },
+    {
       title: "Title",
       dataIndex: "title",
       key: "title",
+      render: (text) => (
+        <div className={text.length > 20 ? "multiline-text" : ""}>{text}</div>
+      ),
     },
     {
       title: "Description",
@@ -106,7 +131,7 @@ const AboutList = () => {
             wordWrap: "break-word",
             overflow: "hidden",
             display: "-webkit-box",
-            WebkitLineClamp: 3, // Number of lines to show
+            WebkitLineClamp: 3,  // Number of lines to show
             WebkitBoxOrient: "vertical",
           }}
           dangerouslySetInnerHTML={{ __html: text }}
