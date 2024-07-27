@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from 'react'
-import { Link } from "react-router-dom";
-import { blog, dashboard, doctor, doctorschedule, logout, menuicon04, menuicon06, menuicon08, menuicon09, menuicon10, menuicon11, menuicon12, menuicon14, menuicon15, menuicon16, patients, sidemenu } from './imagepath';
+import React, { useEffect, useState } from 'react';
 import Scrollbars from "react-custom-scrollbars-2";
+import { Link, useNavigate } from "react-router-dom";
 import { signOutUser } from '../appwrite/Services/authServices';
-import { useNavigate } from 'react-router-dom';
+import { blog, doctor, doctorschedule, logout, menuicon06, menuicon10, menuicon11, menuicon12, menuicon15, menuicon16, patients, sidemenu } from './imagepath';
 const Sidebar = (props) => {
   const navigate = useNavigate();
 
@@ -327,21 +326,6 @@ const Sidebar = (props) => {
                   </ul>
                 </li>
 
-                
-
-             
-
-              
-              
-              
-
-
-              
-
-                
-
-                
-
 
                 {/* Important information  */}
 
@@ -406,7 +390,7 @@ const Sidebar = (props) => {
 
               </ul>
               <div className="logout-btn">
-                <Link to="/login" onClick={handleLogout}>
+                <Link  onClick={handleLogout}>
                   <span className="menu-side">
                     <img src={logout} alt="" />
                   </span>{" "}

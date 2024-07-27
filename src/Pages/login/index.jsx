@@ -4,11 +4,13 @@ import { login02 } from "../../Components/imagepath";
 import { Eye, EyeOff } from "feather-icons-react/build/IconComponents";
 import { signIn, checkAuth } from "../../appwrite/Services/authServices";
 import Preloader from "../../Components/Preloader";
+import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [recaptchaToken, setRecaptchaToken] = useState(null); // State for reCAPTCHA
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -44,8 +46,14 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(""); // Reset error message
+
+    if (!recaptchaToken) {
+      setError("Please complete the reCAPTCHA.");
+      return;
+    }
+
     try {
-      await signIn(email, password);
+      await signIn(email, password, recaptchaToken); // Pass the token to signIn
       navigate("/herocarousel");
     } catch (error) {
       console.error("Login failed:", error); // Log the error for more details
@@ -83,7 +91,6 @@ const Login = () => {
                       <Link to="/">
                         <div className="flex items-center">
                           <img
-                          
                             width={80}
                             height={80}
                             src="/assets/img/webp/logo1.png"
@@ -125,6 +132,10 @@ const Login = () => {
                           {passwordVisible ? <EyeOff className="react-feather-custom" /> : <Eye className="react-feather-custom" />}
                         </span>
                       </div>
+                      <ReCAPTCHA
+                        sitekey="6LcliBkqAAAAAMH9eH7pQ3yM6cKyVeCDRU1CBreV" // Replace with your site key
+                        onChange={(token) => setRecaptchaToken(token)}
+                      />
                       {error && <p className="text-danger">{error}</p>}
                       <div className="forgotpass">
                         <div className="remember-me">
