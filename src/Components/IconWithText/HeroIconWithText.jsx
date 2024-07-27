@@ -25,7 +25,7 @@ const HeroIconWithText = (props) => {
       </svg>
     </div>,
     <div key="opening-hours-icon" className="inline-block items-center justify-center mr-4" style={{ height: 42, width: 51 }}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.002 512.002" style={{ fill: hoverIndex === 2 ? '#FFA217' : '#FFA217' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512.002 512.002" style={{ fill: hoverIndex === 2 ? 'white' : '#FFAF00' }}>
         <g>
           <path d="M207.801 351.335h-9.1v34.267h9.1c22.736-.944 22.718-33.331 0-34.267zM99.351 351.335c-11.267 0-21.149 15.514-21.149 33.2s9.883 33.2 21.149 33.2 21.15-15.514 21.15-33.2-9.884-33.2-21.15-33.2z" />
           <path d="M497.001 257.068h-482c-8.284 0-15 6.716-15 15v224.934c0 8.284 6.716 15 15 15h482c8.284 0 15-6.716 15-15V272.068c0-8.284-6.716-15-15-15zM99.351 447.735c-27.693 0-51.149-27.248-51.149-63.2 2.449-83.942 99.943-83.713 102.3.001-.001 35.523-23.124 63.199-51.151 63.199zm108.45-32.133h-9.1v17.134c-.793 19.902-29.215 19.887-30 0v-96.4c0-8.284 6.716-15 15-15h24.1c62.544 2.596 62.497 91.692 0 94.266zm112.467-46.067c19.902.793 19.887 29.215 0 30h-17.133v18.2h25.166c19.902.793 19.887 29.215 0 30h-40.166c-8.284 0-15-6.716-15-15v-96.4c0-8.284 6.716-15 15-15h40.166c19.902.793 19.887 29.215 0 30h-25.166v18.2zm135.5 63.2a15 15 0 0 1-27.48 8.32l-36.786-55.179v46.858c-.793 19.902-29.215 19.887-30 0v-96.4a15 15 0 0 1 27.48-8.32l36.786 55.179v-46.858c.793-19.902 29.215-19.887 30 0zM97.277 227.068 235.014 89.321c12.477 6.535 29.497 6.535 41.974 0l137.737 137.748h42.426L298.197 68.102C313.902 37.429 290.611-.33 256 .002c-34.606-.334-57.905 37.433-42.196 68.1L54.851 227.068z"/>
@@ -33,7 +33,7 @@ const HeroIconWithText = (props) => {
       </svg>
     </div>,
     <div key="contact-info-icon" className="inline-block items-center justify-center mr-4" style={{ height: 42, width: 51 }}>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style={{ fill: hoverIndex === 3 ? 'white' : '#1246E5' }}>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style={{ fill: hoverIndex === 3 ? 'white' : '#1877F2' }}>
         <g data-name="Layer 2">
           <path d="M24 2H9a3 3 0 0 0-3 3v4h2a1 1 0 0 1 0 2H6v4h2a1 1 0 0 1 0 2H6v4h2a1 1 0 0 1 0 2H6v4a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3zm-2 19a1 1 0 0 1-1-1 4 4 0 0 0-8 0 1 1 0 0 1-2 0 6 6 0 0 1 3.9-5.61 4 4 0 1 1 4.2 0A6 6 0 0 1 23 20a1 1 0 0 1-1 1z"/>
           <path d="M19 11a2 2 0 1 1-2-2 2 2 0 0 1 2 2zM9 10a1 1 0 0 0-1-1H6a1 1 0 0 0 0 2h2a1 1 0 0 0 1-1zm-1 7H6a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2zm0 6H6a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2z"/>
@@ -66,7 +66,7 @@ const HeroIconWithText = (props) => {
                 } else if (i === 3) {
                   e.currentTarget.style.setProperty('background-color', '#1877F2', 'important');
                 } else if (i === 2) {
-                  e.currentTarget.style.setProperty('background-color', '#ffffff', 'important');
+                  e.currentTarget.style.setProperty('background-color', '#FFAF00', 'important');
                 }
               }}
               onMouseLeave={e => {
@@ -77,11 +77,11 @@ const HeroIconWithText = (props) => {
             >
               <div className="flex items-center mb-4">
                 {icons[i]}
-                <span className="ml-5 text-lg font-medium title font-serif" style={{ color: isHovered && i === 2 ? '#828282' : 'inherit' }}>
+                <span className="ml-5 text-lg font-medium title font-serif" >
                   {item.title}
                 </span>
               </div>
-              <div className='feature-box-content' style={{ color: isHovered && i === 2 ? '#828282' : 'inherit' }}>
+              <div className='feature-box-content' >
                 {item.content && (
                   <div dangerouslySetInnerHTML={{ __html: (isHovered || i === 2 || i === 3) ? item.content : truncatedContent }} />
                 )}
