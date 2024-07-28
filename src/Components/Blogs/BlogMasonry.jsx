@@ -28,7 +28,7 @@ const BlogMasonry = (props) => {
   };
 
   return (
-    <div className="grid-wrapper h-screen">
+    <div className="grid-wrapper">
       {/* Filter Start */}
       <Filter title={props.title} filterData={props.filterData} onFilterChange={handleFilterChange} />
       {/* Filter End */}
