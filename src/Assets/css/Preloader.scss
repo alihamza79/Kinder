@@ -9,7 +9,7 @@ $c-02: #a6dcee;
 
 $font-01: "Oxygen", sans-serif;
 
-.content {
+.content-2 {
   width: 100%;
   height: 100vh;
   background-color: $bg;
@@ -17,12 +17,12 @@ $font-01: "Oxygen", sans-serif;
   justify-content: center;
   align-items: center;
 
-  .loading {
+  .loading-2 {
      width: 80px;
      height: 50px;
      position: relative;
 
-     p {
+     .p-tag {
         top: 0;
         padding: 0;
         margin: 0;
@@ -59,7 +59,7 @@ $font-01: "Oxygen", sans-serif;
            }
         }
      }
-     span {
+     .span-2 {
         background-color: $c-01;
         border-radius: 50px;
         display: block;

@@ -4,10 +4,10 @@ function Preloader() {
   return (
    <>
 
-<div class="content">
-   <div class="loading">
-<p>loading</p>
-      <span></span>
+<div class="content-2">
+   <div class="loading-2">
+<p className='p-tag'>loading</p>
+      <span className='span-2'></span>
    </div>
 </div>
 
