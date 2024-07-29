@@ -55,13 +55,13 @@ const HeaderSection = (props) => {
         expand="lg"
         className={`py-[0px] px-[35px] md:px-[15px] md:py-[20px] sm:px-0 ${theme === 'dark' ? 'navbar-dark' : 'navbar-light'}`}
       >
-        <div className="flex items-center justify-between w-full">
+        <div className="flex items-center justify-between">
           <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" >
             <Link aria-label="header logo" className="flex items-center" to="/" >
               {!logoInvisible ? (
                 <>
                   <img
-                    className="default-logo w-[120px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                    className="default-logo w-[80px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
                     style={{maxWidth:'none'}}
                     src="/assets/img/webp/logo1.png"
                     data-rjs="/assets/img/webp/logo-cropped@2x.png"
@@ -94,13 +94,15 @@ const HeaderSection = (props) => {
               />
             </Link>
           </Col>
+        </div>
+          
           <Navbar.Toggle className="md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
             <span className="navbar-toggler-line"></span>
             <span className="navbar-toggler-line"></span>
             <span className="navbar-toggler-line"></span>
             <span className="navbar-toggler-line"></span>
           </Navbar.Toggle>
-        </div>
+         
         <Navbar.Collapse className="justify-center col-auto col-lg-8">
           <Menu {...props} />
         </Navbar.Collapse>
