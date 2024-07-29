@@ -3,14 +3,7 @@ import { AnimatePresence, m } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import { Col, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
 
-// Import functions and components
-import { Input } from '../../Components/Form/Form';
-import { HamburgerMenu, SearchBar } from '../../Components/Header/Header';
-import MessageBox from '../../Components/MessageBox/MessageBox';
-import SocialIcons from '../../Components/SocialIcon/SocialIcons';
-import { resetForm, sendEmail } from '../../Functions/Utilities';
 
 const Header = React.lazy(() =>
   import("../../Components/Header/Header").then((module) => ({
@@ -68,13 +61,14 @@ const HeaderSection = (props) => {
               {!logoInvisible ? (
                 <>
                   <img
-                    className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                    className="default-logo w-[120px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                    style={{maxWidth:'none'}}
                     src="/assets/img/webp/logo1.png"
                     data-rjs="/assets/img/webp/logo-cropped@2x.png"
                     alt="logo"
                   />
                   <img
-                    className="default-logo w-[270px] h-[70px] md:w-[410px] md:h-[100px] sm:w-[205px] sm:h-[48px]"
+                    className="default-logo w-[270px] h-[64px] md:w-[410px] md:h-[100px] sm:w-[205px] sm:h-[48px]"
                     style={{ maxWidth: '400px' }}
                     src="/assets/img/webp/logo2.png"
                     data-rjs="/assets/img/webp/logo-cropped@2x.png"
@@ -88,7 +82,7 @@ const HeaderSection = (props) => {
                 src="/assets/img/webp/logo1.png"
                 data-rjs="/assets/img/webp/logo-cropped@2x.png"
                 alt="logo"
-                style={{ display: scrollUp ? 'block' : 'none' }}
+                style={{ display: scrollUp ? 'block' : 'none',maxWidth:'none' }}
               />
               <img
                 className="alt-logo w-[210px] h-[63px] md:w-[140px] md:h-[100px] sm:w-[10px] sm:h-[48px]"
