@@ -62,120 +62,54 @@ const HeaderSection = (props) => {
         expand="lg"
         className={`py-[0px] px-[35px] md:px-[15px] md:py-[20px] sm:px-0 ${theme === 'dark' ? 'navbar-dark' : 'navbar-light'}`}
       >
-        <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" style={{ marginRight: "30px" }}>
-          <Link aria-label="header logo" className="flex items-center" to="/" >
-            {!logoInvisible ? (
-              <>
-                <img
-                  className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
-                  src="/assets/img/webp/logo1.png"
-                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                  alt="logo"
-                />
-                <img
-                  className="default-logo w-[270px] h-[70px] md:w-[410px] md:h-[100px] sm:w-[253px] sm:h-[60px]"
-                  style={{ maxWidth: '400px' }}
-                  src="/assets/img/webp/logo2.png"
-                  data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                  alt="logo"
-                />
-              </>
-            ) : null}
+        <div className="flex items-center justify-between w-full">
+          <Col lg={2} sm={6} xs={"auto"} className="mr-auto ps-0" >
+            <Link aria-label="header logo" className="flex items-center" to="/" >
+              {!logoInvisible ? (
+                <>
+                  <img
+                    className="default-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                    src="/assets/img/webp/logo1.png"
+                    data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                    alt="logo"
+                  />
+                  <img
+                    className="default-logo w-[270px] h-[70px] md:w-[410px] md:h-[100px] sm:w-[205px] sm:h-[48px]"
+                    style={{ maxWidth: '400px' }}
+                    src="/assets/img/webp/logo2.png"
+                    data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                    alt="logo"
+                  />
+                </>
+              ) : null}
 
-            <img
-              className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
-              src="/assets/img/webp/logo1.png"
-              data-rjs="/assets/img/webp/logo-cropped@2x.png"
-              alt="logo"
-              style={{ display: scrollUp ? 'block' : 'none' }}
-            />
-            <img
-              className="alt-logo w-[210px] h-[63px] md:w-[140px] md:h-[100px] sm:w-[30px] sm:h-[59px]"
+              <img
+                className="alt-logo w-[100px] h-[80px] md:w-[80px] md:h-[80px] sm:w-[60px] sm:h-[60px]"
+                src="/assets/img/webp/logo1.png"
+                data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                alt="logo"
+                style={{ display: scrollUp ? 'block' : 'none' }}
+              />
+              <img
+                className="alt-logo w-[210px] h-[63px] md:w-[140px] md:h-[100px] sm:w-[10px] sm:h-[48px]"
 
-              src="/assets/img/webp/logo2.png"
-              data-rjs="/assets/img/webp/logo-cropped@2x.png"
-              alt="logo"
-              style={{ display: scrollUp ? 'block' : 'none', maxWidth: '400px' }}
-            />
-          </Link>
-        </Col>
-        <Navbar.Toggle className="order-last md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
-          <span className="navbar-toggler-line"></span>
-          <span className="navbar-toggler-line"></span>
-          <span className="navbar-toggler-line"></span>
-          <span className="navbar-toggler-line"></span>
-        </Navbar.Toggle>
+                src="/assets/img/webp/logo2.png"
+                data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                alt="logo"
+                style={{ display: scrollUp ? 'block' : 'none', maxWidth: '400px' }}
+              />
+            </Link>
+          </Col>
+          <Navbar.Toggle className="md:ml-[17px] w-[25px] min-h-[15px] inline-block align-middle">
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+            <span className="navbar-toggler-line"></span>
+          </Navbar.Toggle>
+        </div>
         <Navbar.Collapse className="justify-center col-auto col-lg-8">
           <Menu {...props} />
         </Navbar.Collapse>
-        <Col lg={2} xs={"auto"} className="justify-end pe-0 flex items-center">
-          
-          <div className="md:hidden pl-[17px]">
-            <HamburgerMenu className="" theme={theme}>
-              <Col className="flex flex-col justify-center px-[50px] py-[70px] w-[500px] h-[100vh] shadow-[0_0_2x0px_rgba(0,0,0,0.3)] right-0 text-center bg-white">
-                <div>
-                  <h1 className="mb-0 font-bold tracking-[-3px] text-darkgray font-serif uppercase">Hello</h1>
-                  <p className="text-lg text-[#27ae60] font-serif uppercase block">Let's be friends.</p>
-
-                  <p className="w-[70%] mb-12 text-darkgray leading-[26px] text-lg font-serif mx-auto inline-block">
-                    Get latest update for our trusted applications
-                  </p>
-                  <Formik
-                    initialValues={{ email: '' }}
-                    validationSchema={Yup.object().shape({
-                      email: Yup.string().email('Invalid email.').required('Field is required.'),
-                    })}
-                    onSubmit={async (values, actions) => {
-                      actions.setSubmitting(true);
-                      const response = await sendEmail(values);
-                      response.status === 'success' && resetForm(actions);
-                    }}
-                  >
-                    {({ isSubmitting, status }) => (
-                      <div className="relative subscribe-style-05 mb-20">
-                        <Form className="relative">
-                          <Input
-                            showErrorMsg={false}
-                            type="email"
-                            name="email"
-                            className="border-[1px] medium-input rounded-[5px] border-solid border-[#dfdfdf]"
-                            placeholder="Enter your email address"
-                          />
-                          <button
-                            aria-label="Subscribe"
-                            type="submit"
-                            className={`text-xs leading-[18px] py-[12px] px-[28px] uppercase xs:text-center${isSubmitting ? ' loading' : ''}`}
-                          >
-                            <i className="far fa-envelope text-basecolor text-sm leading-none mr-[10px] xs:mr-0"></i>
-                            Subscribe
-                          </button>
-                        </Form>
-                        <AnimatePresence>
-                          {status && (
-                            <m.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              className="mt-[25px] top-[115%] left-0 w-full"
-                            >
-                              <MessageBox
-                                className="rounded-[4px] text-md py-[10px] px-[22px] z-10"
-                                theme="message-box01"
-                                variant="success"
-                                message="Your message has been sent successfully subscribed to our email list!"
-                              />
-                            </m.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    )}
-                  </Formik>
-                  <SocialIcons theme="social-icon-style-05" size="sm" iconColor="dark" data={SocialIconsData} />
-                </div>
-              </Col>
-            </HamburgerMenu>
-          </div>
-        </Col>
       </HeaderNav>
     </Header>
   );
