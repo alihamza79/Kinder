@@ -40,7 +40,7 @@ const WichtigeInfo = () => {
   });
 
   if (headerLoading || bodyLoading) {
-    return <Preloader/>;
+    return <Preloader />;
   }
 
   if (headerError || bodyError) {
@@ -59,7 +59,7 @@ const WichtigeInfo = () => {
           <Row className="justify-center">
             <Col md={12} className="text-center mt-60">
               <h5 className="font-serif text-darkgray font-medium">{headerData.title}</h5>
-              <p className="text-darkgray font-medium" style={{ fontSize: "1rem" }}>
+              <p className="text-darkgray font-medium text-lg md:text-md">
                 {headerData.description}
               </p>
             </Col>
