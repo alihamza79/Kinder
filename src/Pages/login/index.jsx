@@ -8,8 +8,8 @@ import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin123");
   const [recaptchaToken, setRecaptchaToken] = useState(null); // State for reCAPTCHA
   const navigate = useNavigate();
   const [error, setError] = useState("");
