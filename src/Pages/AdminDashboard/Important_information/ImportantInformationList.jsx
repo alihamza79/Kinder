@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
+import { getAllDocuments, deleteDocument } from "../../../firebase/dbService";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
@@ -34,28 +34,30 @@ const ImportantInformationList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.importantInformation.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('importantInformation');
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async () => {
     try {
-      await db.importantInformation.delete(selectedRecordId);
+      await deleteDocument('importantInformation', selectedRecordId);
       toast.success("Important Information deleted successfully!", { autoClose: 2000 });
       fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document:", error);
+      toast.error("Error deleting document: " + error.message);
     }
   };
 

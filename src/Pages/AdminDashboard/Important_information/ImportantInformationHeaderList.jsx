@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices";
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -16,14 +16,9 @@ const ImportantInformationHeaderList = () => {
 
   useEffect(() => {
     const updateSuccess = sessionStorage.getItem("updateImportantInformationHeaderSuccess");
-    const addSuccess = sessionStorage.getItem("addImportantInformationHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
       sessionStorage.removeItem("updateImportantInformationHeaderSuccess");
-    }
-    if (addSuccess) {
-      toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addImportantInformationHeaderSuccess");
     }
     fetchData();
   }, [location]);
@@ -31,24 +26,29 @@ const ImportantInformationHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.importantInformationHeader.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('importantInformationHeader');
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
 
       if (data.length === 0) {
-        const newDocument = await db.importantInformationHeader.create({
+        const newDocRef = await addDocument('importantInformationHeader', {
           title: "Dummy Title",
-          description: "Dummy Description",
+          description: "Dummy Description"
         });
-        data.push({ id: newDocument.$id, ...newDocument });
+        data.push({
+          id: newDocRef.id,
+          title: "Dummy Title",
+          description: "Dummy Description"
+        });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };

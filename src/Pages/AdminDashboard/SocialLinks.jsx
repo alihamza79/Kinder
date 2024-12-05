@@ -4,7 +4,8 @@ import Header from "../../Components/Header";
 import Sidebar from "../../Components/Sidebar";
 import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../appwrite/Services/dbServices";
+import { db } from "../../config/firebase";
+import { collection, getDocs, doc, updateDoc, addDoc } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -28,16 +29,17 @@ const SocialLinks = () => {
   useEffect(() => {
     const fetchSocialLinks = async () => {
       try {
-        const response = await db.socialLinks.list();
-        if (response.documents.length > 0) {
-          const doc = response.documents[0];
-          setDocId(doc.$id);
-          setValue("facebook", doc.facebook);
-          setValue("twitter", doc.twitter);
-          setValue("instagram", doc.instagram);
+        const querySnapshot = await getDocs(collection(db, "socialLinks"));
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          setDocId(doc.id);
+          setValue("facebook", doc.data().facebook);
+          setValue("twitter", doc.data().twitter);
+          setValue("instagram", doc.data().instagram);
         }
       } catch (error) {
         console.error("Error fetching social links:", error);
+        toast.error("Error fetching social links: " + error.message);
       }
     };
 
@@ -48,14 +50,21 @@ const SocialLinks = () => {
     setSubmitting(true);
     try {
       if (docId) {
-        await db.socialLinks.update(docId, data);
+        const docRef = doc(db, "socialLinks", docId);
+        await updateDoc(docRef, {
+          ...data,
+          updatedAt: new Date()
+        });
       } else {
-        const newDoc = await db.socialLinks.create(data);
-        setDocId(newDoc.$id);
+        const docRef = await addDoc(collection(db, "socialLinks"), {
+          ...data,
+          createdAt: new Date()
+        });
+        setDocId(docRef.id);
       }
       toast.success("Social Links updated successfully!", { autoClose: 2000 });
     } catch (error) {
-      toast.error("Failed to submit Social Links!", { autoClose: 2000 });
+      toast.error("Failed to submit Social Links: " + error.message, { autoClose: 2000 });
       console.error("Error submitting social links:", error);
     } finally {
       setSubmitting(false);

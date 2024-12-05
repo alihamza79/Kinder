@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../config/firebase";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -31,23 +32,31 @@ const ScheduleHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.scheduleHeader.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const scheduleRef = collection(db, "scheduleHeader");
+      const q = query(scheduleRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
       }));
 
       if (data.length === 0) {
-        const newDocument = await db.scheduleHeader.create({
+        const docRef = await addDoc(collection(db, "scheduleHeader"), {
           title: "Dummy Title",
+          createdAt: new Date()
         });
-        data.push({ id: newDocument.$id, ...newDocument });
+        data.push({
+          id: docRef.id,
+          title: "Dummy Title",
+          createdAt: new Date()
+        });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };

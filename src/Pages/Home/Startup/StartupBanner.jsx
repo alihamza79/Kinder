@@ -4,22 +4,23 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Navigation, EffectFade, Autoplay } from "swiper/modules";
 import { LazyMotion, domMax, m } from 'framer-motion';
 import { Container, Row, Col } from 'react-bootstrap';
-import db from '../../../appwrite/Services/dbServices';
-import { storage } from '../../../appwrite/config';
-import { buckets } from '../../../appwrite/buckets';
+import { db } from '../../../config/firebase';
+import { collection, getDocs } from 'firebase/firestore';
+import { getFileURL } from '../../../firebase/storageService';
 import Preloader from '../../../Components/Preloader';
 
 const StartupPageBannerSlider = () => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const fetchSwiperData = async () => {
-    const querySnapshot = await db.heroCarousel.list();
+    const querySnapshot = await getDocs(collection(db, "heroCarousel"));
     const data = await Promise.all(
-      querySnapshot.documents.map(async (doc) => {
-        const img = await getImageUrl(doc.image);
+      querySnapshot.docs.map(async (doc) => {
+        const docData = doc.data();
+        const img = await getFileURL(docData.image);
         return {
           img,
-          title: doc.text,
+          title: docData.text,
         };
       })
     );
@@ -44,17 +45,8 @@ const StartupPageBannerSlider = () => {
     ];
   };
 
-  const getImageUrl = async (imageId) => {
-    try {
-      const result = await storage.getFileView(buckets[0].id, imageId);
-      return result.href;
-    } catch (error) {
-      console.error("Error fetching image URL:", error);
-    }
-  };
-
   if (isLoading) {
-    return <Preloader />; // Optionally, you can add a loading spinner here
+    return <Preloader />;
   }
 
   return (
@@ -84,24 +76,23 @@ const StartupPageBannerSlider = () => {
                 <Container className="text-center">
                   <Row className="full-screen items-center justify-center md:landscape:h-[500px]">
                     <Col xs={12} lg={7} md={10} className="justify-center items-center my-0 mx-auto relative flex flex-col">
-                      <m.h1 className="font-serif font-semibold  pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]"> 
-                        <div className='flex justify-center items-center '>
-                        <img
-                        className="default-logo w-[155px] h-[155px] md:w-[80px] md:h-[80px] sm:w-[90px] sm:h-[90px]"
-
-                        src="/assets/img/webp/logo1.png"
-                        data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                        alt="logo"
-                      />
-                        <img
-                          className="default-logo w-[410px] h-[155px] md:w-[160px] md:h-[110px] sm:w-[220px] sm:h-[130px]"
-                          style={{ maxWidth: '400px' }}
-                          src="/assets/img/webp/logo2.png"
-                          data-rjs="/assets/img/webp/logo-cropped@2x.png"
-                          alt="logo"
-                        />
+                      <m.h1 className="font-serif font-semibold pb-[10px] text-[60px] tracking-[-2px] text-white mb-[35px] lg:text-[55px] lg:leading-[60px] xs:text-[35px] xs:leading-[40px] xs:mb-[20px]"> 
+                        <div className='flex justify-center items-center'>
+                          <img
+                            className="default-logo w-[155px] h-[155px] md:w-[80px] md:h-[80px] sm:w-[90px] sm:h-[90px]"
+                            src="/assets/img/webp/logo1.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
+                          <img
+                            className="default-logo w-[410px] h-[155px] md:w-[160px] md:h-[110px] sm:w-[220px] sm:h-[130px]"
+                            style={{ maxWidth: '400px' }}
+                            src="/assets/img/webp/logo2.png"
+                            data-rjs="/assets/img/webp/logo-cropped@2x.png"
+                            alt="logo"
+                          />
                         </div>
-                        </m.h1>
+                      </m.h1>
                     </Col>
                   </Row>
                 </Container>

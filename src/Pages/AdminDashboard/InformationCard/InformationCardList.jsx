@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
-import db from "../../../appwrite/Services/dbServices";
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
@@ -32,10 +32,10 @@ const InformationCardList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.informationCard.list();
-      let data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('informationCard');
+      let data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
 
       if (data.length === 0) {
@@ -47,15 +47,19 @@ const InformationCardList = () => {
         ];
 
         for (const dummy of dummyData) {
-          const newDocument = await db.informationCard.create(dummy);
-          data.push({ id: newDocument.$id, ...newDocument });
+          const newDocRef = await addDocument('informationCard', dummy);
+          data.push({
+            id: newDocRef.id,
+            ...dummy
+          });
         }
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db } from "../../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import { DatePicker } from "antd";
@@ -20,12 +21,18 @@ const EditRepresentationDate = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const documentSnapshot = await db.representationDates.get(id);
-                setFromDate(moment(documentSnapshot.fromDate));
-                setToDate(moment(documentSnapshot.toDate));
-                setLoading(false);
+                const docRef = doc(db, "representationDates", id);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setFromDate(moment(data.fromDate.toDate()));
+                    setToDate(moment(data.toDate.toDate()));
+                }
             } catch (error) {
                 console.error("Error fetching document:", error);
+                toast.error("Error fetching data: " + error.message);
+            } finally {
                 setLoading(false);
             }
         };
@@ -58,29 +65,17 @@ const EditRepresentationDate = () => {
         setLoading(true);
 
         try {
-            const formattedData = {
-                fromDate: fromDate ? fromDate.toDate() : null,
-                toDate: toDate ? toDate.toDate() : null,
-            };
-
-            await db.representationDates.update(id, formattedData);
-
-            toast.success("Representation Date updated successfully!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
+            const docRef = doc(db, "representationDates", id);
+            await updateDoc(docRef, {
+                fromDate: fromDate.toDate(),
+                toDate: toDate.toDate(),
+                updatedAt: new Date()
             });
 
-            sessionStorage.setItem('updateRepresentationDateSuccess', 'true'); 
+            sessionStorage.setItem('updateRepresentationDateSuccess', 'true');
             navigate("/representationdates");
         } catch (error) {
-            toast.error("Error updating date: " + error.message, { autoClose: 2000 });
-            console.error("Error updating date: ", error);
+            toast.error("Error updating date: " + error.message);
         } finally {
             setLoading(false);
         }

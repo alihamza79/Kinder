@@ -1,10 +1,11 @@
 import { Table } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -13,42 +14,55 @@ const FormHeaderList = () => {
   const [dataSource, setDataSource] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchData();
+      } else {
+        navigate("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [location, navigate]);
 
   useEffect(() => {
     const updateSuccess = sessionStorage.getItem("updateFormHeaderSuccess");
     const addSuccess = sessionStorage.getItem("addFormHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateFormHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateFormHeaderSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addFormHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addFormHeaderSuccess");
     }
-    fetchData();
   }, [location]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.formHeader.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('formHeader');
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
 
       if (data.length === 0) {
-        // Add a new document with "Dummy Title" if the collection is empty
-        const newDocument = await db.formHeader.create({
+        const newDocument = await addDocument('formHeader', {
           title: "Dummy Title",
         });
-        data.push({ id: newDocument.$id, ...newDocument });
+        data.push({ id: newDocument.id, title: "Dummy Title" });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error loading data. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };

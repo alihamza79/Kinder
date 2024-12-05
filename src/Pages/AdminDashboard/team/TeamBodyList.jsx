@@ -4,8 +4,9 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import { db, storage } from "../../../config/firebase";
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
+import { ref, deleteObject } from "firebase/storage";
 import Header from "../../../Components/Header";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
@@ -24,11 +25,11 @@ const TeamBodyList = () => {
     const addSuccess = sessionStorage.getItem("addTeamBodySuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateTeamBodySuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateTeamBodySuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addTeamBodySuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addTeamBodySuccess");
     }
     fetchData();
   }, [location]);
@@ -36,35 +37,18 @@ const TeamBodyList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.teamBody.list(); // Fetch documents from Appwrite collection
-      const data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
-          let imageUrl = '';
-          try {
-            const imageView = await storageServices.images.getFileView(doc.image);
-            const response = await fetch(imageView.href);
-            if (response.status === 200) {
-              imageUrl = imageView.href;
-            } else {
-              console.warn("Image not found in storage.");
-            }
-          } catch (error) {
-            console.error("Error fetching image URL:", error);
-          }
-
-          return {
-            id: doc.$id,
-            name: doc.name,
-            designation: doc.designation,
-            imageId: doc.image,
-            imageUrl: imageUrl,
-          };
-        })
-      );
+      const teamRef = collection(db, "teamBody");
+      const q = query(teamRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -73,73 +57,67 @@ const TeamBodyList = () => {
     try {
       setDeleting(true);
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
-      if (selectedRecord && selectedRecord.imageId) {
-        // Delete image from Appwrite storage if it exists
+      
+      if (selectedRecord && selectedRecord.imageUrl) {
         try {
-          await storageServices.images.deleteFile(selectedRecord.imageId);
+          const imageRef = ref(storage, selectedRecord.imageUrl);
+          await deleteObject(imageRef);
         } catch (error) {
-          if (error.message.includes("not be found")) {
-            console.warn("Image not found in storage.");
-          } else {
-            throw error;
-          }
+          console.warn("Image not found in storage:", error);
         }
       }
-      await db.teamBody.delete(selectedRecordId); // Delete the document from Appwrite
+
+      await deleteDoc(doc(db, "teamBody", selectedRecordId));
       toast.success("Team member deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document and image:", error);
+      toast.error("Error deleting team member: " + error.message);
     } finally {
       setDeleting(false);
     }
   };
 
-  const showDeleteModal = (id) => {
-    setSelectedRecordId(id);
+  const showDeleteModal = (recordId) => {
+    setSelectedRecordId(recordId);
     setDeleteModalVisible(true);
   };
 
   const hideDeleteModal = () => {
     setDeleteModalVisible(false);
+    setSelectedRecordId(null);
+  };
+
+  const handleRefresh = () => {
+    fetchData();
   };
 
   const columns = [
     {
       title: "S/N",
       dataIndex: "serialNumber",
-      key: "serialNumber",
       render: (text, record, index) => index + 1,
     },
     {
       title: "Image",
       dataIndex: "imageUrl",
-      key: "imageUrl",
-      render: (text) => (
+      render: (imageUrl) => (
         <img
-          src={text}
-          alt="Image"
-          className="image-column"
-          style={{ width: "100px", height: "100px", objectFit: "cover" }}
+          src={imageUrl || "default-image-url.jpg"}
+          alt="Team Member"
+          style={{ width: "50px", height: "50px", objectFit: "cover" }}
         />
       ),
     },
     {
       title: "Name",
       dataIndex: "name",
-      key: "name",
     },
     {
       title: "Designation",
       dataIndex: "designation",
-      key: "designation",
-      render: (text) => (
-        <div className={text && text.length > 20 ? "multiline-text" : ""}>
-          {text}
-        </div>
-      ),
     },
     {
       title: "",
@@ -176,10 +154,6 @@ const TeamBodyList = () => {
       ),
     },
   ];
-
-  const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
-  };
 
   return (
     <>

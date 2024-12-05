@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { baricon, baricon1, logo } from "./imagepath";
-import { signOutUser, getCurrentUser } from "../appwrite/Services/authServices";
+import { signOutUser, getCurrentUser } from "../firebase/authService";
 
 const Header = () => {
   const [userName, setUserName] = useState("");
@@ -9,15 +9,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getCurrentUser();
-        setUserName(user.name);
-      } catch (error) {
-        console.error("Failed to fetch user details", error);
-      }
-    };
-    fetchUser();
+    const user = getCurrentUser();
+    if (user) {
+      setUserName(user.displayName || "Admin"); // Use displayName or fallback to "User"
+    } else {
+      console.error("No user is currently logged in");
+    }
   }, []);
 
   const handleLogout = async () => {
@@ -28,6 +25,7 @@ const Header = () => {
       console.error("Failed to logout", error);
     }
   };
+
   const handleLogoutHome = async () => {
     try {
       await signOutUser();

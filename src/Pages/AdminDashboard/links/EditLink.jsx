@@ -5,11 +5,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; 
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditLink = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -19,11 +19,12 @@ const EditLink = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.links.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
-                    setDescription(documentSnapshot.description);
-                    editorRef.current.setEditorContent(documentSnapshot.description);
+                const documentSnapshot = await getDocument('links', id);
+                if (documentSnapshot.exists()) {
+                    const data = documentSnapshot.data();
+                    setTitle(data.title);
+                    setDescription(data.description);
+                    editorRef.current.setEditorContent(data.description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -38,7 +39,6 @@ const EditLink = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate form fields
         if (!title.trim() || !description.trim()) {
             toast.error('Please fill in all required fields.', { autoClose: 2000 });
             return;
@@ -46,8 +46,8 @@ const EditLink = () => {
 
         setLoading(true);
         try {
-            await db.links.update(id, { title, description });
-            sessionStorage.setItem('updateLinkSuccess', 'true'); 
+            await updateDocument('links', id, { title, description });
+            sessionStorage.setItem('updateLinkSuccess', 'true');
             navigate("/linkslist");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });

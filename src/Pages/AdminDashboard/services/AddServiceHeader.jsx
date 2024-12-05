@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db } from "../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -11,20 +12,27 @@ const AddServiceHeader = () => {
     const navigate = useNavigate();
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(false);
+    const [titleError, setTitleError] = useState('');
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!title.trim()) {
+            setTitleError('Title is required');
+            toast.error("Title is required", { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
 
         try {
-            // Store data in Appwrite database
-            await db.serviceHeader.create({
+            await addDoc(collection(db, "serviceHeader"), {
                 title: title,
+                createdAt: new Date()
             });
 
-            sessionStorage.setItem('addServiceHeaderSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('addServiceHeaderSuccess', 'true');
             navigate("/serviceheader");
-
         } catch (error) {
             toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
             console.error('Error adding document: ', error);
@@ -43,7 +51,6 @@ const AddServiceHeader = () => {
             />
             <div className="page-wrapper">
                 <div className="content">
-                    {/* Page Header */}
                     <div className="page-header">
                         <div className="row">
                             <div className="col-sm-12">
@@ -61,7 +68,6 @@ const AddServiceHeader = () => {
                             </div>
                         </div>
                     </div>
-                    {/* /Page Header */}
                     <div className="row">
                         <div className="col-sm-12">
                             <div className="card">
@@ -73,24 +79,24 @@ const AddServiceHeader = () => {
                                                     <h4>Add Service Header</h4>
                                                 </div>
                                             </div>
-
-                                            {/* Title */}
                                             <div className="col-12 col-md-6 col-xl-6">
                                                 <div className="form-group local-forms">
                                                     <label>
                                                         Title <span className="login-danger">*</span>
                                                     </label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${titleError ? 'is-invalid' : ''}`}
                                                         type="text"
                                                         value={title}
-                                                        onChange={(e) => setTitle(e.target.value)}
+                                                        onChange={(e) => {
+                                                            setTitle(e.target.value);
+                                                            setTitleError('');
+                                                        }}
                                                         disabled={loading}
                                                     />
+                                                    {titleError && <div className="invalid-feedback">{titleError}</div>}
                                                 </div>
                                             </div>
-
-                                            {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">
                                                     <button

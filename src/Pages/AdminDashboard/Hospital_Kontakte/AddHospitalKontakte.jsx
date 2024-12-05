@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices";
+import { addDocument } from "../../../firebase/dbService";
 import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,12 +26,12 @@ const AddHospitalKontakte = () => {
         setLoading(true);
 
         try {
-            await db.hospitalKontakte.create({
+            await addDocument('hospitalKontakte', {
                 title: title,
                 description: description,
             });
 
-            sessionStorage.setItem('addHospitalKontakteSuccess', 'true'); 
+            sessionStorage.setItem('addHospitalKontakteSuccess', 'true');
             navigate("/hospitalkontakteliste");
 
         } catch (error) {

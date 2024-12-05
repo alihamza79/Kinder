@@ -4,7 +4,8 @@ import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../config/firebase";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,11 +20,11 @@ const TeamHeaderList = () => {
     const addSuccess = sessionStorage.getItem("addTeamHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateTeamHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateTeamHeaderSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addTeamHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addTeamHeaderSuccess");
     }
     fetchData();
   }, [location]);
@@ -31,23 +32,31 @@ const TeamHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.teamHeader.list(); 
-      let data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const headerRef = collection(db, "teamHeader");
+      const q = query(headerRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
 
       if (data.length === 0) {
-        // Add a dummy document if the collection is empty
-        const dummy = { title: "Dummy Title" };
-        const newDocument = await db.teamHeader.create(dummy);
-        data.push({ id: newDocument.$id, ...newDocument });
+        const dummyData = {
+          title: "Dummy Title",
+          createdAt: new Date()
+        };
+        const docRef = await addDoc(collection(db, "teamHeader"), dummyData);
+        data.push({
+          id: docRef.id,
+          ...dummyData
+        });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -56,7 +65,6 @@ const TeamHeaderList = () => {
     {
       title: "S/N",
       dataIndex: "serialNumber",
-      key: "serialNumber",
       render: (text, record, index) => index + 1,
     },
     {

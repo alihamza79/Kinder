@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
+import { db } from "../../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
 import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
@@ -37,32 +38,16 @@ const AddRepresentationDate = () => {
         setLoading(true);
 
         try {
-            const formattedData = {
-                fromDate: fromDate ? fromDate.toDate() : null,
-                toDate: toDate ? toDate.toDate() : null,
-                representativesCollection: [],
-            };
-
-            // Store data in Appwrite database
-            await db.representationDates.create(formattedData);
-
-            toast.success("Representation Date added successfully!", {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
+            await addDoc(collection(db, "representationDates"), {
+                fromDate: fromDate.toDate(),
+                toDate: toDate.toDate(),
+                createdAt: new Date()
             });
-            setFromDate(null);
-            setToDate(null);
-            navigate("/representationdates");
 
+            sessionStorage.setItem('addRepresentationDateSuccess', 'true');
+            navigate("/representationdates");
         } catch (error) {
-            toast.error("Error adding date: " + error.message, { autoClose: 2000 });
-            console.error("Error adding date: ", error);
+            toast.error("Error adding date: " + error.message);
         } finally {
             setLoading(false);
         }

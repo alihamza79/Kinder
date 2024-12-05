@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import storageServices from "../../../appwrite/Services/storageServices";
-import db from "../../../appwrite/Services/dbServices";
+import { addDocument } from "../../../firebase/dbService";
+import { uploadFile } from "../../../firebase/storageService";
 import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,7 +13,7 @@ const AddFormBody = () => {
     const [title, setTitle] = useState('');
     const [file, setFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [formErrors, setFormErrors] = useState({}); // State for form validation errors
+    const [formErrors, setFormErrors] = useState({});
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -34,14 +34,15 @@ const AddFormBody = () => {
                 return;
             }
 
-            let uploadedFileId = "";
+            let uploadedFilePath = "";
 
             // Upload file if selected
             if (file) {
                 const toastId = toast.loading("Uploading file...");
                 try {
-                    const uploadedFile = await storageServices.files.createFile(file);
-                    uploadedFileId = uploadedFile.$id;
+                    const filePath = `formBody/${Date.now()}-${file.name}`;
+                    await uploadFile(file, filePath);
+                    uploadedFilePath = filePath;
                     toast.update(toastId, { render: "File uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
                     toast.update(toastId, { render: "File upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
@@ -49,13 +50,13 @@ const AddFormBody = () => {
                 }
             }
 
-            // Store data in Appwrite database
-            await db.formBody.create({
+            // Store data in Firebase database
+            await addDocument('formBody', {
                 title: title,
-                file: uploadedFileId,
+                file: uploadedFilePath,
             });
 
-            sessionStorage.setItem('addFormBodySuccess', 'true'); // Set update flag
+            sessionStorage.setItem('addFormBodySuccess', 'true');
             navigate("/formbody");
 
         } catch (error) {

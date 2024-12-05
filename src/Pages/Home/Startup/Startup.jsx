@@ -6,10 +6,9 @@ import Accordions from "../../../Components/Accordion/Accordion";
 import { m } from "framer-motion";
 import { fadeIn,fadeInLeft } from "../../../Functions/GlobalAnimations";
 
-import { buckets } from "../../../appwrite/buckets";
-import { storage } from "../../../appwrite/config";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { db,storage } from "../../../config/firebase";
+import { collection, getDocs, query } from "firebase/firestore";
+import { ref, getDownloadURL } from "firebase/storage";
 import HeroIconWithText from "../../../Components/IconWithText/HeroIconWithText";
 import Preloader from "../../../Components/Preloader";
 import Team from "../../../Components/Team/Team";
@@ -53,30 +52,30 @@ const fallbackScheduleBody = [
 ];
 
 const fetchInformationCards = async () => {
-  const querySnapshot = await db.informationCard.list();
-  const fetchedData = querySnapshot.documents;
+  const querySnapshot = await getDocs(collection(db, "informationCard"));
+  const fetchedData = querySnapshot.docs.map(doc => doc.data());
 
   if (fetchedData.length > 0) {
     return [
       {
         img: emergency_services,
         title: fetchedData[0]?.Title || "NOTFALL",
-        content: fetchedData[0]?.Description || "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
+        content: fetchedData[0]?.Description || "Default content...",
       },
       {
         img: ambulance,
         title: fetchedData[1]?.Title || "NOTDIENST",
-        content: fetchedData[1]?.Description || "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
+        content: fetchedData[1]?.Description || "Default content...",
       },
       {
         img: opening,
         title: fetchedData[2]?.Title || "OPENING HOURS",
-        content: fetchedData[2]?.Description || "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
+        content: fetchedData[2]?.Description || "Default content...",
       },
       {
         img: contact_info,
         title: fetchedData[3]?.Title || "Contact Information",
-        content: fetchedData[3]?.Description || "Email an: praxis@kjk-wn.de \nTelefonnummer: 07151 - 21080.",
+        content: fetchedData[3]?.Description || "Default content...",
       },
     ];
   }
@@ -85,30 +84,30 @@ const fetchInformationCards = async () => {
     {
       img: ambulance,
       title: "NOTFALL",
-      content: "In lebensbedrohlichen Notfällen, insbesondere bei Bewusstlosigkeit, Krampfanfall, starker Blutung, Atemnot oder Vergiftung, rufen Sie bitte den Rettungsdienst unter der Rufnummer 112 an. Die Vergiftungszentrale in Berlin ist unter der \n Tel. 030 -19240 erreichbar.",
+      content: "Default content...",
     },
     {
       img: emergency_services,
       title: "NOTDIENST",
-      content: "Auf Betreiben der Kassenärztlichen Vereinigung Baden-Württemberg wurde der wohnortnahe Notdienst für Kinder und Jugendliche ins Klinikum Winnenden, Am Jakobsweg 1, 71364 Winnenden, Tel: 01806- 073614 verlegt. \n Montag-Freitag ab 18.00- 08.00 Uhr Samstag, Sonn- und Feiertag rund um die Uhr \n Patienten können ohne Voranmeldung in die Klinik kommen, dort ist ständig ein Kinder- und Jugendarzt dienstbereit.",
+      content: "Default content...",
     },
     {
       img: opening,
       title: "OPENING HOURS",
-      content: "Vormittags \n Montags bis freitags:  08 - 11 Uhr \n Nachmittags \n  Montags, mittwochs, freitags 14 -16 Uhr \n Contact Info \n Telefonnummer: 07151 - 21080 \n Email an:  praxis@kjk-wn.de",
+      content: "Default content...",
     },
     {
       img: contact_info,
       title: "Contact Information",
-      content:"Email an: praxis@kjk-wn.de \nTelefonnummer: 07151 - 21080.",
+      content:"Default content...",
     }
   ];
 };
 
 const fetchAboutUs = async () => {
-  const querySnapshot = await db.about.list();
-  if (querySnapshot.documents.length > 0) {
-    const aboutData = querySnapshot.documents[0];
+  const querySnapshot = await getDocs(collection(db, "about"));
+  if (!querySnapshot.empty) {
+    const aboutData = querySnapshot.docs[0].data();
     const image = await getImageUrl(aboutData.image);
     return {
       title: aboutData.title,
@@ -129,100 +128,126 @@ const fetchAboutUs = async () => {
 };
 
 const fetchServiceData = async () => {
-  const headerSnapshot = await db.serviceHeader.list();
-  const bodySnapshot = await db.services.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Leistungen";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.name }));
+  const headerSnapshot = await getDocs(collection(db, "serviceHeader"));
+  const bodySnapshot = await getDocs(collection(db, "services"));
+  
+  const header = !headerSnapshot.empty ? headerSnapshot.docs[0].data().title : "Leistungen";
+  const body = bodySnapshot.docs.map(doc => ({ title: doc.data().name }));
+  
   return { header, body };
 };
 
 const fetchTeamData = async () => {
-  const headerSnapshot = await db.teamHeader.list();
-  const bodySnapshot = await db.teamBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Team";
-  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
-    const img = await getImageUrl(doc.image);
-    return { img, name: doc.name, designation: doc.designation };
+  const headerSnapshot = await getDocs(collection(db, "teamHeader"));
+  const bodySnapshot = await getDocs(collection(db, "teamBody"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "Team";
+  
+  console.log("Team body data:", bodySnapshot.docs.map(doc => doc.data()));
+  
+  const body = await Promise.all(bodySnapshot.docs.map(async doc => {
+    const data = doc.data();
+    const imagePath = data.image || data.imageUrl || data.img;
+    const imageUrl = await getImageUrl(imagePath);
+    
+    console.log("Team member image path:", imagePath);
+    console.log("Team member image URL:", imageUrl);
+    
+    return { 
+      img: imageUrl || '/path/to/default/image.jpg',
+      name: data.name,
+      designation: data.designation 
+    };
   }));
   return { header, body };
 };
 
 const fetchLinksData = async () => {
-  const headerSnapshot = await db.linkHeader.list();
-  const bodySnapshot = await db.links.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Links";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.title, content: doc.description }));
+  const headerSnapshot = await getDocs(collection(db, "linkHeader"));
+  const bodySnapshot = await getDocs(collection(db, "links"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "Links";
+  const body = bodySnapshot.docs.map(doc => ({ title: doc.data().title, content: doc.data().description }));
   return { header, body };
 };
 
 const fetchBlogData = async () => {
-  const querySnapshot = await db.blogs.list();
-  const data = await Promise.all(querySnapshot.documents.map(async doc => {
-    const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+  const querySnapshot = await getDocs(collection(db, "blogs"));
+  
+  console.log("Blog data:", querySnapshot.docs.map(doc => doc.data()));
+  
+  const data = await Promise.all(querySnapshot.docs.map(async doc => {
+    const blogData = doc.data();
+    const imagePath = blogData.image || blogData.imageUrl || blogData.img;
+    const imageUrl = await getImageUrl(imagePath);
+    
+    console.log("Blog image path:", imagePath);
+    console.log("Blog image URL:", imageUrl);
+    
     return {
-      id: doc.$id,
-      title: doc.title,
-      date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : "",
-      content: doc.content,
-      img: imageUrl.href,
-      category: doc.tags,
-      publicationDate: new Date(doc.publicationDate),
+      id: doc.id,
+      title: blogData.title,
+      date: blogData.publicationDate ? new Date(blogData.publicationDate).toLocaleDateString() : "",
+      content: blogData.content,
+      img: imageUrl || '/path/to/default/image.jpg',
+      category: blogData.tags || [],
+      publicationDate: blogData.publicationDate ? new Date(blogData.publicationDate) : new Date(),
     };
   }));
-  const latestBlogs = data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
-  return latestBlogs;
+  
+  return data.sort((a, b) => b.publicationDate - a.publicationDate).slice(0, 3);
 };
 
 const fetchHospitalKontakteData = async () => {
-  const headerSnapshot = await db.hospitalKontakteHeader.list();
-  const bodySnapshot = await db.hospitalKontakte.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "";
-  const body = bodySnapshot.documents.map(doc => ({ title: doc.title, description: doc.description }));
+  const headerSnapshot = await getDocs(collection(db, "hospitalKontakteHeader"));
+  const bodySnapshot = await getDocs(collection(db, "hospitalKontakte"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "";
+  const body = bodySnapshot.docs.map(doc => ({ title: doc.data().title, description: doc.data().description }));
   return { header, body };
 };
 
 const fetchFormData = async () => {
-  const headerSnapshot = await db.formHeader.list();
-  const bodySnapshot = await db.formBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Forms";
-  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
-    const fileUrl = await storageServices.files.getFileView(doc.file);
+  const headerSnapshot = await getDocs(collection(db, "formHeader"));
+  const bodySnapshot = await getDocs(collection(db, "formBody"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "Forms";
+  const body = await Promise.all(bodySnapshot.docs.map(async doc => {
+    const fileUrl = await getImageUrl(doc.data().file);
     return {
       img: pdf,
-      title: doc.title,
-      content: `<a href="${fileUrl.href}" target="_blank" download>Preview</a>`,
+      title: doc.data().title,
+      content: `<a href="${fileUrl}" target="_blank" download>Preview</a>`,
     };
   }));
   return { header, body };
 };
 
 const fetchScheduleData = async () => {
-  const headerSnapshot = await db.scheduleHeader.list();
-  const bodySnapshot = await db.scheduleBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "";
-  const body = bodySnapshot.documents.map((doc, index) => ({
+  const headerSnapshot = await getDocs(collection(db, "scheduleHeader"));
+  const bodySnapshot = await getDocs(collection(db, "scheduleBody"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "";
+  const body = bodySnapshot.docs.map((doc, index) => ({
     img: fallbackScheduleBody[index]?.img,
-    title: doc.title,
-    content: doc.description,
+    title: doc.data().title,
+    content: doc.data().description,
   }));
   return { header, body };
 };
 
-const getImageUrl = async (imageId) => {
+const getImageUrl = async (imagePath) => {
   try {
-    const result = await storage.getFileView(buckets[0].id, imageId);
-    return result.href;
+    const imageRef = ref(storage, imagePath);
+    const url = await getDownloadURL(imageRef);
+    return url;
   } catch (error) {
     console.error("Error fetching image URL:", error);
+    return null;
   }
 };
 const fetchGalleryData = async () => {
-  const headerSnapshot = await db.galleryHeader.list();
-  const bodySnapshot = await db.galleryBody.list();
-  const header = headerSnapshot.documents.length > 0 ? headerSnapshot.documents[0].title : "Image Gallery";
-  const body = await Promise.all(bodySnapshot.documents.map(async doc => {
-    const img = await getImageUrl(doc.image);
-    return { src: img, category: doc.category, title: doc.title };
+  const headerSnapshot = await getDocs(collection(db, "galleryHeader"));
+  const bodySnapshot = await getDocs(collection(db, "galleryBody"));
+  const header = headerSnapshot.docs.length > 0 ? headerSnapshot.docs[0].data().title : "Image Gallery";
+  const body = await Promise.all(bodySnapshot.docs.map(async doc => {
+    const img = await getImageUrl(doc.data().image);
+    return { src: img, category: doc.data().category, title: doc.data().title };
   }));
   return { header, body };
 };
@@ -376,7 +401,7 @@ const HomeStartupPage = (props) => {
                         <SwiperSlide key={i} className="p-[15px]"> */}
                           <div className="h-full bg-[#fff] box-shadow">
                             <img className="w-full" src={aboutUs.image} alt="TestimonialsCarousel" width={555} height={432} />
-                            <div className="items-center justify-center text-center flex px-[4.5rem] py-14 flex-row	xs:p-8">
+                            <div className="items-center justify-center text-center flex px-[4.5rem] py-14 flex-row xs:p-8">
                               {/* <div className="grow-0 shrink-0 basis-auto flex-initial pr-[40px] xs:pr-[15px]">
                                 <h2 className="heading-4 font-semibold text-darkgray font-serif mb-0">
                                   {item.number}
@@ -691,3 +716,4 @@ const HomeStartupPage = (props) => {
 };
 
 export default HomeStartupPage;
+

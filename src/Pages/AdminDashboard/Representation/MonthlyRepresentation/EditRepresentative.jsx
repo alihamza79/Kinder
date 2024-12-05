@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db } from "../../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
@@ -11,7 +12,7 @@ import "@reach/combobox/styles.css";
 
 const EditRepresentative = () => {
     const navigate = useNavigate();
-    const { id, repId } = useParams(); // Get the representation date ID and representative ID from the URL
+    const { id, repId } = useParams();
     const [hospital, setHospital] = useState('');
     const [address, setAddress] = useState('');
     const [telephoneNumber, setTelephoneNumber] = useState('');
@@ -23,70 +24,29 @@ const EditRepresentative = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const representative = await db.representatives.get(repId);
-                console.log("Fetched Representative:", representative); // Added console log to check the fetched data
-                setHospital(representative.hospital);
-                setAddress(representative.address);
-                setTelephoneNumber(representative.telephoneNumber);
-                setDoctors(representative.doctors);
-                setLoading(false);
+                const docRef = doc(db, "representatives", repId);
+                const docSnap = await getDoc(docRef);
+                
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setHospital(data.hospital);
+                    setAddress(data.address);
+                    setTelephoneNumber(data.telephoneNumber);
+                    setDoctors(data.doctors);
+                } else {
+                    toast.error("Representative not found!");
+                    navigate(`/representationdates/${id}/representatives`);
+                }
             } catch (error) {
                 console.error("Error fetching representative:", error);
+                toast.error("Error fetching data: " + error.message);
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [repId]);
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        // Validation checks
-        if (!hospital.trim()) {
-            toast.error("Hospital is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!address.trim()) {
-            toast.error("Address is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!telephoneNumber.trim()) {
-            toast.error("Telephone number is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!doctors.trim()) {
-            toast.error("Doctors are required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            await db.representatives.update(repId, {
-                hospital,
-                address,
-                telephoneNumber,
-                doctors,
-            });
-
-            toast.success('Representative updated successfully!', { autoClose: 2000 });
-            sessionStorage.setItem('updateRepresentativeSuccess', 'true'); 
-            navigate(`/representationdates/${id}/representatives`);
-        } catch (error) {
-            toast.error('Error updating representative: ' + error.message, { autoClose: 2000 });
-            console.error('Error updating representative: ', error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [repId, id, navigate]);
 
     const handleAddressChange = async (e) => {
         const value = e.target.value;
@@ -94,20 +54,64 @@ const EditRepresentative = () => {
 
         if (value.length > 2) {
             try {
-                const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`);
+                const response = await fetch(
+                    `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`
+                );
                 const result = await response.json();
                 setAutocompleteOptions(result.features || []);
             } catch (error) {
-                console.error("Error fetching autocomplete options:", error);
+                console.error("Error fetching address suggestions:", error);
             }
-        } else {
-            setAutocompleteOptions([]);
         }
     };
 
-    const handleSelect = (description) => {
-        setAddress(description);
+    const handleSelect = (address) => {
+        setAddress(address);
         setAutocompleteOptions([]);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Validation checks
+        if (!hospital.trim()) {
+            toast.error("Hospital is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!address.trim()) {
+            toast.error("Address is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!telephoneNumber.trim()) {
+            toast.error("Telephone number is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!doctors.trim()) {
+            toast.error("Doctors are required", { autoClose: 2000 });
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await updateDoc(doc(db, "representatives", repId), {
+                hospital,
+                address,
+                telephoneNumber,
+                doctors,
+            });
+
+            sessionStorage.setItem('updateRepresentativeSuccess', 'true');
+            navigate(`/representationdates/${id}/representatives`);
+        } catch (error) {
+            toast.error("Error updating representative: " + error.message);
+            console.error('Error updating representative: ', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import storageServices from "../../../../appwrite/Services/storageServices"; // Import Appwrite storage service
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
-import ImageUpload from "../../../../Components/ImageUpload"; // Import the ImageUpload component
+import ImageUpload from "../../../../Components/ImageUpload";
+import { addDocument } from "../../../../firebase/dbService";
+import { uploadFile } from "../../../../firebase/storageService";
 
 const AddCarouselItem = () => {
     const navigate = useNavigate();
@@ -28,7 +28,6 @@ const AddCarouselItem = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validation checks
         if (!text.trim()) {
             toast.error("Text is required", { autoClose: 2000 });
             setLoading(false);
@@ -44,13 +43,14 @@ const AddCarouselItem = () => {
         setLoading(true);
 
         try {
-            let uploadedImageId = "";
+            let uploadedImagePath = "";
 
             if (imageFile) {
                 const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.images.createFile(imageFile);
-                    uploadedImageId = uploadedImage.$id;
+                    const filePath = `carousel/${Date.now()}-${imageFile.name}`;
+                    await uploadFile(imageFile, filePath);
+                    uploadedImagePath = filePath;
                     toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
                     toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
@@ -58,13 +58,12 @@ const AddCarouselItem = () => {
                 }
             }
 
-            // Store data in Appwrite database
-            await db.heroCarousel.create({
+            await addDocument('heroCarousel', {
                 text: text,
-                image: uploadedImageId,
+                image: uploadedImagePath,
             });
 
-            sessionStorage.setItem('addCarouselItemSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('addCarouselItemSuccess', 'true');
             navigate("/herocarousel");
 
         } catch (error) {

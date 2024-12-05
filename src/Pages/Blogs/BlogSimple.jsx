@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Parallax } from "react-scroll-parallax";
 import BlogSimple from '../../Components/Blogs/BlogSimple';
-import db from "../../appwrite/Services/dbServices";
-import storageServices from "../../appwrite/Services/storageServices";
+import { getAllDocuments } from '../../firebase/dbService';
+import { getFileURL } from '../../firebase/storageService';
 import HeaderSection from '../Header/HeaderSection';
 import FooterSection from '../Footer/FooterSection';
 
@@ -13,29 +13,21 @@ const BlogSimplePage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const blogsPerPage = 6;
 
-  // useEffect(() => {
-  //   const hasReloaded = sessionStorage.getItem('hasReloaded');
-  //   if (!hasReloaded) {
-  //     sessionStorage.setItem('hasReloaded', 'true');
-  //     window.location.reload();
-  //   }
-  // }, []);
-
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const querySnapshot = await db.blogs.list();
+        const querySnapshot = await getAllDocuments('blogs');
         const data = await Promise.all(
-          querySnapshot.documents.map(async (doc) => {
-            const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+          querySnapshot.docs.map(async (doc) => {
+            const imageUrl = await getFileURL(doc.data().image);
             return {
-              id: doc.$id,
-              title: doc.title,
-              date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
-              content: doc.content,
-              img: imageUrl.href,
-              category: doc.tags,
-              author: doc.author,
+              id: doc.id,
+              title: doc.data().title,
+              date: doc.data().publicationDate ? new Date(doc.data().publicationDate).toLocaleDateString() : '',
+              content: doc.data().content,
+              img: imageUrl,
+              category: doc.data().tags,
+              author: doc.data().author,
             };
           })
         );

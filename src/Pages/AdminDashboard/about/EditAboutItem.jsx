@@ -1,73 +1,65 @@
 import React, { useState, useEffect, useRef } from "react";
-import Header from "../../../Components/Header";
-import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import ImageUpload from "../../../Components/ImageUpload"; // Import the ImageUpload component
-import TextEditor from "../InformationCard/TextEditor"; // Import TextEditor component
+import { getDocument, updateDocument } from "../../../firebase/dbService";
+import { uploadFile, getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
+import Header from "../../../Components/Header";
+import Sidebar from "../../../Components/Sidebar";
+import FeatherIcon from "feather-icons-react";
+import ImageUpload from "../../../Components/ImageUpload";
+import TextEditor from "../InformationCard/TextEditor";
 
 const EditAboutItem = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         title: "",
         description: "",
         imageId: "",
-        newImageFile: null, // State to handle new image file
-        newImageId: "", // State to handle new image ID
-        newImageURL: "", // State to handle new image URL
-        imageTitle: "", // State to handle image title
-        imageSubtitle: "", // State to handle image subtitle
+        newImageFile: null,
+        newImageId: "",
+        newImageURL: "",
+        imageTitle: "",
+        imageSubtitle: "",
     });
     const editorRef = useRef(null);
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.about.get(id);
-                if (documentSnapshot) {
+                const docSnapshot = await getDocument('about', id);
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
                     let imageUrl = "";
                     try {
-                        const imageView = await storageServices.images.getFileView(documentSnapshot.image);
-                        const response = await fetch(imageView.href);
-                        if (response.status === 200) {
-                            imageUrl = imageView.href;
-                        } else if (response.status === 404) {
-                            console.warn("Image not found in storage.");
-                        } else {
-                            throw new Error("Error fetching image");
-                        }
+                        imageUrl = await getFileURL(data.image);
                     } catch (error) {
-                        if (error.message.includes("not be found")) {
-                            console.warn("Image not found in storage.");
-                        } else {
-                            throw error;
-                        }
+                        console.warn("Error fetching image:", error);
                     }
+
                     setFormData({
-                        ...documentSnapshot,
-                        imageId: documentSnapshot.image,
-                        newImageId: documentSnapshot.image,
+                        ...data,
+                        imageId: data.image,
+                        newImageId: data.image,
                         newImageURL: imageUrl,
-                        imageTitle: documentSnapshot.imageTitle, // Fetch image title
-                        imageSubtitle: documentSnapshot.imageSubtitle, // Fetch image subtitle
+                        imageTitle: data.imageTitle,
+                        imageSubtitle: data.imageSubtitle,
                     });
-                    editorRef.current.setEditorContent(documentSnapshot.description);
+                    editorRef.current.setEditorContent(data.description);
                 } else {
-                    console.error('Document does not exist');
+                    toast.error('Document does not exist');
+                    navigate('/aboutlist');
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error('Error fetching document data');
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -98,44 +90,54 @@ const EditAboutItem = () => {
 
         setLoading(true);
         try {
-            let newImageId = formData.imageId;
+            let newImagePath = formData.imageId;
 
-            // Upload the new image if a new file is selected
+            // Upload new image if selected
             if (formData.newImageFile) {
                 const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
-                    newImageId = uploadedImage.$id;
-                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                    const imagePath = `about/${Date.now()}-${formData.newImageFile.name}`;
+                    const imageUrl = await uploadFile(formData.newImageFile, imagePath);
+                    newImagePath = imagePath;
+                    toast.update(toastId, { 
+                        render: "Image uploaded successfully!", 
+                        type: "success", 
+                        isLoading: false, 
+                        autoClose: 2000 
+                    });
                 } catch (error) {
-                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                    toast.update(toastId, { 
+                        render: "Image upload failed: " + error.message, 
+                        type: "error", 
+                        isLoading: false, 
+                        autoClose: 2000 
+                    });
                     throw error;
                 }
             }
 
-            // Delete the old image if a new one was uploaded
-            if (formData.newImageFile && formData.imageId !== newImageId) {
+            // Delete old image if new one was uploaded
+            if (formData.newImageFile && formData.imageId !== newImagePath) {
                 try {
-                    console.log("Image id to be deleted: ", formData.imageId);
-                    await storageServices.images.deleteFile(formData.imageId);
+                    await deleteFileFromStorage(formData.imageId);
                 } catch (error) {
-                    console.warn("Old image not found in storage.");
+                    console.warn("Error deleting old image:", error);
                 }
             }
 
-            await db.about.update(id, {
+            await updateDocument('about', id, {
                 title: formData.title,
                 description: formData.description,
-                image: newImageId,
+                image: newImagePath,
                 imageTitle: formData.imageTitle,
                 imageSubtitle: formData.imageSubtitle,
             });
 
-            sessionStorage.setItem('updateAboutItemSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('updateAboutItemSuccess', 'true');
             navigate("/aboutlist");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
-            console.log(error);
+            toast.error("Error updating document: " + error.message);
+            console.error(error);
         } finally {
             setLoading(false);
         }

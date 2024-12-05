@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login02 } from "../../Components/imagepath";
 import { Eye, EyeOff } from "feather-icons-react/build/IconComponents";
-import { signIn, checkAuth } from "../../appwrite/Services/authServices";
+import { signIn, checkAuth } from "../../firebase/authService";
 import Preloader from "../../Components/Preloader";
-import ReCAPTCHA from "react-google-recaptcha"; // Import reCAPTCHA
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin123");
-  const [recaptchaToken, setRecaptchaToken] = useState(null); // State for reCAPTCHA
+  const [email, setEmail] = useState("hamza@gmail.com");
+  const [password, setPassword] = useState("hamza123");
+  const [recaptchaToken, setRecaptchaToken] = useState(null);
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
@@ -45,7 +45,7 @@ const Login = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(""); // Reset error message
+    setError("");
 
     if (!recaptchaToken) {
       setError("Please complete the reCAPTCHA.");
@@ -53,13 +53,13 @@ const Login = () => {
     }
 
     try {
-      await signIn(email, password, recaptchaToken); // Pass the token to signIn
+      await signIn(email, password);
       navigate("/herocarousel");
     } catch (error) {
-      console.error("Login failed:", error); // Log the error for more details
-      if (error.message.includes("Invalid credentials")) {
+      console.error("Login failed:", error);
+      if (error.code === "auth/invalid-email" || error.code === "auth/wrong-password") {
         setError("Invalid email or password. Please try again.");
-      } else if (error.message.includes("Rate limit")) {
+      } else if (error.code === "auth/too-many-requests") {
         setError("Too many login attempts. Please wait a few minutes and try again.");
       } else {
         setError("Failed to login. Please try again later.");
@@ -133,7 +133,7 @@ const Login = () => {
                         </span>
                       </div>
                       <ReCAPTCHA
-                        sitekey="6LcliBkqAAAAAMH9eH7pQ3yM6cKyVeCDRU1CBreV" // Replace with your site key
+                        sitekey="6LcliBkqAAAAAMH9eH7pQ3yM6cKyVeCDRU1CBreV"
                         onChange={(token) => setRecaptchaToken(token)}
                       />
                       {error && <p className="text-danger">{error}</p>}

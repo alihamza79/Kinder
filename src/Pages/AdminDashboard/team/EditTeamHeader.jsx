@@ -5,49 +5,57 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const EditTeamHeader = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState("");
+    const [titleError, setTitleError] = useState("");
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.teamHeader.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
+                const docRef = doc(db, "teamHeader", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setTitle(docSnap.data().title);
                 } else {
                     console.error('Document does not exist');
+                    toast.error("Team header not found");
+                    navigate("/teamheader");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error fetching data: " + error.message);
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate title field
         if (!title.trim()) {
-            toast.error('Please enter a title.', { autoClose: 2000 });
+            setTitleError('Title is required');
+            toast.error("Title is required", { autoClose: 2000 });
             return;
         }
 
         setLoading(true);
         try {
-            await db.teamHeader.update(id, {
+            const docRef = doc(db, "teamHeader", id);
+            await updateDoc(docRef, {
                 title: title,
+                updatedAt: new Date()
             });
-            sessionStorage.setItem('updateTeamHeaderSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('updateTeamHeaderSuccess', 'true');
             navigate("/teamheader");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error("Error updating document: " + error.message);
         } finally {
             setLoading(false);
         }

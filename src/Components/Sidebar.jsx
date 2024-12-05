@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Scrollbars from "react-custom-scrollbars-2";
 import { Link, useNavigate } from "react-router-dom";
-import { signOutUser } from '../appwrite/Services/authServices';
+import { signOutUser } from '../firebase/authService';
 import { blog, doctor, doctorschedule, logout, menuicon06, menuicon10, menuicon11, menuicon12, menuicon15, menuicon16, patients, sidemenu } from './imagepath';
 const Sidebar = (props) => {
   const navigate = useNavigate();
@@ -390,7 +390,7 @@ const Sidebar = (props) => {
 
               </ul>
               <div className="logout-btn">
-                <Link  onClick={handleLogout}>
+                <Link onClick={handleLogout}>
                   <span className="menu-side">
                     <img src={logout} alt="" />
                   </span>{" "}

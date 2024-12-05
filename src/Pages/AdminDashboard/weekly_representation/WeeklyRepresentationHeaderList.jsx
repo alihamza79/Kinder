@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -31,23 +32,32 @@ const WeeklyRepresentationHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.weeklyRepresentationHeader.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const headerRef = collection(db, "weeklyRepresentationHeader");
+      const q = query(headerRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      let data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
 
       if (data.length === 0) {
-        const newDocument = await db.weeklyRepresentationHeader.create({
+        // Add dummy data if collection is empty
+        const dummyData = {
           title: "Dummy Title",
+          createdAt: new Date()
+        };
+        const docRef = await addDoc(collection(db, "weeklyRepresentationHeader"), dummyData);
+        data.push({
+          id: docRef.id,
+          ...dummyData
         });
-        data.push({ id: newDocument.$id, ...newDocument });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -56,13 +66,11 @@ const WeeklyRepresentationHeaderList = () => {
     {
       title: "S/N",
       dataIndex: "serialNumber",
-      key: "serialNumber",
       render: (text, record, index) => index + 1,
     },
     {
       title: "Title",
       dataIndex: "title",
-      key: "title",
     },
     {
       title: "",

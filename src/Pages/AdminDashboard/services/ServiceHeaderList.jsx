@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../config/firebase";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -19,11 +20,11 @@ const ServiceHeaderList = () => {
     const addSuccess = sessionStorage.getItem("addServiceHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateServiceHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateServiceHeaderSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addServiceHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addServiceHeaderSuccess");
     }
     fetchData();
   }, [location]);
@@ -31,24 +32,31 @@ const ServiceHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.serviceHeader.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const headerRef = collection(db, "serviceHeader");
+      const q = query(headerRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
 
       if (data.length === 0) {
-        // Add a new document with "Dummy Title" if the collection is empty
-        const newDocument = await db.serviceHeader.create({
+        const newDoc = await addDoc(collection(db, "serviceHeader"), {
           title: "Dummy Title",
+          createdAt: new Date()
         });
-        data.push({ id: newDocument.$id, ...newDocument });
+        data.push({
+          id: newDoc.id,
+          title: "Dummy Title",
+          createdAt: new Date()
+        });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -93,8 +101,6 @@ const ServiceHeaderList = () => {
       ),
     },
   ];
-
- 
 
   return (
     <>

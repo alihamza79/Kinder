@@ -2,7 +2,7 @@ import React, { Suspense, useEffect, useState,lazy } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 
-import { checkAuth } from "./appwrite/Services/authServices";
+import { checkAuth } from "./firebase/authService";
 import Login from "./Pages/login";
 import ForgotPassword from "./Pages/login/ForgotPassword";
 
@@ -105,8 +105,7 @@ const ProtectedRoute = ({ element }) => {
   }, []);
 
   if (isAuth === null) {
-    // You can show a loader here while checking authentication
-    return <Preloader/>;
+    return <Preloader />;
   }
 
   return isAuth ? element : <Navigate to="/login" />;

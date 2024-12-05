@@ -5,68 +5,54 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import ImageUpload from "../../../Components/ImageUpload"; // Import the ImageUpload component
+import { db, storage } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import ImageUpload from "../../../Components/ImageUpload";
 
 const EditTeamMember = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: "",
         designation: "",
-        imageId: "",
-        newImageFile: null, // State to handle new image file
-        newImageId: "", // State to handle new image ID
-        newImageURL: "", // State to handle new image URL
+        imageUrl: "",
+        newImageFile: null,
     });
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.teamBody.get(id);
-                if (documentSnapshot) {
-                    let imageUrl = "";
-                    try {
-                        const imageView = await storageServices.images.getFileView(documentSnapshot.image);
-                        const response = await fetch(imageView.href);
-                        if (response.status === 200) {
-                            imageUrl = imageView.href;
-                        } else if (response.status === 404) {
-                            console.warn("Image not found in storage.");
-                        } else {
-                            throw new Error("Error fetching image");
-                        }
-                    } catch (error) {
-                        if (error.message.includes("not be found")) {
-                            console.warn("Image not found in storage.");
-                        } else {
-                            throw error;
-                        }
-                    }
+                const docRef = doc(db, "teamBody", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
                     setFormData({
-                        ...documentSnapshot,
-                        imageId: documentSnapshot.image,
-                        newImageId: documentSnapshot.image,
-                        newImageURL: imageUrl,
+                        name: data.name,
+                        designation: data.designation,
+                        imageUrl: data.imageUrl,
+                        newImageFile: null
                     });
                 } else {
                     console.error('Document does not exist');
+                    toast.error("Team member not found");
+                    navigate("/teamlist");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error fetching data: " + error.message);
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
         }));
     };
 
@@ -74,59 +60,62 @@ const EditTeamMember = () => {
         const file = event.target.files[0];
         if (file) {
             const newImageURL = URL.createObjectURL(file);
-            setFormData((prevData) => ({
-                ...prevData,
+            setFormData(prev => ({
+                ...prev,
                 newImageFile: file,
-                newImageURL,
+                imageUrl: newImageURL
             }));
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.name || !formData.designation || !formData.newImageURL) {
-            toast.error("All fields are required, including the image.");
+        if (!formData.name || !formData.designation) {
+            toast.error("All fields are required");
             return;
         }
 
         setLoading(true);
         try {
-            let newImageId = formData.imageId;
+            let imageUrl = formData.imageUrl;
 
-            // Upload the new image if a new file is selected
             if (formData.newImageFile) {
+                // Upload new image
                 const toastId = toast.loading("Uploading image...");
-                try {
-                    const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
-                    newImageId = uploadedImage.$id;
-                    toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-                } catch (error) {
-                    toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-                    throw error;
+                const imageRef = ref(storage, `team/${Date.now()}_${formData.newImageFile.name}`);
+                await uploadBytes(imageRef, formData.newImageFile);
+                imageUrl = await getDownloadURL(imageRef);
+                
+                // Delete old image if it exists
+                if (formData.imageUrl) {
+                    try {
+                        const oldImageRef = ref(storage, formData.imageUrl);
+                        await deleteObject(oldImageRef);
+                    } catch (error) {
+                        console.warn("Old image not found in storage");
+                    }
                 }
+                
+                toast.update(toastId, {
+                    render: "Image uploaded successfully!",
+                    type: "success",
+                    isLoading: false,
+                    autoClose: 2000
+                });
             }
 
-            // Delete the old image if a new one was uploaded
-            if (formData.newImageFile && formData.imageId !== newImageId) {
-                try {
-                    console.log("Image id to be deleted: ", formData.imageId);
-                    await storageServices.images.deleteFile(formData.imageId);
-                } catch (error) {
-                    console.warn("Old image not found in storage.");
-                }
-            }
-
-            await db.teamBody.update(id, {
+            const docRef = doc(db, "teamBody", id);
+            await updateDoc(docRef, {
                 name: formData.name,
                 designation: formData.designation,
-                image: newImageId,
+                imageUrl: imageUrl,
+                updatedAt: new Date()
             });
 
-            sessionStorage.setItem('updateTeamBodySuccess', 'true'); // Set update flag
+            sessionStorage.setItem('updateTeamBodySuccess', 'true');
             navigate("/teamlist");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
-            console.log(error);
+            toast.error("Error updating team member: " + error.message);
         } finally {
             setLoading(false);
         }
@@ -207,7 +196,7 @@ const EditTeamMember = () => {
                                                 </div>
                                             </div>
                                             {/* Image Upload Component */}
-                                            <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Image" />
+                                            <ImageUpload id="image" src={formData.imageUrl} loadFile={handleImageLoad} imageName="Image" />
                                             {/* Submit/Cancel Button */}
                                             <div className="col-12">
                                                 <div className="doctor-submit text-end">

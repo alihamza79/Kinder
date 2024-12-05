@@ -4,7 +4,7 @@ import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,16 +31,16 @@ const GalleryHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.galleryHeader.list();
-      let data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('galleryHeader');
+      let data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
 
       if (data.length === 0) {
         const dummy = { title: "Dummy Title" };
-        const newDocument = await db.galleryHeader.create(dummy);
-        data.push({ id: newDocument.$id, ...newDocument });
+        const newDocument = await addDocument('galleryHeader', dummy);
+        data.push({ id: newDocument.id, ...newDocument.data() });
       }
 
       setDataSource(data);

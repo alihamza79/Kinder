@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { addDocument } from "../../../firebase/dbService";
+import { uploadFile } from "../../../firebase/storageService";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FeatherIcon from "feather-icons-react";
@@ -35,7 +35,6 @@ const AddBlog = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Check if all required fields are filled
         if (!title || !author || !tags || !content || !imageFile) {
             toast.error('Please fill in all required fields.', { autoClose: 2000 });
             return;
@@ -44,15 +43,25 @@ const AddBlog = () => {
         setLoading(true);
 
         try {
-            let uploadedImageId = "";
-
+            let imagePath = "";
             const toastId = toast.loading("Uploading image...");
+            
             try {
-                const uploadedImage = await storageServices.images.createFile(imageFile);
-                uploadedImageId = uploadedImage.$id;
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
+                imagePath = `blogs/${Date.now()}-${imageFile.name}`;
+                await uploadFile(imageFile, imagePath);
+                toast.update(toastId, { 
+                    render: "Image uploaded successfully!", 
+                    type: "success", 
+                    isLoading: false, 
+                    autoClose: 2000 
+                });
             } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
+                toast.update(toastId, { 
+                    render: "Image upload failed: " + error.message, 
+                    type: "error", 
+                    isLoading: false, 
+                    autoClose: 2000 
+                });
                 throw error;
             }
 
@@ -63,17 +72,18 @@ const AddBlog = () => {
                 author,
                 tags: cleanedTags,
                 content,
-                imageUrl: uploadedImageId,
-                publicationDate: new Date(),
+                image: imagePath,
+                publicationDate: new Date().toISOString(),
                 views: 0,
+                createdAt: new Date().toISOString()
             };
 
-            await db.blogs.create(blogData);
-            toast.success("Blog has been published successfully");
+            await addDocument('blogs', blogData);
+            sessionStorage.setItem('addBlogSuccess', 'true');
             navigate("/blogview");
 
         } catch (error) {
-            toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
+            toast.error('Error adding blog: ' + error.message, { autoClose: 2000 });
         } finally {
             setLoading(false);
         }

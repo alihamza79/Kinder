@@ -5,16 +5,16 @@ import { AnimatePresence, m } from 'framer-motion';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Parallax } from 'react-scroll-parallax';
+import { db } from '../../config/firebase';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import Buttons from '../../Components/Button/Buttons';
 import { Checkbox, Input, TextArea } from '../../Components/Form/Form';
-
 import GoogleMap from '../../Components/GoogleMap/GoogleMap';
 import MessageBox from '../../Components/MessageBox/MessageBox';
 import SocialIcons from '../../Components/SocialIcon/SocialIcons';
 import { fadeIn } from '../../Functions/GlobalAnimations';
 import FooterSection from '../Footer/FooterSection';
 import HeaderSection from '../Header/HeaderSection';
-import db from '../../appwrite/Services/dbServices';
 import { ContactFormStyle03Schema } from '../../Components/Form/FormSchema';
 
 const sendEmail = async (values) => {
@@ -34,9 +34,11 @@ const sendEmail = async (values) => {
 
 const saveContactInfo = async (values) => {
   try {
-    const result = await db.contacts.create(values);
-    
-    return { status: 'success', result };
+    const docRef = await addDoc(collection(db, "contacts"), {
+      ...values,
+      createdAt: new Date()
+    });
+    return { status: 'success', result: docRef };
   } catch (error) {
     console.log(error);
     return { status: 'error', error };
@@ -60,9 +62,9 @@ const ContactUsClassicPage = (props) => {
   useEffect(() => {
     const fetchSocialLinks = async () => {
       try {
-        const response = await db.socialLinks.list();
-        if (response.documents.length > 0) {
-          const { facebook, twitter, instagram, linkedin } = response.documents[0];
+        const querySnapshot = await getDocs(collection(db, "socialLinks"));
+        if (!querySnapshot.empty) {
+          const { facebook, twitter, instagram, linkedin } = querySnapshot.docs[0].data();
           setSocialLinks({ facebook, twitter, instagram, linkedin });
         }
       } catch (error) {

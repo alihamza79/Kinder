@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import storageServices from "../../../../appwrite/Services/storageServices"; // Import Appwrite storage services
+import { getAllDocuments, deleteDocument } from "../../../../firebase/dbService";
+import { getFileURL, deleteFileFromStorage } from "../../../../firebase/storageService";
 import Header from "../../../../Components/Header";
 import { plusicon, refreshicon } from "../../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../../Components/Pagination";
@@ -24,11 +24,11 @@ const CarouselList = () => {
     const addSuccess = sessionStorage.getItem("addCarouselItemSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateCarouselItemSuccess");
     }
     if (addSuccess) {
       toast.success("Document added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addCarouselItemSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addCarouselItemSuccess");
     }
     fetchData();
   }, [location]);
@@ -36,15 +36,15 @@ const CarouselList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.heroCarousel.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await getAllDocuments('heroCarousel');
       const data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await storageServices.images.getFileView(doc.image);
+        querySnapshot.docs.map(async (doc) => {
+          const imageUrl = await getFileURL(doc.data().image);
           return {
-            id: doc.$id,
-            text: doc.text,
-            imageId: doc.image,
-            imageUrl: imageUrl.href,
+            id: doc.id,
+            text: doc.data().text,
+            imageId: doc.data().image,
+            imageUrl: imageUrl,
           };
         })
       );
@@ -61,12 +61,11 @@ const CarouselList = () => {
       setDeleting(true);
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.imageId) {
-        // Delete image from Appwrite storage if it exists
-        await storageServices.images.deleteFile(selectedRecord.imageId);
+        await deleteFileFromStorage(selectedRecord.imageId);
       }
-      await db.heroCarousel.delete(selectedRecordId); // Delete the document from Appwrite
+      await deleteDocument('heroCarousel', selectedRecordId);
       toast.success("Carousel item deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
@@ -152,7 +151,7 @@ const CarouselList = () => {
   ];
 
   const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
+    fetchData();
   };
 
   return (

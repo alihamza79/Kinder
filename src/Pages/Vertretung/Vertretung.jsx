@@ -7,7 +7,7 @@ import IconWithText from '../../Components/IconWithText/IconWithText';
 import FooterSection from '../Footer/FooterSection';
 import HeaderSection from '../Header/HeaderSection';
 import MonthlyTab06 from '../../Components/Tab/MonthlyTab06';
-import db from '../../appwrite/Services/dbServices';
+import { getAllDocuments, getDocument } from '../../firebase/dbService';
 import Preloader from '../../Components/Preloader';
 
 //icons
@@ -15,67 +15,71 @@ import Preloader from '../../Components/Preloader';
  import calender_03 from "../../Assets/img/icons/calender_03.svg"
 
 const fetchRepresentationDates = async () => {
-  const { documents } = await db.representationDates.list();
-  const fetchedData = await Promise.all(
-    documents.map(async (doc) => {
-      const representatives = await Promise.all(
-        doc.representativesCollection.map(async (repId) => {
-          try {
-            const repData = await db.representatives.get(repId);
-            return {
-              name: repData.name,
-              hospital: repData.hospital,
-              address: repData.address,
-              telephoneNumber: repData.telephoneNumber,
-              doctors: repData.doctors
-            };
-          } catch (error) {
-            console.error(`Error fetching representative with ID ${repId}:`, error);
-            return null; // Return null if there's an error fetching this representative
-          }
-        })
-      );
+  try {
+    const dateSnapshot = await getAllDocuments('representationDates');
+    const dates = dateSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+    const repSnapshot = await getAllDocuments('representatives');
+    const representatives = repSnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+
+    const fetchedData = dates.map(date => {
+      const repsForDate = representatives.filter(rep => rep.dateId === date.id);
+
       return {
-        ...doc,
-        representatives: representatives.filter((rep) => rep !== null), // Filter out any null values
+        fromDate: date.fromDate.toDate(),
+        toDate: date.toDate.toDate(),
+        representatives: repsForDate.map(rep => ({
+          name: rep.name,
+          hospital: rep.hospital,
+          address: rep.address,
+          telephoneNumber: rep.telephoneNumber,
+          doctors: rep.doctors
+        }))
       };
-    })
-  );
+    });
 
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
-  };
-
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
-  return months.map((month, index) => {
-    const monthData = fetchedData.filter((doc) => new Date(doc.fromDate).getMonth() === index);
-    const activities = monthData.map((doc) => ({
-      time: doc.fromDate === doc.toDate ? formatDate(doc.fromDate) : `${formatDate(doc.fromDate)} - ${formatDate(doc.toDate)}`,
-      representatives: doc.representatives,
-    }));
-    return {
-      tabTitle: month,
-      month,
-      activities,
+    const formatDate = (date) => {
+      return `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
     };
-  });
+
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    
+    return months.map((month, index) => {
+      const monthData = fetchedData.filter((doc) => {
+        return doc.fromDate.getMonth() === index;
+      });
+
+      return {
+        tabTitle: month,
+        month,
+        activities: monthData.map((doc) => ({
+          time: doc.fromDate.getTime() === doc.toDate.getTime()
+            ? formatDate(doc.fromDate)
+            : `${formatDate(doc.fromDate)} - ${formatDate(doc.toDate)}`,
+          representatives: doc.representatives || [],
+        }))
+      };
+    });
+  } catch (error) {
+    console.error('Error fetching representation dates:', error);
+    throw error;
+  }
 };
 
 const fetchWeeklyRepresentation = async () => {
   // Fetch header data
-  const headerSnapshot = await db.weeklyRepresentationHeader.list();
+  const headerSnapshot = await getAllDocuments('weeklyRepresentationHeader');
   let weeklyHeader = "";
-  if (headerSnapshot.documents.length > 0) {
-    weeklyHeader = headerSnapshot.documents[0].title;
+  if (!headerSnapshot.empty) {
+    weeklyHeader = headerSnapshot.docs[0].data().title;
   }
 
   // Fetch body data
-  const bodySnapshot = await db.weeklyRepresentation.list();
-  const weeklyBodyData = bodySnapshot.documents.map((doc) => ({
-    img:calender_03,
-    title: doc.title,
-    content: doc.description,
+  const bodySnapshot = await getAllDocuments('weeklyRepresentation');
+  const weeklyBodyData = bodySnapshot.docs.map((doc) => ({
+    img: calender_03,
+    title: doc.data().title,
+    content: doc.data().description,
   }));
 
   return { weeklyHeader, weeklyBodyData };

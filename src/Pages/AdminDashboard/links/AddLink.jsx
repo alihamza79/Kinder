@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices"; 
-import { toast, ToastContainer } from "react-toastify"; 
+import { addDocument } from "../../../firebase/dbService";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import TextEditor from "../InformationCard/TextEditor";
@@ -18,7 +18,6 @@ const AddLink = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Validate form fields
         if (!title.trim() || !description.trim()) {
             toast.error('Please fill in all required fields.', { autoClose: 2000 });
             return;
@@ -27,14 +26,13 @@ const AddLink = () => {
         setLoading(true);
 
         try {
-            await db.links.create({
+            await addDocument('links', {
                 title: title,
                 description: description,
             });
 
-            sessionStorage.setItem('addLinkSuccess', 'true'); 
+            sessionStorage.setItem('addLinkSuccess', 'true');
             navigate("/linkslist");
-
         } catch (error) {
             toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
             console.error('Error adding document: ', error);

@@ -5,40 +5,57 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const EditWeeklyRepresentationHeader = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
+  const [titleError, setTitleError] = useState('');
 
   useEffect(() => {
     const fetchDocumentData = async () => {
       try {
-        const documentSnapshot = await db.weeklyRepresentationHeader.get(id);
-        if (documentSnapshot) {
-          setTitle(documentSnapshot.title);
+        const docRef = doc(db, "weeklyRepresentationHeader", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setTitle(docSnap.data().title);
         } else {
           console.error('Document does not exist');
+          toast.error("Weekly representation header not found");
+          navigate("/weeklyrepresentationheader");
         }
       } catch (error) {
         console.error('Error fetching document data:', error);
+        toast.error("Error fetching data: " + error.message);
       }
     };
 
     fetchDocumentData();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!title.trim()) {
+      setTitleError('Title is required');
+      toast.error("Title is required", { autoClose: 2000 });
+      return;
+    }
+
     setLoading(true);
     try {
-      await db.weeklyRepresentationHeader.update(id, { title });
+      const docRef = doc(db, "weeklyRepresentationHeader", id);
+      await updateDoc(docRef, {
+        title: title,
+        updatedAt: new Date()
+      });
       sessionStorage.setItem('updateWeeklyRepresentationHeaderSuccess', 'true');
       navigate("/weeklyrepresentationheader");
     } catch (error) {
-      toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+      toast.error("Error updating document: " + error.message);
     } finally {
       setLoading(false);
     }

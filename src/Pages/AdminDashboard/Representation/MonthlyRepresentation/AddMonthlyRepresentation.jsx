@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../../appwrite/Services/dbServices";
+import { db } from "../../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
 import TextEditor from "../../../../Components/TextEditor"; // Import the TextEditor component
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
 import "@reach/combobox/styles.css";
@@ -35,16 +36,18 @@ const AddMonthlyRepresentation = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await db.monthlyRepresentation.create({
+            await addDoc(collection(db, "monthlyRepresentations"), {
                 date: formData.date,
                 hospitalDetails: formData.hospitalDetails,
                 doctors: formData.doctors,
                 hospitalLocation: formData.hospitalLocation,
+                createdAt: new Date(),
             });
+            
             sessionStorage.setItem('addMonthlyRepresentationSuccess', 'true'); 
             navigate("/monthlyrepresentation");
         } catch (error) {
-            toast.error("Error adding document: " + error.message, { autoClose: 2000 });
+            toast.error("Error adding representation: " + error.message);
         } finally {
             setLoading(false);
         }

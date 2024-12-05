@@ -1,22 +1,35 @@
+// src/components/ForgotPassword.jsx
+
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { login02 } from '../../Components/imagepath';
-import { sendPasswordRecoveryEmail } from '../../appwrite/Services/authServices';
+import { login02 } from '../../Components/imagepath'; // Ensure this path is correct
+import { sendPasswordRecoveryEmail } from '../../firebase/authService';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  /**
+   * Handles the form submission to send a password recovery email.
+   * @param {Event} event - The form submission event.
+   */
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMessage("");
     setError("");
     try {
       await sendPasswordRecoveryEmail(email);
-      setMessage("Password recovery email sent. Please check your inbox.");
+      // Always display a generic success message
+      setMessage("Apassword reset link has been sent.");
     } catch (error) {
-      setError("Failed to send recovery email. Please try again later.");
+      console.error("Error sending password recovery email:", error);
+      if (error.code === 'auth/invalid-email') {
+        setError("Invalid email address. Please enter a valid email.");
+      } else {
+        // For security reasons, do not reveal if the user exists or not
+        setError("Failed to send recovery email. Please try again later.");
+      }
     }
   };
 
@@ -37,8 +50,8 @@ const ForgotPassword = () => {
                 <div className="login-right">
                   <div className="login-right-wrap">
                     <div className="account-logo">
-                    <Link to="/">
-                    <div className="flex items-center">
+                      <Link to="/">
+                        <div className="flex items-center">
                           <img
                             width={80}
                             height={80}
@@ -68,6 +81,7 @@ const ForgotPassword = () => {
                           value={email}
                           onChange={(e) => setEmail(e.target.value)}
                           required
+                          placeholder="Enter your registered email"
                         />
                       </div>
                       {message && <p className="text-success">{message}</p>}
@@ -78,14 +92,16 @@ const ForgotPassword = () => {
                         </button>
                       </div>
                     </form>
-                    
+                    <div className="text-center">
+                      <Link to="/login">Back to Login</Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   );
 };

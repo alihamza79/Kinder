@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../../config/firebase";   
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import Header from "../../../../Components/Header";
 import { plusicon, refreshicon } from "../../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../../Components/Pagination";
@@ -36,16 +37,19 @@ const RepresentationDatesList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.representationDates.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        fromDate: doc.fromDate,
-        toDate: doc.toDate,
+      const q = query(collection(db, "representationDates"), orderBy("fromDate", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+        fromDate: doc.data().fromDate.toDate(),
+        toDate: doc.data().toDate.toDate()
       }));
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -53,35 +57,24 @@ const RepresentationDatesList = () => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
+      const dateRef = doc(db, "representationDates", selectedRecordId);
       
-      // Fetch the representation date document to get the representativesCollection
-      const representationDateDoc = await db.representationDates.get(selectedRecordId);
-      const { representativesCollection } = representationDateDoc;
-  
-     
+      // Delete all associated representatives
+      const repsSnapshot = await getDocs(collection(db, "representatives"));
+      const deletePromises = repsSnapshot.docs
+        .filter(doc => doc.data().dateId === selectedRecordId)
+        .map(doc => deleteDoc(doc.ref));
       
-      // Check if representativesCollection exists and is an array
-      if (Array.isArray(representativesCollection) && representativesCollection.length > 0) {
-        
-        await Promise.all(representativesCollection.map(async (repId) => {
-          console.log("Deleting representative with ID:", repId);
-          return await db.representatives.delete(repId);
-        }));
-        
-      } else {
-        console.log("No representatives to delete.");
-      }
-    
-      // Delete the representation date document
-      await db.representationDates.delete(selectedRecordId);
+      await Promise.all(deletePromises);
+      await deleteDoc(dateRef);
       
-      toast.success("Date and related representatives deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      toast.success("Date and related representatives deleted successfully!");
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting documents:", error);
-      toast.error("Error deleting documents: " + error.message, { autoClose: 2000 });
+      toast.error("Error deleting: " + error.message);
     } finally {
       setDeleting(false);
     }

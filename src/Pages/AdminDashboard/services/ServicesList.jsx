@@ -5,7 +5,8 @@ import Sidebar from "../../../Components/Sidebar";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
@@ -23,11 +24,11 @@ const ServicesList = () => {
     const addSuccess = sessionStorage.getItem("addServiceSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateServiceSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateServiceSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addServiceSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addServiceSuccess");
     }
     fetchData();
   }, [location]);
@@ -35,28 +36,32 @@ const ServicesList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.services.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const servicesRef = collection(db, "services");
+      const q = query(servicesRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
       }));
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async () => {
     try {
-      await db.services.delete(selectedRecordId); // Delete the document from Appwrite
+      await deleteDoc(doc(db, "services", selectedRecordId));
       toast.success("Service deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document:", error);
+      toast.error("Error deleting service: " + error.message);
     }
   };
 
@@ -118,7 +123,7 @@ const ServicesList = () => {
   ];
 
   const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
+    fetchData();
   };
 
   return (

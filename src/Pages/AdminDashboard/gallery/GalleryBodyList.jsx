@@ -4,8 +4,8 @@ import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { getAllDocuments, deleteDocument } from "../../../firebase/dbService";
+import { getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
@@ -36,27 +36,21 @@ const GalleryBodyList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.galleryBody.list();
+      const querySnapshot = await getAllDocuments('galleryBody');
       const data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
+        querySnapshot.docs.map(async (doc) => {
           let imageUrl = "";
           try {
-            const imageView = await storageServices.images.getFileView(doc.image);
-            const response = await fetch(imageView.href);
-            if (response.status === 200) {
-              imageUrl = imageView.href;
-            } else {
-              console.warn("Image not found in storage.");
-            }
+            imageUrl = await getFileURL(doc.data().image);
           } catch (error) {
             console.error("Error fetching image URL:", error);
           }
 
           return {
-            id: doc.$id,
-            name: doc.name,
-            category: doc.category,
-            imageId: doc.image,
+            id: doc.id,
+            name: doc.data().name,
+            category: doc.data().category,
+            imageId: doc.data().image,
             imageUrl: imageUrl,
           };
         })
@@ -75,16 +69,12 @@ const GalleryBodyList = () => {
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.imageId) {
         try {
-          await storageServices.images.deleteFile(selectedRecord.imageId);
+          await deleteFileFromStorage(selectedRecord.imageId);
         } catch (error) {
-          if (error.message.includes("not be found")) {
-            console.warn("Image not found in storage.");
-          } else {
-            throw error;
-          }
+          console.warn("Image not found in storage.");
         }
       }
-      await db.galleryBody.delete(selectedRecordId);
+      await deleteDocument('galleryBody', selectedRecordId);
       toast.success("Gallery item deleted successfully!", { autoClose: 2000 });
       fetchData();
       setSelectedRecordId(null);
@@ -258,44 +248,6 @@ const GalleryBodyList = () => {
           </div>
         </div>
       </div>
-      {deleteModalVisible && (
-        <div
-          className={
-            deleteModalVisible
-              ? "modal fade show delete-modal"
-              : "modal fade delete-modal"
-          }
-          style={{
-            display: deleteModalVisible ? "block" : "none",
-            backgroundColor: "rgba(0,0,0,0.5)",
-          }}
-          role="dialog"
-        >
-          <div className="modal-dialog modal-dialog-centered">
-            <div className="modal-content">
-              <div className="modal-body text-center">
-                <h3>Are you sure you want to delete this gallery item?</h3>
-                <div className="m-t-20">
-                  <Button
-                    onClick={hideDeleteModal}
-                    className="btn btn-white me-2 pt-1"
-                  >
-                    Close
-                  </Button>
-                  <Button
-                    type="button"
-                    className="btn btn-danger pt-1"
-                    onClick={handleDelete}
-                    disabled={deleting}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       <ToastContainer />
     </>
   );

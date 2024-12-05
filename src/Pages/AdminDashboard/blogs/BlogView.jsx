@@ -1,12 +1,12 @@
 import { Button, Table } from "antd";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
-import { storage } from "../../../appwrite/config";
-import { buckets } from "../../../appwrite/buckets";
+import { getAllDocuments, deleteDocument } from "../../../firebase/dbService";
+import { getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../../../Components/Header";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
@@ -19,49 +19,59 @@ const BlogView = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchData();
+      } else {
+        navigate("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [location, navigate]);
 
   useEffect(() => {
     const updateSuccess = sessionStorage.getItem("updateBlogSuccess");
     const addSuccess = sessionStorage.getItem("addBlogSuccess");
     if (updateSuccess) {
       toast.success("Blog updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateBlogSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateBlogSuccess");
     }
     if (addSuccess) {
       toast.success("Blog added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addBlogSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addBlogSuccess");
     }
-    fetchData();
   }, [location]);
-
-  const getImageUrl = async (imageId) => {
-    try {
-      const result = await storage.getFileView(buckets[0].id, imageId);
-      return result.href;
-    } catch (error) {
-      console.error("Error fetching image URL:", error);
-    }
-  };
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.blogs.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await getAllDocuments('blogs');
       const data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await getImageUrl(doc.imageUrl);
+        querySnapshot.docs.map(async (doc) => {
+          let imageUrl = '';
+          try {
+            imageUrl = await getFileURL(doc.data().image);
+          } catch (error) {
+            console.warn(`Error fetching image for document ${doc.id}:`, error);
+            imageUrl = '/assets/img/dummy-image.jpg'; // Fallback image
+          }
           return {
-            id: doc.$id,
-            ...doc,
+            id: doc.id,
+            ...doc.data(),
             imageUrl: imageUrl,
-            imageId: doc.imageUrl // Store the original image ID
           };
         })
       );
       setBlogs(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error loading blogs. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };
@@ -70,17 +80,17 @@ const BlogView = () => {
     try {
       setDeleting(true);
       const selectedBlog = blogs.find((blog) => blog.id === selectedBlogId);
-      if (selectedBlog && selectedBlog.imageId) {
-        // Delete image from Appwrite storage if it exists
-        await storage.deleteFile(buckets[0].id, selectedBlog.imageId);
+      if (selectedBlog && selectedBlog.image) {
+        await deleteFileFromStorage(selectedBlog.image);
       }
-      await db.blogs.delete(selectedBlogId); // Delete the document from Appwrite
+      await deleteDocument('blogs', selectedBlogId);
       toast.success("Blog deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedBlogId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting blog:", error);
+      toast.error("Error deleting blog. Please try again.");
     } finally {
       setDeleting(false);
     }
@@ -157,7 +167,7 @@ const BlogView = () => {
   ];
 
   const handleRefresh = () => {
-    fetchData(); // Refresh data from Appwrite
+    fetchData();
   };
 
   return (

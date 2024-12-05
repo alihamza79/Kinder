@@ -5,11 +5,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; 
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditWeeklyRepresentation = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [title, setTitle] = useState('');
@@ -19,42 +20,48 @@ const EditWeeklyRepresentation = () => {
   useEffect(() => {
     const fetchDocumentData = async () => {
       try {
-        const documentSnapshot = await db.weeklyRepresentation.get(id);
-        if (documentSnapshot) {
-          setTitle(documentSnapshot.title);
-          setDescription(documentSnapshot.description);
-          editorRef.current.setEditorContent(documentSnapshot.description);
+        const docRef = doc(db, "weeklyRepresentation", id);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setTitle(data.title);
+          setDescription(data.description);
+          editorRef.current.setEditorContent(data.description);
         } else {
           console.error('Document does not exist');
+          toast.error("Weekly representation not found");
+          navigate("/weeklyrepresentationbody");
         }
       } catch (error) {
         console.error('Error fetching document data:', error);
+        toast.error("Error fetching data: " + error.message);
       }
     };
 
     fetchDocumentData();
-  }, [id]);
+  }, [id, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!title.trim()) {
-      toast.error('Title is required', { autoClose: 2000 });
-      return;
-    }
-
-    if (!description.trim()) {
-      toast.error('Description is required', { autoClose: 2000 });
+    if (!title.trim() || !description.trim()) {
+      toast.error('All fields are required', { autoClose: 2000 });
       return;
     }
 
     setLoading(true);
     try {
-      await db.weeklyRepresentation.update(id, { title, description });
-      sessionStorage.setItem('updateWeeklyRepresentationSuccess', 'true'); 
+      const docRef = doc(db, "weeklyRepresentation", id);
+      await updateDoc(docRef, {
+        title,
+        description,
+        updatedAt: new Date()
+      });
+      
+      sessionStorage.setItem('updateWeeklyRepresentationSuccess', 'true');
       navigate("/weeklyrepresentationbody");
     } catch (error) {
-      toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+      toast.error("Error updating document: " + error.message);
     } finally {
       setLoading(false);
     }

@@ -1,14 +1,16 @@
-import { Button, Table } from "antd";
-import FeatherIcon from "feather-icons-react/build/FeatherIcon";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../../config/firebase";
+import { collection, query, where, getDocs, deleteDoc, doc, getDoc } from "firebase/firestore";
 import Header from "../../../../Components/Header";
 import { plusicon, refreshicon } from "../../../../Components/imagepath";
 import { itemRender, onShowSizeChange } from "../../../../Components/Pagination";
 import Sidebar from "../../../../Components/Sidebar";
+import { Button, Table } from "antd";
+import FeatherIcon from "feather-icons-react/build/FeatherIcon";
+import moment from 'moment';
 
 const RepresentativeList = () => {
   const [dataSource, setDataSource] = useState([]);
@@ -16,59 +18,59 @@ const RepresentativeList = () => {
   const [selectedRecordId, setSelectedRecordId] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [dateRange, setDateRange] = useState(null);
   const location = useLocation();
-  const [representationDate, setRepresentationDate] = useState();
   const navigate = useNavigate();
-  const { id } = useParams(); // Get the representation date ID from the URL
+  const { id } = useParams();
 
   useEffect(() => {
+    fetchDateDetails();
     const updateSuccess = sessionStorage.getItem("updateRepresentativeSuccess");
     const addSuccess = sessionStorage.getItem("addRepresentativeSuccess");
     if (updateSuccess) {
       toast.success("Representative updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateRepresentativeSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateRepresentativeSuccess");
     }
     if (addSuccess) {
       toast.success("Representative added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addRepresentativeSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addRepresentativeSuccess");
     }
     fetchData();
   }, [location]);
 
+  const fetchDateDetails = async () => {
+    try {
+      const dateDoc = await getDoc(doc(db, "representationDates", id));
+      if (dateDoc.exists()) {
+        const data = dateDoc.data();
+        const fromDate = moment(data.fromDate.toDate()).format('DD.MM.YYYY'); // Change here
+        const toDate = moment(data.toDate.toDate()).format('DD.MM.YYYY'); // Change here
+        setDateRange(`${fromDate} to ${toDate}`);
+      }
+    } catch (error) {
+      console.error("Error fetching date details:", error);
+      toast.error("Error fetching date details: " + error.message);
+    }
+  };
+  
+
   const fetchData = async () => {
     try {
       setLoading(true);
-      // Fetch the representation date document
-      const representationDateDoc = await db.representationDates.get(id);
-      const representativeIds = representationDateDoc.representativesCollection;
-  
-      const formatDate = (date) => {
-        const d = new Date(date);
-        return `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
-      };
-  
-      setRepresentationDate(
-        representationDateDoc.fromDate === representationDateDoc.toDate
-          ? formatDate(representationDateDoc.fromDate)
-          : `${formatDate(representationDateDoc.fromDate)} - ${formatDate(representationDateDoc.toDate)}`
+      const q = query(
+        collection(db, "representatives"), 
+        where("dateId", "==", id)
       );
-  
-      // Fetch the representative documents
-      const representativePromises = representativeIds.map((repId) => db.representatives.get(repId));
-      const representatives = await Promise.all(representativePromises);
-  
-      const data = representatives.map((rep) => ({
-        id: rep.$id,
-        hospital: rep.hospital,
-        address: rep.address,
-        telephoneNumber: rep.telephoneNumber,
-        doctors: rep.doctors,
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
-  
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
@@ -77,27 +79,14 @@ const RepresentativeList = () => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      
-      // Delete the representative document
-      await db.representatives.delete(selectedRecordId);
-
-      // Fetch the representation date document
-      const representationDateDoc = await db.representationDates.get(id);
-      const representativeIds = representationDateDoc.representativesCollection;
-
-      // Remove the representative ID from the representativesCollection array
-      const updatedRepresentativeIds = representativeIds.filter(repId => repId !== selectedRecordId);
-
-      // Update the representation date document
-      await db.representationDates.update(id, { representativesCollection: updatedRepresentativeIds });
-
-      toast.success("Representative and associated data deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      await deleteDoc(doc(db, "representatives", selectedRecordId));
+      toast.success("Representative deleted successfully!");
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document:", error);
-      toast.error("Error deleting document: " + error.message, { autoClose: 2000 });
+      toast.error("Error deleting: " + error.message);
     } finally {
       setDeleting(false);
     }
@@ -181,27 +170,23 @@ const RepresentativeList = () => {
 
   return (
     <>
-      <Header />
-      <Sidebar id="menu-item4" id1="menu-items4" activeClassName="representatives" />
-      <>
+      <div className="main-wrapper">
+        <Header />
+        <Sidebar />
         <div className="page-wrapper">
-          <div className="content">
-            {/* Page Navbar */}
+          <div className="content container-fluid">
             <div className="page-header">
-              <div className="row">
-                <div className="col-sm-12">
+              <div className="row align-items-center">
+                <div className="col">
+                 
                   <ul className="breadcrumb">
                     <li className="breadcrumb-item">
-                      <Link to="/representationdates">Representative Dates</Link>
-                    </li>
-                    <li className="breadcrumb-item">
-                      <i className="feather-chevron-right">
-                        <FeatherIcon icon="chevron-right" />
-                      </i>
+                      <Link to="/representationdates">Representation Dates</Link>
                     </li>
                     <li className="breadcrumb-item active">Representatives</li>
                   </ul>
                 </div>
+                
               </div>
             </div>
             <div className="row">
@@ -212,7 +197,7 @@ const RepresentativeList = () => {
                       <div className="row align-items-center">
                         <div className="col">
                           <div className="doctor-table-blk">
-                            <h3>{`${representationDate} Representatives`}</h3>
+                            <h3>{`${dateRange} Representatives`}</h3>
                             <div className="doctor-search-blk">
                               <div className="add-group">
                                 <Link
@@ -255,7 +240,7 @@ const RepresentativeList = () => {
             </div>
           </div>
         </div>
-      </>
+      </div>
       {deleteModalVisible && (
         <div
           className={

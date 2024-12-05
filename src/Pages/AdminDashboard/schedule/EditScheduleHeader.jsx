@@ -5,10 +5,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const EditScheduleHeader = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -17,14 +18,17 @@ const EditScheduleHeader = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.scheduleHeader.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
+                const docRef = doc(db, "scheduleHeader", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setTitle(docSnap.data().title);
                 } else {
                     console.error('Document does not exist');
+                    toast.error("Document not found");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error fetching data: " + error.message);
             }
         };
 
@@ -36,18 +40,21 @@ const EditScheduleHeader = () => {
 
         if (!title.trim()) {
             setTitleError('Title is required');
+            toast.error("Title is required", { autoClose: 2000 });
             return;
-        } else {
-            setTitleError('');
         }
 
         setLoading(true);
         try {
-            await db.scheduleHeader.update(id, { title });
-            sessionStorage.setItem('updateScheduleHeaderSuccess', 'true'); // Set update flag
+            const docRef = doc(db, "scheduleHeader", id);
+            await updateDoc(docRef, {
+                title,
+                updatedAt: new Date()
+            });
+            sessionStorage.setItem('updateScheduleHeaderSuccess', 'true');
             navigate("/scheduleheader");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error("Error updating document: " + error.message);
         } finally {
             setLoading(false);
         }

@@ -5,10 +5,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 
 const EditLinkHeader = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -16,9 +16,9 @@ const EditLinkHeader = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.linkHeader.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
+                const documentSnapshot = await getDocument('linkHeader', id);
+                if (documentSnapshot.exists()) {
+                    setTitle(documentSnapshot.data().title);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -34,8 +34,8 @@ const EditLinkHeader = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await db.linkHeader.update(id, { title });
-            sessionStorage.setItem('updateLinkHeaderSuccess', 'true'); // Set update flag
+            await updateDocument('linkHeader', id, { title });
+            sessionStorage.setItem('updateLinkHeaderSuccess', 'true');
             navigate("/linkheader");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });

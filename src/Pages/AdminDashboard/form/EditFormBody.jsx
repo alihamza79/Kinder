@@ -3,13 +3,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { getDocument, updateDocument } from "../../../firebase/dbService";
+import { uploadFile, getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 
 const EditFormBody = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -19,30 +19,39 @@ const EditFormBody = () => {
         newFileId: "",
         newFileURL: "",
     });
-    const [formErrors, setFormErrors] = useState({}); // State for form validation errors
+    const [formErrors, setFormErrors] = useState({});
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.formBody.get(id);
-                if (documentSnapshot) {
-                    const fileUrl = await storageServices.files.getFileView(documentSnapshot.file);
+                const documentSnapshot = await getDocument('formBody', id);
+                if (documentSnapshot.exists()) {
+                    const data = documentSnapshot.data();
+                    let fileUrl = "";
+                    try {
+                        fileUrl = await getFileURL(data.file);
+                    } catch (error) {
+                        console.warn("Error fetching file:", error);
+                    }
+
                     setFormData({
-                        ...documentSnapshot,
-                        fileId: documentSnapshot.file,
-                        newFileId: documentSnapshot.file,
-                        newFileURL: fileUrl.href,
+                        title: data.title,
+                        fileId: data.file,
+                        newFileId: data.file,
+                        newFileURL: fileUrl,
                     });
                 } else {
                     console.error('Document does not exist');
+                    navigate("/formbody");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error loading data. Please try again.");
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,46 +77,42 @@ const EditFormBody = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            if (!formData.title || !formData.newFile) {
-                // Handle validation errors
+            if (!formData.title || (!formData.newFile && !formData.fileId)) {
                 const errors = {};
                 if (!formData.title) errors.title = 'Title is required';
-                if (!formData.newFile) errors.file = 'File is required';
+                if (!formData.newFile && !formData.fileId) errors.file = 'File is required';
                 setFormErrors(errors);
                 setLoading(false);
                 return;
             }
-    
+
             let newFileId = formData.fileId;
-    
-            // Upload new file if selected
+
             if (formData.newFile) {
                 const toastId = toast.loading("Uploading file...");
                 try {
-                    const uploadedFile = await storageServices.files.createFile(formData.newFile);
-                    newFileId = uploadedFile.$id;
+                    const filePath = `formBody/${Date.now()}-${formData.newFile.name}`;
+                    await uploadFile(formData.newFile, filePath);
+                    newFileId = filePath;
                     toast.update(toastId, { render: "File uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
                 } catch (error) {
                     toast.update(toastId, { render: "File upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
                     throw error;
                 }
             }
-    
-            // Delete old file if new one was uploaded
+
             if (formData.newFile && formData.fileId !== newFileId) {
-                await storageServices.files.deleteFile(formData.fileId);
+                await deleteFileFromStorage(formData.fileId);
             }
-    
-            // Update document in database
-            await db.formBody.update(id, {
+
+            await updateDocument('formBody', id, {
                 title: formData.title,
                 file: newFileId,
             });
-    
-            sessionStorage.setItem('updateFormBodySuccess', 'true'); // Set update flag
+
+            sessionStorage.setItem('updateFormBodySuccess', 'true');
             navigate("/formbody");
         } catch (error) {
-            // Display more detailed error message
             console.error("Error updating document:", error);
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });
         } finally {

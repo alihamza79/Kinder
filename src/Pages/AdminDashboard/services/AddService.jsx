@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db } from "../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -17,16 +18,15 @@ const AddService = () => {
         setLoading(true);
 
         try {
-            // Store data in Appwrite database
-            await db.services.create({
+            await addDoc(collection(db, "services"), {
                 name: name,
+                createdAt: new Date()
             });
 
-            sessionStorage.setItem('addServiceSuccess', 'true'); // Set update flag
+            sessionStorage.setItem('addServiceSuccess', 'true');
             navigate("/serviceslist");
-
         } catch (error) {
-            toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
+            toast.error('Error adding document: ' + error.message);
             console.error('Error adding document: ', error);
         } finally {
             setLoading(false);

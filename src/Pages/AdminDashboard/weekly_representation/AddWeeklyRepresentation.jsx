@@ -2,8 +2,9 @@ import React, { useState, useRef } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import db from "../../../appwrite/Services/dbServices"; 
-import { toast, ToastContainer } from "react-toastify"; 
+import { db } from "../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import TextEditor from "../InformationCard/TextEditor";
@@ -31,14 +32,14 @@ const AddWeeklyRepresentation = () => {
     setLoading(true);
 
     try {
-      await db.weeklyRepresentation.create({
-        title: title,
-        description: description,
+      await addDoc(collection(db, "weeklyRepresentation"), {
+        title,
+        description,
+        createdAt: new Date(),
       });
 
-      sessionStorage.setItem('addWeeklyRepresentationSuccess', 'true'); 
+      sessionStorage.setItem('addWeeklyRepresentationSuccess', 'true');
       navigate("/weeklyrepresentationbody");
-
     } catch (error) {
       toast.error('Error adding document: ' + error.message, { autoClose: 2000 });
       console.error('Error adding document: ', error);

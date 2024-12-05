@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import storageServices from "../../../appwrite/Services/storageServices";
-import db from "../../../appwrite/Services/dbServices";
 import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import ImageUpload from "../../../Components/ImageUpload";
+import { getAllDocuments } from "../../../firebase/dbService";
+import { uploadFile } from "../../../firebase/storageService";
+import { addDocument } from "../../../firebase/dbService";
 
 const AddGalleryItem = () => {
   const navigate = useNavigate();
@@ -20,9 +21,9 @@ const AddGalleryItem = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await db.categories.list();
-        const categoriesList = response.documents.flatMap(doc => 
-          [doc.category1, doc.category2, doc.category3].filter(cat => cat)
+        const response = await getAllDocuments('categories');
+        const categoriesList = response.docs.flatMap(doc => 
+          [doc.data().category1, doc.data().category2, doc.data().category3].filter(cat => cat)
         );
         setCategories(categoriesList);
         if (categoriesList.length > 0) {
@@ -49,13 +50,14 @@ const AddGalleryItem = () => {
     setLoading(true);
 
     try {
-      let uploadedImageId = '';
+      let uploadedImagePath = '';
 
       if (imageFile) {
         const toastId = toast.loading("Uploading image...");
         try {
-          const uploadedImage = await storageServices.images.createFile(imageFile);
-          uploadedImageId = uploadedImage.$id;
+          const filePath = `gallery/${Date.now()}-${imageFile.name}`;
+          await uploadFile(imageFile, filePath);
+          uploadedImagePath = filePath;
           toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
         } catch (error) {
           toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
@@ -73,9 +75,9 @@ const AddGalleryItem = () => {
         return;
       }
 
-      await db.galleryBody.create({
+      await addDocument('galleryBody', {
         category: category,
-        image: uploadedImageId,
+        image: uploadedImagePath,
       });
 
       sessionStorage.setItem('addGalleryBodySuccess', 'true');

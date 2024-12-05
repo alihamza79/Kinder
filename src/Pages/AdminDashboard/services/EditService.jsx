@@ -5,45 +5,57 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const EditService = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState('');
+    const [nameError, setNameError] = useState('');
 
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.services.get(id);
-                if (documentSnapshot) {
-                    setName(documentSnapshot.name);
+                const docRef = doc(db, "services", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    setName(docSnap.data().name);
                 } else {
                     console.error('Document does not exist');
+                    toast.error("Service not found");
+                    navigate("/serviceslist");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error fetching service: " + error.message);
             }
         };
 
         fetchDocumentData();
-    }, [id]);
-
-    const handleChange = (e) => {
-        const { value } = e.target;
-        setName(value);
-    };
+    }, [id, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!name.trim()) {
+            setNameError('Name is required');
+            toast.error("Name is required", { autoClose: 2000 });
+            return;
+        }
+
         setLoading(true);
         try {
-            await db.services.update(id, { name: name });
-            sessionStorage.setItem('updateServiceSuccess', 'true'); // Set update flag
+            const docRef = doc(db, "services", id);
+            await updateDoc(docRef, {
+                name: name,
+                updatedAt: new Date()
+            });
+            sessionStorage.setItem('updateServiceSuccess', 'true');
             navigate("/serviceslist");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error("Error updating service: " + error.message);
         } finally {
             setLoading(false);
         }
@@ -63,7 +75,6 @@ const EditService = () => {
                         <div className="row">
                             <div className="col-sm-12">
                                 <ul className="breadcrumb">
-                                   
                                     <li className="breadcrumb-item active">
                                         <Link to="/serviceslist">Services</Link>
                                     </li>
@@ -93,13 +104,16 @@ const EditService = () => {
                                                 <div className="form-group local-forms">
                                                     <label>Name <span className="login-danger">*</span></label>
                                                     <input
-                                                        className="form-control"
+                                                        className={`form-control ${nameError ? 'is-invalid' : ''}`}
                                                         type="text"
-                                                        name="name"
                                                         value={name}
-                                                        onChange={handleChange}
-                                                        required
+                                                        onChange={(e) => {
+                                                            setName(e.target.value);
+                                                            setNameError('');
+                                                        }}
+                                                        disabled={loading}
                                                     />
+                                                    {nameError && <div className="invalid-feedback">{nameError}</div>}
                                                 </div>
                                             </div>
                                             {/* Submit/Cancel Button */}
@@ -116,6 +130,7 @@ const EditService = () => {
                                                         type="button"
                                                         className="btn btn-primary cancel-form"
                                                         onClick={() => navigate("/serviceslist")}
+                                                        disabled={loading}
                                                     >
                                                         Cancel
                                                     </button>

@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
-import {  refreshicon } from "../../../Components/imagepath";
+import { db } from "../../../config/firebase";
+import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
+import { refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,24 +33,35 @@ const ScheduleBodyList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.scheduleBody.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const scheduleRef = collection(db, "scheduleBody");
+      const q = query(scheduleRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
       }));
 
       if (data.length === 0) {
-        const newDocuments = [
-          await db.scheduleBody.create({ title: "Dummy Title 1", description: "Dummy Description 1" }),
-          await db.scheduleBody.create({ title: "Dummy Title 2", description: "Dummy Description 2" }),
+        const dummyData = [
+          { title: "Dummy Title 1", description: "Dummy Description 1", createdAt: new Date() },
+          { title: "Dummy Title 2", description: "Dummy Description 2", createdAt: new Date() }
         ];
-        data.push(...newDocuments.map((doc) => ({ id: doc.$id, ...doc })));
+
+        const newDocs = await Promise.all(
+          dummyData.map(doc => addDoc(collection(db, "scheduleBody"), doc))
+        );
+
+        data.push(...newDocs.map((doc, index) => ({
+          id: doc.id,
+          ...dummyData[index]
+        })));
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from "firebase/firestore";
 import { plusicon, refreshicon } from "../../../Components/imagepath";
 import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
 import { toast, ToastContainer } from "react-toastify";
@@ -15,6 +16,7 @@ const WeeklyRepresentationList = () => {
   const [loading, setLoading] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState(null);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -34,28 +36,35 @@ const WeeklyRepresentationList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.weeklyRepresentation.list();
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const weeklyRef = collection(db, "weeklyRepresentation");
+      const q = query(weeklyRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };
 
   const handleDelete = async () => {
+    if (!selectedRecordId) return;
+    setDeleting(true);
     try {
-      await db.weeklyRepresentation.delete(selectedRecordId);
-      toast.success("Weekly Representation deleted successfully!", { autoClose: 2000 });
+      await deleteDoc(doc(db, "weeklyRepresentation", selectedRecordId));
+      toast.success("Weekly representation deleted successfully!", { autoClose: 2000 });
       fetchData();
-      setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document:", error);
+      toast.error("Error deleting document: " + error.message);
+    } finally {
+      setDeleting(false);
     }
   };
 

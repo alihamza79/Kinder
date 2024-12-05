@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from "react";
 import { Table, Button } from "antd";
-import { Link, useLocation } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage services
-import { plusicon, refreshicon } from "../../../Components/imagepath";
-import { onShowSizeChange, itemRender } from "../../../Components/Pagination";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getAllDocuments, deleteDocument } from "../../../firebase/dbService";
+import { getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Header from "../../../Components/Header";
+import { plusicon, refreshicon } from "../../../Components/imagepath";
+import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
 
 const FormBodyList = () => {
@@ -18,40 +19,60 @@ const FormBodyList = () => {
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        fetchData();
+      } else {
+        navigate("/login");
+      }
+    });
+
+    return () => unsubscribe();
+  }, [location, navigate]);
 
   useEffect(() => {
     const updateSuccess = sessionStorage.getItem("updateFormBodySuccess");
     const addSuccess = sessionStorage.getItem("addFormBodySuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateFormBodySuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateFormBodySuccess");
     }
     if (addSuccess) {
       toast.success("Document added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addFormBodySuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addFormBodySuccess");
     }
-    fetchData();
   }, [location]);
 
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.formBody.list(); // Fetch documents from Appwrite collection
+      const querySnapshot = await getAllDocuments('formBody');
       const data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
-          const fileUrl = await storageServices.files.getFileView(doc.file);
+        querySnapshot.docs.map(async (doc) => {
+          let fileUrl = '';
+          try {
+            fileUrl = await getFileURL(doc.data().file);
+          } catch (error) {
+            console.warn(`Error fetching file for document ${doc.id}:`, error);
+            fileUrl = '#';
+          }
           return {
-            id: doc.$id,
-            title: doc.title,
-            fileId: doc.file,
-            fileUrl: fileUrl.href,
+            id: doc.id,
+            title: doc.data().title,
+            fileId: doc.data().file,
+            fileUrl: fileUrl,
           };
         })
       );
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error loading data. Please try again later.");
+    } finally {
       setLoading(false);
     }
   };
@@ -61,16 +82,16 @@ const FormBodyList = () => {
       setDeleting(true);
       const selectedRecord = dataSource.find((record) => record.id === selectedRecordId);
       if (selectedRecord && selectedRecord.fileId) {
-        // Delete file from Appwrite storage if it exists
-        await storageServices.files.deleteFile(selectedRecord.fileId);
+        await deleteFileFromStorage(selectedRecord.fileId);
       }
-      await db.formBody.delete(selectedRecordId); // Delete the document from Appwrite
+      await deleteDocument('formBody', selectedRecordId);
       toast.success("Form deleted successfully!", { autoClose: 2000 });
-      fetchData(); // Refresh data after deletion
+      fetchData();
       setSelectedRecordId(null);
       hideDeleteModal();
     } catch (error) {
       console.error("Error deleting document and file:", error);
+      toast.error("Error deleting form. Please try again.");
     } finally {
       setDeleting(false);
     }

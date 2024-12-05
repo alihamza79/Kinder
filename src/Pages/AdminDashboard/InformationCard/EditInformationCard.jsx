@@ -5,11 +5,11 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 import TextEditor from "./TextEditor";
 
 const EditInformationCard = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -21,13 +21,14 @@ const EditInformationCard = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.informationCard.get(id);
-                if (documentSnapshot) {
+                const documentSnapshot = await getDocument('informationCard', id);
+                if (documentSnapshot.exists()) {
+                    const data = documentSnapshot.data();
                     setFormData({
-                        Title: documentSnapshot.Title,
-                        Description: documentSnapshot.Description,
+                        Title: data.Title,
+                        Description: data.Description,
                     });
-                    editorRef.current.setEditorContent(documentSnapshot.Description);
+                    editorRef.current.setEditorContent(data.Description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -50,26 +51,23 @@ const EditInformationCard = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validation checks
         if (!formData.Title.trim()) {
             toast.error("Title is required", { autoClose: 2000 });
-            setLoading(false);
             return;
         }
 
         if (!formData.Description.trim()) {
             toast.error("Description is required", { autoClose: 2000 });
-            setLoading(false);
             return;
         }
 
         setLoading(true);
         try {
-            await db.informationCard.update(id, {
+            await updateDocument('informationCard', id, {
                 Title: formData.Title,
                 Description: formData.Description,
             });
-            sessionStorage.setItem('updateInformationCardSuccess', 'true'); 
+            sessionStorage.setItem('updateInformationCardSuccess', 'true');
             navigate("/informationcard");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });

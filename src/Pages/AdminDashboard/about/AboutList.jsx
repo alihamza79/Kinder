@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
+import { getFileURL, uploadFile } from "../../../firebase/storageService";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -32,46 +32,53 @@ const AboutList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.about.list();
+      const querySnapshot = await getAllDocuments('about');
       let data = await Promise.all(
-        querySnapshot.documents.map(async (doc) => {
-          const imageUrl = await storageServices.images.getFileView(doc.image);
+        querySnapshot.docs.map(async (doc) => {
+          const imageUrl = await getFileURL(doc.data().image);
           return {
-            id: doc.$id,
-            title: doc.title,
-            description: doc.description,
-            imageId: doc.image,
-            imageUrl: imageUrl.href,
-            imageTitle: doc.imageTitle,  // Fetch image title
-            imageSubtitle: doc.imageSubtitle,  // Fetch image subtitle
+            id: doc.id,
+            title: doc.data().title,
+            description: doc.data().description,
+            imageId: doc.data().image,
+            imageUrl: imageUrl,
+            imageTitle: doc.data().imageTitle,
+            imageSubtitle: doc.data().imageSubtitle,
           };
         })
       );
 
       if (data.length === 0) {
-        const newDocument = await db.about.create({
+        // Create dummy data if no documents exist
+        const dummyImagePath = 'about/dummy-image.jpg';
+        // You should have a dummy image in your assets to upload
+        const dummyImageFile = await fetch('/assets/img/dummy-image.jpg').then(res => res.blob());
+        const imageUrl = await uploadFile(dummyImageFile, dummyImagePath);
+        
+        const newDocument = await addDocument('about', {
           title: "Dummy Title",
           description: "Dummy Description",
-          image: "dummyImageId",  // Assuming you have a default image ID or handle image creation here
+          image: dummyImagePath,
           imageTitle: "Dummy Image Title",
           imageSubtitle: "Dummy Image Subtitle",
         });
-        const imageUrl = await storageServices.images.getFileView(newDocument.image);
+
         data.push({
-          id: newDocument.$id,
-          title: newDocument.title,
-          description: newDocument.description,
-          imageId: newDocument.image,
-          imageUrl: imageUrl.href,
-          imageTitle: newDocument.imageTitle,
-          imageSubtitle: newDocument.imageSubtitle,
+          id: newDocument.id,
+          title: "Dummy Title",
+          description: "Dummy Description",
+          imageId: dummyImagePath,
+          imageUrl: imageUrl,
+          imageTitle: "Dummy Image Title",
+          imageSubtitle: "Dummy Image Subtitle",
         });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data");
+    } finally {
       setLoading(false);
     }
   };

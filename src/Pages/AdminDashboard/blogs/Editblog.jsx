@@ -5,13 +5,13 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
+import { getDocument, updateDocument } from "../../../firebase/dbService";
+import { uploadFile, getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
 import ImageUpload from "../../../Components/ImageUpload";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditBlog = () => {
-    const { id } = useParams(); 
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -22,7 +22,7 @@ const EditBlog = () => {
         imageId: "",
         newImageFile: null,
         newImageId: "",
-        newImageUrl: "",
+        newImageURL: "",
     });
     const [formErrors, setFormErrors] = useState({
         title: "",
@@ -36,29 +36,38 @@ const EditBlog = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.blogs.get(id);
-                if (documentSnapshot) {
-                    const imageUrl = await storageServices.images.getFileView(documentSnapshot.imageUrl);
+                const docSnapshot = await getDocument('blogs', id);
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    let imageUrl = "";
+                    try {
+                        imageUrl = await getFileURL(data.image);
+                    } catch (error) {
+                        console.warn("Error fetching image:", error);
+                    }
+
                     setFormData({
-                        title: documentSnapshot.title,
-                        author: documentSnapshot.author,
-                        tags: documentSnapshot.tags.join(","),
-                        content: documentSnapshot.content,
-                        imageId: documentSnapshot.imageUrl,
-                        newImageId: documentSnapshot.imageUrl,
-                        newImageUrl: imageUrl.href,
+                        title: data.title,
+                        author: data.author,
+                        tags: data.tags.join(","),
+                        content: data.content,
+                        imageId: data.image,
+                        newImageId: data.image,
+                        newImageURL: imageUrl,
                     });
-                    editorRef.current.setEditorContent(documentSnapshot.content);
+                    editorRef.current.setEditorContent(data.content);
                 } else {
-                    console.error('Document does not exist');
+                    toast.error('Blog not found');
+                    navigate('/blogview');
                 }
             } catch (error) {
-                console.error('Error fetching document data:', error);
+                console.error('Error fetching blog:', error);
+                toast.error('Error loading blog');
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -123,46 +132,62 @@ const EditBlog = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!validateForm()) {
-            return;
-        }
-    
+        if (!validateForm()) return;
+
         setLoading(true);
         try {
-            let newImageId = formData.imageId;
-    
+            let newImagePath = formData.imageId;
+
             if (formData.newImageFile) {
+                const toastId = toast.loading("Uploading image...");
                 try {
-                    const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
-                    newImageId = uploadedImage.$id;
+                    const imagePath = `blogs/${Date.now()}-${formData.newImageFile.name}`;
+                    await uploadFile(formData.newImageFile, imagePath);
+                    newImagePath = imagePath;
+                    toast.update(toastId, { 
+                        render: "Image uploaded successfully!", 
+                        type: "success", 
+                        isLoading: false, 
+                        autoClose: 2000 
+                    });
                 } catch (error) {
+                    toast.update(toastId, { 
+                        render: "Image upload failed: " + error.message, 
+                        type: "error", 
+                        isLoading: false, 
+                        autoClose: 2000 
+                    });
                     throw error;
                 }
             }
-    
-            if (formData.newImageFile && formData.imageId !== newImageId) {
-                await storageServices.images.deleteFile(formData.imageId);
+
+            if (formData.newImageFile && formData.imageId !== newImagePath) {
+                try {
+                    await deleteFileFromStorage(formData.imageId);
+                } catch (error) {
+                    console.warn("Error deleting old image:", error);
+                }
             }
-    
+
             const cleanedTags = formData.tags.split(",").map(tag => tag.trim());
-    
-            await db.blogs.update(id, {
+
+            await updateDocument('blogs', id, {
                 title: formData.title,
                 author: formData.author,
                 tags: cleanedTags,
                 content: formData.content,
-                imageUrl: newImageId,
+                image: newImagePath,
+                updatedAt: new Date().toISOString()
             });
-    
-            toast.success("Blog updated successfully");
+
+            sessionStorage.setItem('updateBlogSuccess', 'true');
             navigate("/blogview");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error("Error updating blog: " + error.message);
         } finally {
             setLoading(false);
         }
     };
-    
 
     return (
         <div>
@@ -268,7 +293,7 @@ const EditBlog = () => {
                                             </div>
                                             <div className="col-12 col-md-6 col-xl-12">
                                                 <div className="form-group local-top-form">
-                                                    <ImageUpload id="image" src={formData.newImageUrl} loadFile={handleImageLoad} imageName="Avatar" />
+                                                    <ImageUpload id="image" src={formData.newImageURL} loadFile={handleImageLoad} imageName="Avatar" />
                                                     {formErrors.image && (
                                                         <div className="text-danger">{formErrors.image}</div>
                                                     )}

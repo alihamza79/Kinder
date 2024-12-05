@@ -5,9 +5,9 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
 import ImageUpload from "../../../Components/ImageUpload";
+import { getDocument, updateDocument, getAllDocuments } from "../../../firebase/dbService";
+import { uploadFile, getFileURL, deleteFileFromStorage } from "../../../firebase/storageService";
 
 const EditGalleryItem = () => {
   const { id } = useParams();
@@ -25,9 +25,9 @@ const EditGalleryItem = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await db.categories.list();
-        const categoriesList = response.documents.flatMap(doc => 
-          [doc.category1, doc.category2, doc.category3].filter(cat => cat)
+        const response = await getAllDocuments('categories');
+        const categoriesList = response.docs.flatMap(doc => 
+          [doc.data().category1, doc.data().category2, doc.data().category3].filter(cat => cat)
         );
         setCategories(categoriesList);
       } catch (error) {
@@ -37,30 +37,19 @@ const EditGalleryItem = () => {
 
     const fetchDocumentData = async () => {
       try {
-        const documentSnapshot = await db.galleryBody.get(id);
-        if (documentSnapshot) {
+        const documentSnapshot = await getDocument('galleryBody', id);
+        if (documentSnapshot.exists()) {
+          const data = documentSnapshot.data();
           let imageUrl = "";
           try {
-            const imageView = await storageServices.images.getFileView(documentSnapshot.image);
-            const response = await fetch(imageView.href);
-            if (response.status === 200) {
-              imageUrl = imageView.href;
-            } else if (response.status === 404) {
-              console.warn("Image not found in storage.");
-            } else {
-              throw new Error("Error fetching image");
-            }
+            imageUrl = await getFileURL(data.image);
           } catch (error) {
-            if (error.message.includes("not be found")) {
-              console.warn("Image not found in storage.");
-            } else {
-              throw error;
-            }
+            console.warn("Error fetching image:", error);
           }
           setFormData({
-            ...documentSnapshot,
-            imageId: documentSnapshot.image,
-            newImageId: documentSnapshot.image,
+            category: data.category,
+            imageId: data.image,
+            newImageId: data.image,
             newImageURL: imageUrl,
           });
         } else {
@@ -104,8 +93,9 @@ const EditGalleryItem = () => {
       if (formData.newImageFile) {
         const toastId = toast.loading("Uploading image...");
         try {
-          const uploadedImage = await storageServices.images.createFile(formData.newImageFile);
-          newImageId = uploadedImage.$id;
+          const filePath = `gallery/${Date.now()}-${formData.newImageFile.name}`;
+          await uploadFile(formData.newImageFile, filePath);
+          newImageId = filePath;
           toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
         } catch (error) {
           toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
@@ -114,15 +104,10 @@ const EditGalleryItem = () => {
       }
 
       if (formData.newImageFile && formData.imageId !== newImageId) {
-        try {
-          console.log("Image id to be deleted: ", formData.imageId);
-          await storageServices.images.deleteFile(formData.imageId);
-        } catch (error) {
-          console.warn("Old image not found in storage.");
-        }
+        await deleteFileFromStorage(formData.imageId);
       }
 
-      await db.galleryBody.update(id, {
+      await updateDocument('galleryBody', id, {
         category: formData.category,
         image: newImageId,
       });

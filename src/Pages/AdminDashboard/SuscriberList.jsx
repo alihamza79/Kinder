@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Checkbox, Spin } from 'antd';
 import { MailOutlined, LoadingOutlined } from "@ant-design/icons";
 import { Link } from 'react-router-dom';
-import db from '../../appwrite/Services/dbServices';
+import { db } from '../../config/firebase';
+import { collection, getDocs, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import Header from '../../Components/Header';
 import Sidebar from '../../Components/Sidebar';
 import { toast, ToastContainer } from 'react-toastify';
@@ -17,21 +18,27 @@ const SubscriberList = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchSubscribers = async () => {
-      try {
-        const response = await db.subscribers.list();
-        const subscriberData = response.documents.map((doc) => ({
-          id: doc.$id,
-          email: doc.email,
-        }));
-        setSubscribers(subscriberData);
-      } catch (error) {
-        console.error("Error fetching subscribers:", error);
-      }
-    };
-
     fetchSubscribers();
   }, []);
+
+  const fetchSubscribers = async () => {
+    try {
+      setIsLoading(true);
+      const subscribersRef = collection(db, "subscribers");
+      const q = query(subscribersRef, orderBy("createdAt", "desc"));
+      const querySnapshot = await getDocs(q);
+      const subscriberData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setSubscribers(subscriberData);
+    } catch (error) {
+      console.error("Error fetching subscribers:", error);
+      toast.error("Error fetching subscribers: " + error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const showModal = (subscriber) => {
     setSelectedSubscriber(subscriber);
@@ -69,26 +76,29 @@ const SubscriberList = () => {
   };
 
   const handleDeleteSelected = () => {
+    if (selectedSubscribers.length === 0) {
+      toast.warning("Please select subscribers to delete");
+      return;
+    }
     setIsDeleteModalOpen(true);
   };
 
   const confirmDelete = async () => {
     setIsLoading(true);
     try {
-      const promises = selectedSubscribers.map((id) =>
-        db.subscribers.delete(id)
+      const deletePromises = selectedSubscribers.map((id) =>
+        deleteDoc(doc(db, "subscribers", id))
       );
-      await Promise.all(promises);
-      setSubscribers(
-        subscribers.filter(
-          (subscriber) => !selectedSubscribers.includes(subscriber.id)
-        )
+      await Promise.all(deletePromises);
+      
+      setSubscribers(prev => 
+        prev.filter(subscriber => !selectedSubscribers.includes(subscriber.id))
       );
       setSelectedSubscribers([]);
       toast.success("Subscribers deleted successfully!");
     } catch (error) {
       console.error("Error deleting subscribers:", error);
-      toast.error("Failed to delete subscribers.");
+      toast.error("Failed to delete subscribers: " + error.message);
     } finally {
       setIsLoading(false);
       setIsDeleteModalOpen(false);
@@ -108,7 +118,14 @@ const SubscriberList = () => {
             const allIds = subscribers.map((subscriber) => subscriber.id);
             setSelectedSubscribers(checked ? allIds : []);
           }}
-          checked={selectedSubscribers.length === subscribers.length}
+          checked={
+            subscribers.length > 0 && 
+            selectedSubscribers.length === subscribers.length
+          }
+          indeterminate={
+            selectedSubscribers.length > 0 && 
+            selectedSubscribers.length < subscribers.length
+          }
         />
       ),
       dataIndex: "checkbox",
@@ -131,8 +148,9 @@ const SubscriberList = () => {
         <Button
           className="btn btn-primary"
           onClick={() => showModal(record)}
+          icon={<MailOutlined />}
         >
-           Reply
+          Reply
         </Button>
       ),
     },
@@ -141,30 +159,31 @@ const SubscriberList = () => {
   return (
     <>
       <Header />
-      <Sidebar id="menu-item1" activeClassName="subscriber-list" />
+      <Sidebar id="menu-item13" activeClassName="subscribers" />
       <div className="page-wrapper">
         <div className="content">
           <div className="page-header">
-            <div className="row">
-              <div className="col-sm-12">
-                <h2 className="cs_section_title cs_fs_32 m-0 text-2xl font-semibold mb-2">
-                  Subscriber List
-                </h2>
+            <div className="row align-items-center">
+              <div className="col">
+              <h2 className="cs_section_title cs_fs_32 m-0 text-2xl font-semibold mb-2"> Subscriber List </h2>
+              </div>
+              <div className="col-auto">
                 {selectedSubscribers.length > 0 && (
                   <>
                     <Button
-                      type="danger"
+                      danger
                       style={{
                         marginLeft: "20px",
                         backgroundColor: "#E70226",
                         color: "white",
                       }}
                       onClick={handleDeleteSelected}
+                      disabled={isLoading}
                     >
                       {isLoading ? (
                         <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
                       ) : (
-                        "Delete"
+                        "Delete Selected"
                       )}
                     </Button>
                     <Button
@@ -180,82 +199,63 @@ const SubscriberList = () => {
               </div>
             </div>
           </div>
+
           <div className="row">
             <div className="col-sm-12">
               <div className="card">
                 <div className="card-body">
                   <div className="table-responsive">
                     <Table
+                      loading={isLoading}
                       columns={columns}
                       dataSource={subscribers}
                       rowKey="id"
                     />
                   </div>
-                  {isModalOpen && (
-                    <Modal
-                      title="Reply to Subscriber"
-                      visible={isModalOpen}
-                      onCancel={handleCancel}
-                      footer={[
-                        <Button key="back" onClick={handleCancel}>
-                          Close
-                        </Button>,
-                        <Button
-                          key="submit"
-                          type="primary"
-                          onClick={handleReply}
-                          icon={<MailOutlined />}
-                        >
-                          Reply
-                        </Button>,
-                      ]}
-                    >
-                      <p>Email: {selectedSubscriber.email}</p>
-                      <p>Body: Dear subscriber</p>
-                    </Modal>
-                  )}
-                  <div
-                    className={
-                      isDeleteModalOpen
-                        ? "modal fade show delete-modal"
-                        : "modal fade delete-modal"
-                    }
-                    style={{
-                      display: isDeleteModalOpen ? "block" : "none",
-                      backgroundColor: "rgba(0,0,0,0.5)",
-                    }}
-                    role="dialog"
+
+                  <Modal
+                    title="Reply to Subscriber"
+                    open={isModalOpen}
+                    onCancel={handleCancel}
+                    footer={[
+                      <Button key="back" onClick={handleCancel}>
+                        Close
+                      </Button>,
+                      <Button
+                        key="submit"
+                        type="primary"
+                        onClick={handleReply}
+                        icon={<MailOutlined />}
+                      >
+                        Reply
+                      </Button>,
+                    ]}
                   >
-                    <div className="modal-dialog modal-dialog-centered">
-                      <div className="modal-content">
-                        <div className="modal-body text-center">
-                          <h3>
-                            Are you sure you want to delete the selected
-                            subscribers?
-                          </h3>
-                          <div className="m-t-20">
-                            <Button
-                              onClick={cancelDelete}
-                              className="btn btn-white me-2 p-0"
-                            >
-                              Close
-                            </Button>
-                            <Button
-                              type="button"
-                              className="btn btn-danger p-0"
-                              onClick={confirmDelete}
-                            >
-                              {isLoading ? (
-                                <Spin indicator={<LoadingOutlined style={{ fontSize: 24 }} spin />} />
-                              ) : (
-                                "Delete"
-                              )}
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                    <p>Email: {selectedSubscriber.email}</p>
+                    <p>Body: Dear subscriber</p>
+                  </Modal>
+
+                  <Modal
+                    title="Delete Subscribers"
+                    open={isDeleteModalOpen}
+                    onCancel={cancelDelete}
+                    footer={[
+                      <Button key="back" onClick={cancelDelete}>
+                        Cancel
+                      </Button>,
+                      <Button
+                        key="submit"
+                        type="primary"
+                        danger
+                        onClick={confirmDelete}
+                        loading={isLoading}
+                      >
+                        Delete
+                      </Button>,
+                    ]}
+                  >
+                    <p>Are you sure you want to delete the selected subscribers?</p>
+                  </Modal>
                 </div>
               </div>
             </div>

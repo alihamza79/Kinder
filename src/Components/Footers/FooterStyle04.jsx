@@ -14,10 +14,9 @@ import { Input } from '../Form/Form';
 import SocialIcons from '../SocialIcon/SocialIcons';
 import { Footer } from './Footer';
 
-
-
-// Appwrite
-import db from '../../appwrite/Services/dbServices';
+// Firebase
+import { db } from '../../config/firebase';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 
 // Toast notifications
 import { toast, ToastContainer } from 'react-toastify';
@@ -43,9 +42,9 @@ const FooterStyle04 = (props) => {
   useEffect(() => {
     const fetchSocialLinks = async () => {
       try {
-        const response = await db.socialLinks.list();
-        if (response.documents.length > 0) {
-          const { facebook, twitter, instagram } = response.documents[0];
+        const querySnapshot = await getDocs(collection(db, "socialLinks"));
+        if (!querySnapshot.empty) {
+          const { facebook, twitter, instagram } = querySnapshot.docs[0].data();
           setIconData((prevIconData) =>
             prevIconData.map((item) => {
               if (item.icon.includes('facebook')) item.link = facebook;
@@ -73,7 +72,6 @@ const FooterStyle04 = (props) => {
     return re.test(email);
   };
 
-  
   const handleSubscription = async (email, actions) => {
     if (!validateEmail(email)) {
       toast.warn("Please enter a valid email address.");
@@ -82,17 +80,21 @@ const FooterStyle04 = (props) => {
     }
 
     try {
-      const response = await db.subscribers.list();
-      const emails = response.documents.map(doc => doc.email);
+      // Check if email already exists
+      const subscribersRef = collection(db, "subscribers");
+      const q = query(subscribersRef, where("email", "==", email));
+      const querySnapshot = await getDocs(q);
 
-      if (emails.includes(email)) {
+      if (!querySnapshot.empty) {
         toast.warn("This email is already subscribed.");
       } else {
-        const createResponse = await db.subscribers.create({ email });
-        if (createResponse.$id) {
-          toast.success("Subscription successful!");
-          resetForm(actions);
-        }
+        // Add new subscriber
+        await addDoc(subscribersRef, { 
+          email,
+          createdAt: new Date()
+        });
+        toast.success("Subscription successful!");
+        resetForm(actions);
       }
     } catch (error) {
       console.error("Error subscribing:", error);
@@ -107,6 +109,7 @@ const FooterStyle04 = (props) => {
       <div className="py-[6%] lg:py-[8%] md:py-[50px]" style={{ backgroundColor: "rgb(245 242 242)" }}>
         <Container>
           <Row className="justify-between md:justify-start">
+            {/* Logo and Social Icons Section */}
             <Col lg={{ span: 3, order: 0 }} sm={{ span: 6, order: 1 }} className="md:mb-[40px] xs:mb-[25px]">
               <Link aria-label="link" to="/" className="mb-[25px] block">
                 <div className="flex items-center">
@@ -130,6 +133,7 @@ const FooterStyle04 = (props) => {
               <SocialIcons theme="social-icon-style-01" className="justify-start" size="xs" iconColor={props.theme === "dark" ? "light" : "dark"} data={iconData.filter(icon => icon.link)} />
             </Col>
 
+            {/* Footer Links Section */}
             <Col lg={{ span: 3 }} sm={{ span: 6 }} className="md:mb-[40px] xs:mb-[25px]">
               <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Pages</span>
               <Row>
@@ -158,6 +162,7 @@ const FooterStyle04 = (props) => {
               </Row>
             </Col>
 
+            {/* Newsletter Section */}
             <Col xl={{ span: 3 }} lg={{ span: 4, order: 0 }} sm={{ span: 6, order: 3 }} md={5}>
               <span className="font-serif font-medium block text-themecolor mb-[20px] xs:mb-[10px]">Subscribe to newsletter</span>
               <p className="mb-[25px] md:mb-[20px]">Enter your email address for receiving valuable Updates</p>
@@ -184,7 +189,6 @@ const FooterStyle04 = (props) => {
                           exit={{ opacity: 0 }}
                           className="absolute top-[115%] left-0 w-full"
                         >
-                          
                         </m.div>
                       )}
                     </AnimatePresence>

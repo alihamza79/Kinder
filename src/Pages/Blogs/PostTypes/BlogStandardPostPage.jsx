@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-
-// Libraries
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link, useParams } from 'react-router-dom';
+import { getDocument, getAllDocuments } from '../../../firebase/dbService';
 
-// Components
+import { getFileURL } from '../../../firebase/storageService';
 import Sidebar from '../../../Components/Blogs/HelperComponents/Sidebar';
 import SocialIcons from "../../../Components/SocialIcon/SocialIcons";
 import BlogClean from '../../../Components/Blogs/BlogClean';
-
-// Data
 import { fadeIn } from '../../../Functions/GlobalAnimations';
 import FooterSection from '../../Footer/FooterSection';
 import HeaderSection from '../../Header/HeaderSection';
-import db from "../../../appwrite/Services/dbServices";
-import storageServices from "../../../appwrite/Services/storageServices";
 
 const BlogStandardPostPage = (props) => {
   const [data, setData] = useState(null);
@@ -32,20 +27,21 @@ const BlogStandardPostPage = (props) => {
   useEffect(() => {
     const fetchBlogData = async () => {
       try {
-        const doc = await db.blogs.get(id);
-        if (doc) {
-          const imageUrl = await storageServices.images.getFileView(doc.imageUrl);
+        const doc = await getDocument('blogs', id);
+        if (doc.exists()) {
+          const docData = doc.data();
+          const imageUrl = await getFileURL(docData.image);
           const blogData = {
-            id: doc.$id,
-            title: doc.title,
-            date: doc.publicationDate ? new Date(doc.publicationDate).toLocaleDateString() : '',
-            content: doc.content,
-            img: imageUrl.href,
-            tags: doc.tags || [],
-            author: doc.author || ""
+            id: doc.id,
+            title: docData.title,
+            date: docData.publicationDate ? new Date(docData.publicationDate).toLocaleDateString() : '',
+            content: docData.content,
+            img: imageUrl,
+            tags: docData.tags || [],
+            author: docData.author || "",
           };
           setData(blogData);
-          fetchRelatedPosts(doc.tags || []);
+          fetchRelatedPosts(docData.tags || []);
         }
       } catch (error) {
         console.error("Error fetching blog data:", error);
@@ -54,20 +50,20 @@ const BlogStandardPostPage = (props) => {
 
     const fetchRelatedPosts = async (tags) => {
       try {
-        const querySnapshot = await db.blogs.list();
-        const allPosts = querySnapshot.documents || [];
-        const related = allPosts.filter(post => post.$id !== id && post.tags.some(tag => tags.includes(tag))).slice(0, 3);
+        const querySnapshot = await getAllDocuments('blogs');
+        const allPosts = querySnapshot.docs || [];
+        const related = allPosts.filter(post => post.id !== id && post.data().tags.some(tag => tags.includes(tag))).slice(0, 3);
         const relatedData = await Promise.all(
           related.map(async (post) => {
-            const imageUrl = await storageServices.images.getFileView(post.imageUrl);
+            const imageUrl = await getFileURL(post.data().image);
             return {
-              id: post.$id,
-              title: post.title,
-              date: post.publicationDate ? new Date(post.publicationDate).toLocaleDateString() : '',
-              content: post.content,
-              img: imageUrl.href,
-              tags: post.tags || [],
-              author: post.author || ""
+              id: post.id,
+              title: post.data().title,
+              date: post.data().publicationDate ? new Date(post.data().publicationDate).toLocaleDateString() : '',
+              content: post.data().content,
+              img: imageUrl,
+              tags: post.data().tags || [],
+              author: post.data().author || "",
             };
           })
         );
@@ -79,45 +75,38 @@ const BlogStandardPostPage = (props) => {
 
     const fetchRecentPosts = async () => {
       try {
-        // Fetch all blog posts
-        const querySnapshot = await db.blogs.list();
-        const allPosts = querySnapshot.documents || [];
-    
-        // Sort posts by publication date in descending order
+        const querySnapshot = await getAllDocuments('blogs');
+        const allPosts = querySnapshot.docs || [];
         const sortedPosts = allPosts.sort((a, b) => {
-          const dateA = new Date(a.publicationDate);
-          const dateB = new Date(b.publicationDate);
-          return dateB - dateA; // Descending order
+          const dateA = new Date(a.data().publicationDate);
+          const dateB = new Date(b.data().publicationDate);
+          return dateB - dateA;
         });
-    
-        // Select the top 5 most recent posts
         const recentData = await Promise.all(
           sortedPosts.slice(0, 5).map(async (post) => {
-            const imageUrl = await storageServices.images.getFileView(post.imageUrl);
+            const imageUrl = await getFileURL(post.data().image);
             return {
-              id: post.$id,
-              title: post.title,
-              date: post.publicationDate ? new Date(post.publicationDate).toLocaleDateString() : '',
-              content: post.content,
-              img: imageUrl.href,
-              tags: post.tags || [],
+              id: post.id,
+              title: post.data().title,
+              date: post.data().publicationDate ? new Date(post.data().publicationDate).toLocaleDateString() : '',
+              content: post.data().content,
+              img: imageUrl,
+              tags: post.data().tags || [],
             };
           })
         );
-    
         setRecentPosts(recentData);
       } catch (error) {
         console.error("Error fetching recent posts:", error);
       }
     };
-    
 
     const fetchTags = async () => {
       try {
-        const querySnapshot = await db.blogs.list();
-        const allPosts = querySnapshot.documents || [];
+        const querySnapshot = await getAllDocuments('blogs');
+        const allPosts = querySnapshot.docs || [];
         const allTags = allPosts.reduce((acc, post) => {
-          post.tags.forEach(tag => {
+          post.data().tags.forEach(tag => {
             if (!acc.includes(tag)) {
               acc.push(tag);
             }
@@ -132,9 +121,9 @@ const BlogStandardPostPage = (props) => {
 
     const fetchSocialLinks = async () => {
       try {
-        const response = await db.socialLinks.list();
-        if (response.documents.length > 0) {
-          const { facebook, twitter, instagram, linkedin } = response.documents[0];
+        const docRef = await getDocument('socialLinks', '1');  // assuming a single document for social links
+        if (docRef.exists()) {
+          const { facebook, twitter, instagram, linkedin } = docRef.data();
           setSocialLinks({ facebook, twitter, instagram, linkedin });
         }
       } catch (error) {

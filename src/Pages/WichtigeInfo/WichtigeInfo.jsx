@@ -6,26 +6,27 @@ import { fadeIn } from "../../Functions/GlobalAnimations";
 import Accordion from "../../Components/Accordion/Accordion";
 import FooterSection from "../Footer/FooterSection";
 import HeaderSection from "../Header/HeaderSection";
-import db from "../../appwrite/Services/dbServices";
+import { getAllDocuments } from "../../firebase/dbService";
 import 'react-toastify/dist/ReactToastify.css';
 import Preloader from "../../Components/Preloader";
 
 const fetchHeaderData = async () => {
-  const headerSnapshot = await db.importantInformationHeader.list();
-  if (headerSnapshot.documents.length > 0) {
+  const headerSnapshot = await getAllDocuments('importantInformationHeader');
+  if (headerSnapshot.docs.length > 0) {
+    const headerData = headerSnapshot.docs[0].data();
     return {
-      title: headerSnapshot.documents[0].title,
-      description: headerSnapshot.documents[0].description,
+      title: headerData.title,
+      description: headerData.description,
     };
   }
   return null;
 };
 
 const fetchBodyData = async () => {
-  const bodySnapshot = await db.importantInformation.list();
-  return bodySnapshot.documents.map((doc) => ({
-    title: doc.title,
-    content: doc.description,
+  const bodySnapshot = await getAllDocuments('importantInformation');
+  return bodySnapshot.docs.map((doc) => ({
+    title: doc.data().title,
+    content: doc.data().description,
   }));
 };
 

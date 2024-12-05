@@ -2,18 +2,18 @@ import React, { useState } from "react";
 import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link, useNavigate } from "react-router-dom";
-import storageServices from "../../../appwrite/Services/storageServices"; // Import Appwrite storage service
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db, storage } from "../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
-import ImageUpload from "../../../Components/ImageUpload"; // Import the ImageUpload component
+import ImageUpload from "../../../Components/ImageUpload";
 
 const AddTeamMember = () => {
     const navigate = useNavigate();
     const [name, setName] = useState('');
     const [designation, setDesignation] = useState('');
-    const [imageId, setImageId] = useState("");
     const [imageFile, setImageFile] = useState(null);
     const [imageURL, setImageURL] = useState("");
     const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ const AddTeamMember = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        // Basic form validation
         if (!name.trim() || !designation.trim() || !imageFile) {
             toast.error('Please fill in all required fields.', { autoClose: 2000 });
             return;
@@ -39,27 +38,27 @@ const AddTeamMember = () => {
         setLoading(true);
 
         try {
-            let uploadedImageId = imageId;
-
-            // Upload image if a new file is selected
+            // Upload image to Firebase Storage
             const toastId = toast.loading("Uploading image...");
-            try {
-                const uploadedImage = await storageServices.images.createFile(imageFile);
-                uploadedImageId = uploadedImage.$id;
-                toast.update(toastId, { render: "Image uploaded successfully!", type: "success", isLoading: false, autoClose: 2000 });
-            } catch (error) {
-                toast.update(toastId, { render: "Image upload failed: " + error.message, type: "error", isLoading: false, autoClose: 2000 });
-                throw error;
-            }
-
-            // Store data in Appwrite database
-            await db.teamBody.create({
-                name: name,
-                designation: designation,
-                image: uploadedImageId,
+            const imageRef = ref(storage, `team/${Date.now()}_${imageFile.name}`);
+            await uploadBytes(imageRef, imageFile);
+            const imageUrl = await getDownloadURL(imageRef);
+            toast.update(toastId, { 
+                render: "Image uploaded successfully!", 
+                type: "success", 
+                isLoading: false, 
+                autoClose: 2000 
             });
 
-            sessionStorage.setItem('addTeamBodySuccess', 'true'); // Set update flag
+            // Store data in Firestore
+            await addDoc(collection(db, "teamBody"), {
+                name,
+                designation,
+                imageUrl,
+                createdAt: new Date()
+            });
+
+            sessionStorage.setItem('addTeamBodySuccess', 'true');
             navigate("/teamlist");
 
         } catch (error) {

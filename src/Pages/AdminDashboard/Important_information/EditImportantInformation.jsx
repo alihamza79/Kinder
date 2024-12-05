@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditImportantInformation = () => {
@@ -19,11 +19,11 @@ const EditImportantInformation = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.importantInformation.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
-                    setDescription(documentSnapshot.description);
-                    editorRef.current.setEditorContent(documentSnapshot.description);
+                const documentSnapshot = await getDocument('importantInformation', id);
+                if (documentSnapshot.exists()) {
+                    setTitle(documentSnapshot.data().title);
+                    setDescription(documentSnapshot.data().description);
+                    editorRef.current.setEditorContent(documentSnapshot.data().description);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -45,7 +45,7 @@ const EditImportantInformation = () => {
 
         setLoading(true);
         try {
-            await db.importantInformation.update(id, { title, description });
+            await updateDocument('importantInformation', id, { title, description });
             sessionStorage.setItem('updateImportantInformationSuccess', 'true');
             navigate("/importantinformationbody");
         } catch (error) {

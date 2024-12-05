@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import Header from "../../../../Components/Header";
 import Sidebar from "../../../../Components/Sidebar";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import db from "../../../../appwrite/Services/dbServices"; // Import Appwrite database service
-import { toast, ToastContainer } from "react-toastify"; // Import toast notifications
+import { db } from "../../../../config/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { toast, ToastContainer } from "react-toastify";
 import FeatherIcon from "feather-icons-react";
 import 'react-toastify/dist/ReactToastify.css';
 import { Combobox, ComboboxInput, ComboboxPopover, ComboboxList, ComboboxOption } from "@reach/combobox";
@@ -19,80 +20,72 @@ const AddRepresentative = () => {
     const [loading, setLoading] = useState(false);
     const [autocompleteOptions, setAutocompleteOptions] = useState([]);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        // Validation checks
-        if (!hospital.trim()) {
-            toast.error("Hospital is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!address.trim()) {
-            toast.error("Address is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!telephoneNumber.trim()) {
-            toast.error("Telephone number is required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        if (!doctors.trim()) {
-            toast.error("Doctors are required", { autoClose: 2000 });
-            setLoading(false);
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            // Store data in Appwrite database
-            const representative = await db.representatives.create({
-                hospital,
-                address,
-                telephoneNumber,
-                doctors,
-            });
-
-            // Update the representationDates collection with the new representative ID
-            const representationDate = await db.representationDates.get(id);
-            const updatedRepresentatives = [...representationDate.representativesCollection, representative.$id];
-            await db.representationDates.update(id, { representativesCollection: updatedRepresentatives });
-
-            toast.success('Representative added successfully!', { autoClose: 2000 });
-            navigate(`/representationdates/${id}/representatives`);
-        } catch (error) {
-            toast.error('Error adding representative: ' + error.message, { autoClose: 2000 });
-            console.error('Error adding representative: ', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     const handleAddressChange = async (e) => {
         const value = e.target.value;
         setAddress(value);
 
         if (value.length > 2) {
             try {
-                const response = await fetch(`https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`);
+                const response = await fetch(
+                    `https://api.geoapify.com/v1/geocode/autocomplete?text=${value}&apiKey=8f50230b46434772aae8fadc8d64a5b8`
+                );
                 const result = await response.json();
                 setAutocompleteOptions(result.features || []);
             } catch (error) {
-                console.error("Error fetching autocomplete options:", error);
+                console.error("Error fetching address suggestions:", error);
             }
-        } else {
-            setAutocompleteOptions([]);
         }
     };
 
-    const handleSelect = (description) => {
-        setAddress(description);
+    const handleSelect = (address) => {
+        setAddress(address);
         setAutocompleteOptions([]);
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Validation checks
+        if (!hospital.trim()) {
+            toast.error("Hospital is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!address.trim()) {
+            toast.error("Address is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!telephoneNumber.trim()) {
+            toast.error("Telephone number is required", { autoClose: 2000 });
+            return;
+        }
+
+        if (!doctors.trim()) {
+            toast.error("Doctors are required", { autoClose: 2000 });
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await addDoc(collection(db, "representatives"), {
+                dateId: id,
+                hospital,
+                address,
+                telephoneNumber,
+                doctors,
+                createdAt: new Date()
+            });
+
+            sessionStorage.setItem('addRepresentativeSuccess', 'true');
+            navigate(`/representationdates/${id}/representatives`);
+        } catch (error) {
+            toast.error("Error adding representative: " + error.message);
+            console.error('Error adding representative: ', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (

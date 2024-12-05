@@ -4,9 +4,9 @@ import Header from "../../../Components/Header";
 import Sidebar from "../../../Components/Sidebar";
 import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react/build/FeatherIcon";
-import db from "../../../appwrite/Services/dbServices";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { getAllDocuments, updateDocument, addDocument } from "../../../firebase/dbService";
 
 const Categories = () => {
   const {
@@ -16,33 +16,32 @@ const Categories = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      category1: "", // Initialize default values for categories
+      category1: "",
       category2: "",
       category3: "",
     },
   });
 
-  const [submitting, setSubmitting] = useState(false); // State to manage form submission
-  const [docId, setDocId] = useState(null); // State to store document ID from Firestore
-  const [initialCategories, setInitialCategories] = useState({}); // State to store initial category values
+  const [submitting, setSubmitting] = useState(false);
+  const [docId, setDocId] = useState(null);
+  const [initialCategories, setInitialCategories] = useState({});
 
   useEffect(() => {
-    // Fetch categories data from Firestore on component mount
     const fetchCategories = async () => {
       try {
-        const response = await db.categories.list();
-        if (response.documents.length > 0) {
-          const doc = response.documents[0];
-          setDocId(doc.$id);
+        const response = await getAllDocuments('categories');
+        if (!response.empty) {
+          const doc = response.docs[0];
+          setDocId(doc.id);
+          const data = doc.data();
           setInitialCategories({
-            category1: doc.category1,
-            category2: doc.category2,
-            category3: doc.category3,
+            category1: data.category1,
+            category2: data.category2,
+            category3: data.category3,
           });
-          // Set form values using setValue from react-hook-form
-          setValue("category1", doc.category1);
-          setValue("category2", doc.category2);
-          setValue("category3", doc.category3);
+          setValue("category1", data.category1);
+          setValue("category2", data.category2);
+          setValue("category3", data.category3);
         }
       } catch (error) {
         console.error("Error fetching categories:", error);
@@ -50,24 +49,22 @@ const Categories = () => {
     };
 
     fetchCategories();
-  }, [setValue]); // Dependency array ensures fetch happens once on mount
+  }, [setValue]);
 
-  // Function to update gallery items when categories change
   const updateGalleryCategories = async (oldCategory, newCategory) => {
     try {
-      const response = await db.galleryBody.list();
-      const galleryItems = response.documents.filter(item => item.category === oldCategory);
+      const response = await getAllDocuments('galleryBody');
+      const galleryItems = response.docs.filter(item => item.data().category === oldCategory);
       for (const item of galleryItems) {
-        await db.galleryBody.update(item.$id, { category: newCategory });
+        await updateDocument('galleryBody', item.id, { category: newCategory });
       }
     } catch (error) {
       console.error("Error updating gallery categories:", error);
     }
   };
 
-  // Form submission handler
   const onSubmit = async (data) => {
-    setSubmitting(true); // Set submitting state to true to disable form during submission
+    setSubmitting(true);
     try {
       const promises = [];
       if (data.category1 !== initialCategories.category1) {
@@ -80,22 +77,20 @@ const Categories = () => {
         promises.push(updateGalleryCategories(initialCategories.category3, data.category3));
       }
 
-      // Wait for all promises to resolve
       await Promise.all(promises);
 
-      // Update or create categories document in Firestore
       if (docId) {
-        await db.categories.update(docId, data);
+        await updateDocument('categories', docId, data);
       } else {
-        const newDoc = await db.categories.create(data);
-        setDocId(newDoc.$id);
+        const newDoc = await addDocument('categories', data);
+        setDocId(newDoc.id);
       }
       toast.success("Categories updated successfully!", { autoClose: 2000 });
     } catch (error) {
       toast.error("Failed to submit categories!", { autoClose: 2000 });
       console.error("Error submitting categories:", error);
     } finally {
-      setSubmitting(false); // Reset submitting state
+      setSubmitting(false);
     }
   };
 

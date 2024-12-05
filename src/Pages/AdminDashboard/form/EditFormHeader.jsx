@@ -5,10 +5,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 
 const EditFormHeader = () => {
-    const { id } = useParams(); // Retrieve the document ID from the URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
@@ -17,19 +17,21 @@ const EditFormHeader = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.formHeader.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
+                const documentSnapshot = await getDocument('formHeader', id);
+                if (documentSnapshot.exists()) {
+                    setTitle(documentSnapshot.data().title);
                 } else {
                     console.error('Document does not exist');
+                    navigate("/formheader");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error loading data. Please try again.");
             }
         };
 
         fetchDocumentData();
-    }, [id]);
+    }, [id, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,8 +42,8 @@ const EditFormHeader = () => {
 
         setLoading(true);
         try {
-            await db.formHeader.update(id, { title });
-            sessionStorage.setItem('updateFormHeaderSuccess', 'true'); // Set update flag
+            await updateDocument('formHeader', id, { title });
+            sessionStorage.setItem('updateFormHeaderSuccess', 'true');
             navigate("/formheader");
         } catch (error) {
             toast.error("Error updating document: " + error.message, { autoClose: 2000 });

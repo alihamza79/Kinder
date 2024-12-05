@@ -5,7 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { getDocument, updateDocument } from "../../../firebase/dbService";
 
 const EditGalleryHeader = () => {
     const { id } = useParams();
@@ -16,9 +16,9 @@ const EditGalleryHeader = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.galleryHeader.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
+                const documentSnapshot = await getDocument('galleryHeader', id);
+                if (documentSnapshot.exists()) {
+                    setTitle(documentSnapshot.data().title);
                 } else {
                     console.error('Document does not exist');
                 }
@@ -40,7 +40,7 @@ const EditGalleryHeader = () => {
 
         setLoading(true);
         try {
-            await db.galleryHeader.update(id, { title });
+            await updateDocument('galleryHeader', id, { title });
             sessionStorage.setItem('updateGalleryHeaderSuccess', 'true');
             navigate("/galleryheader");
         } catch (error) {

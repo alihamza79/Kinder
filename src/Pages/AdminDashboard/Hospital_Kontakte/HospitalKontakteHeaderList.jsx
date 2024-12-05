@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import db from "../../../appwrite/Services/dbServices"; // Import Appwrite db services
+import { getAllDocuments, addDocument } from "../../../firebase/dbService";
 import Header from "../../../Components/Header";
 import { itemRender, onShowSizeChange } from "../../../Components/Pagination";
 import Sidebar from "../../../Components/Sidebar";
@@ -19,11 +19,11 @@ const HospitalKontakteHeaderList = () => {
     const addSuccess = sessionStorage.getItem("addHospitalKontakteHeaderSuccess");
     if (updateSuccess) {
       toast.success("Document updated successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("updateHospitalKontakteHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("updateHospitalKontakteHeaderSuccess");
     }
     if (addSuccess) {
       toast.success("Document Added successfully!", { autoClose: 2000 });
-      sessionStorage.removeItem("addHospitalKontakteHeaderSuccess"); // Clear the flag after showing the toast
+      sessionStorage.removeItem("addHospitalKontakteHeaderSuccess");
     }
     fetchData();
   }, [location]);
@@ -31,24 +31,27 @@ const HospitalKontakteHeaderList = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const querySnapshot = await db.hospitalKontakteHeader.list(); // Fetch documents from Appwrite collection
-      const data = querySnapshot.documents.map((doc) => ({
-        id: doc.$id,
-        ...doc,
+      const querySnapshot = await getAllDocuments('hospitalKontakteHeader');
+      const data = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
       }));
 
       if (data.length === 0) {
-        // Add a new document with "Dummy Title" if the collection is empty
-        const newDocument = await db.hospitalKontakteHeader.create({
-          title: "Dummy Title",
+        const newDocRef = await addDocument('hospitalKontakteHeader', {
+          title: "Dummy Title"
         });
-        data.push({ id: newDocument.$id, ...newDocument });
+        data.push({
+          id: newDocRef.id,
+          title: "Dummy Title"
+        });
       }
 
       setDataSource(data);
-      setLoading(false);
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data: " + error.message);
+    } finally {
       setLoading(false);
     }
   };

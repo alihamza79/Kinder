@@ -5,7 +5,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import db from "../../../appwrite/Services/dbServices";
+import { db } from "../../../config/firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import TextEditor from "../InformationCard/TextEditor";
 
 const EditScheduleBody = () => {
@@ -21,16 +22,20 @@ const EditScheduleBody = () => {
     useEffect(() => {
         const fetchDocumentData = async () => {
             try {
-                const documentSnapshot = await db.scheduleBody.get(id);
-                if (documentSnapshot) {
-                    setTitle(documentSnapshot.title);
-                    setDescription(documentSnapshot.description);
-                    editorRef.current.setEditorContent(documentSnapshot.description);
+                const docRef = doc(db, "scheduleBody", id);
+                const docSnap = await getDoc(docRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setTitle(data.title);
+                    setDescription(data.description);
+                    editorRef.current.setEditorContent(data.description);
                 } else {
                     console.error('Document does not exist');
+                    toast.error("Document not found");
                 }
             } catch (error) {
                 console.error('Error fetching document data:', error);
+                toast.error("Error fetching data: " + error.message);
             }
         };
 
@@ -40,29 +45,30 @@ const EditScheduleBody = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!title.trim()) {
-            setTitleError('Title is required');
-            toast.error("Title is required", { autoClose: 2000 });
+        if (!title.trim() || !description.trim()) {
+            if (!title.trim()) {
+                setTitleError('Title is required');
+                toast.error("Title is required", { autoClose: 2000 });
+            }
+            if (!description.trim()) {
+                setDescriptionError('Description is required');
+                toast.error("Description is required", { autoClose: 2000 });
+            }
             return;
-        } else {
-            setTitleError('');
-        }
-
-        if (!description.trim()) {
-            setDescriptionError('Description is required');
-            toast.error("Description is required", { autoClose: 2000 });
-            return;
-        } else {
-            setDescriptionError('');
         }
 
         setLoading(true);
         try {
-            await db.scheduleBody.update(id, { title, description });
+            const docRef = doc(db, "scheduleBody", id);
+            await updateDoc(docRef, {
+                title,
+                description,
+                updatedAt: new Date()
+            });
             sessionStorage.setItem('updateScheduleSuccess', 'true');
             navigate("/schedulebody");
         } catch (error) {
-            toast.error("Error updating document: " + error.message, { autoClose: 2000 });
+            toast.error("Error updating document: " + error.message);
         } finally {
             setLoading(false);
         }
